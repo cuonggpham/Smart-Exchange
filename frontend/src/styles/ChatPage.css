@@ -1,0 +1,269 @@
+/* ======= ROOT CONTAINER ======= */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+    background: var(--bg-color);
+    font-family: "Inter", sans-serif;
+}
+
+/* ======= HEADER ======= */
+.chat-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 28px;
+    height: 56px;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+    box-shadow: 0 1px 2px var(--shadow-sm);
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.title {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: var(--text-color);
+}
+
+/* ======= BODY ======= */
+.chat-body {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+}
+
+/* ======= SIDEBAR ======= */
+.chat-sidebar {
+    width: 240px;
+    padding: 20px;
+    border-right: 1px solid var(--border-color);
+    background: var(--sidebar-bg);
+    overflow-y: auto;
+}
+
+.back-link {
+    font-size: 14px;
+    color: var(--link-color);
+    text-decoration: none;
+    margin-bottom: 14px;
+    display: inline-block;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+    color: var(--link-hover);
+}
+
+.history-title {
+    margin-top: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.history-list {
+    margin-top: 12px;
+}
+
+.history-item {
+    padding: 12px 14px;
+    border-radius: 6px;
+    margin-bottom: 4px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    color: var(--text-color);
+}
+
+.history-item:hover {
+    background-color: var(--bg-tertiary);
+}
+
+.history-item.selected {
+    background-color: var(--primary-light);
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+/* ======= CHAT AREA WRAPPER ======= */
+.chat-area-wrapper {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-color);
+    height: 100%;
+    overflow: hidden;
+}
+
+/* ======= MESSAGE LIST ======= */
+.chat-area {
+    flex: 1;
+    width: 100%;
+    padding: 20px;
+    overflow-y: auto;
+    background: var(--bg-color);
+    padding-bottom: 40px;
+}
+
+/* ======= BUBBLE ROW ======= */
+/* 🚀 FIX QUAN TRỌNG: KHÔNG ĐƯỢC width:100% */
+.bubble-row {
+    display: flex;
+    align-items: flex-end;
+    max-width: 70%;
+    margin-bottom: 14px;
+}
+
+/* OTHER (bên trái) */
+.bubble-row.left {
+    justify-content: flex-start;
+    flex-direction: row;
+}
+
+/* USER (bên phải) */
+.bubble-row.right {
+    justify-content: flex-start;
+    flex-direction: row-reverse;
+    margin-left: auto;
+    align-self: flex-end;
+}
+
+/* ======= AVATAR ======= */
+.avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin: 0 8px;
+}
+
+/* ======= BUBBLE WRAPPER ======= */
+.bubble-wrapper {
+    display: flex;
+    flex-direction: column;
+    max-width: 65%;
+}
+
+/* ======= BUBBLE ======= */
+.bubble {
+    padding: 10px 14px;
+    border-radius: 12px;
+    white-space: pre-wrap;
+    font-size: 15px;
+    line-height: 20px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    position: relative;
+}
+
+/* ======= DELETE MESSAGE BUTTON ======= */
+.delete-msg-btn {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #ff4757;
+    color: white;
+    border: none;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.8;
+    transition: all 0.15s ease;
+}
+
+.delete-msg-btn:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.bubble-row.left .bubble {
+    background: var(--bg-tertiary);
+    color: var(--text-color);
+}
+
+.bubble-row.right .bubble {
+    background: var(--primary-color);
+    color: var(--text-inverse);
+}
+
+/* ======= TIMESTAMP ======= */
+.timestamp {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 4px;
+    text-align: right;
+}
+
+/* ======= INPUT BAR ======= */
+.input-container {
+    display: flex;
+    padding: 14px 20px;
+    border-top: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+    gap: 14px;
+}
+
+.editor {
+    flex: 1;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid var(--input-border);
+    background: var(--input-bg);
+    color: var(--text-color);
+    min-height: 40px;
+    max-height: 150px;
+    overflow-y: auto;
+    outline: none;
+    white-space: pre-wrap;
+}
+
+.editor:focus {
+    border-color: var(--input-focus);
+    box-shadow: 0 0 0 2px var(--primary-light);
+}
+
+.editor:empty:before {
+    content: "メッセージを入力してください。";
+    color: var(--input-placeholder);
+    pointer-events: none;
+}
+
+.send-button {
+    padding: 12px 20px;
+    border: none;
+    background: var(--primary-color);
+    color: var(--text-inverse);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.15s ease;
+    font-weight: 500;
+}
+
+.send-button:hover {
+    background: var(--primary-hover);
+}
+
+.msg-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-area-container {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}

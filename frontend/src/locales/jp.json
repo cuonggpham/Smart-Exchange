@@ -1,0 +1,257 @@
+{
+    "auth": {
+        "login": {
+            "title": "ログイン",
+            "emailLabel": "メールアドレス",
+            "emailPlaceholder": "メールアドレスを入力してください",
+            "passwordLabel": "パスワード",
+            "passwordPlaceholder": "パスワードを入力してください",
+            "submit": "ログイン",
+            "google": "Googleでログイン",
+            "noAccount": "アカウントをお持ちでない場合？",
+            "register": "新規登録",
+            "loginProcessing": "処理中...",
+            "errorMissing": "メールとパスワードを入力してください。",
+            "errorLoginFailed": "ログインに失敗しました。"
+        },
+        "register": {
+            "title": "登録",
+            "fullNameLabel": "氏名",
+            "fullNamePlaceholder": "お名前を入力してください",
+            "emailLabel": "メールアドレス",
+            "emailPlaceholder": "メールアドレスを入力してください",
+            "passwordLabel": "パスワード",
+            "passwordPlaceholder": "パスワードを入力してください",
+            "passwordConfirmLabel": "パスワード確認",
+            "passwordConfirmPlaceholder": "もう一度パスワードを入力してください",
+            "submit": "登録",
+            "bottomText": "すでにアカウントをお持ちですか？",
+            "bottomLinkText": "ログイン",
+            "registerProcessing": "処理中...",
+            "errorMissing": "すべての項目を入力してください。",
+            "errorPasswordMismatch": "パスワードと確認用パスワードが一致しません。",
+            "errorRegisterFailed": "登録に失敗しました。",
+            "errorGeneric": "エラーが発生しました。もう一度お試しください。"
+        },
+        "googleAlt": "Googleアカウントでログイン"
+    },
+    "profile": {
+        "title": "プロフィール",
+        "emailLabel": "電子メール",
+        "careerLabel": "自分のキャリア",
+        "careerPlaceholder": "キャリア情報を入力してください...",
+        "positionLabel": "自分の立場",
+        "positionPlaceholder": "職位情報を入力してください...",
+        "updateButton": "アップデート",
+        "updating": "アップデート中...",
+        "settingsBackButton": "設定画面に戻る",
+        "successMessage": "プロフィールの更新に成功しました！",
+        "errorNotAuthenticated": "ログインしていません。",
+        "errorUpdateFailed": "プロフィールの更新に失敗しました。",
+        "avatarLabel": "アバター",
+        "avatarAlt": "アバター",
+        "avatarEmpty": "未設定",
+        "avatarUrlPlaceholder": "画像URLを貼り付ける、またはファイルを選択",
+        "errorAvatarInvalid": "画像ファイルのみ対応しています。",
+        "errorAvatarReadFailed": "画像の読み込みに失敗しました。"
+},
+
+    "lang": {
+        "ariaVi": "ベトナム語に切り替える",
+        "ariaJp": "日本語に切り替える"
+    },
+    "settings": {
+        "breadcrumb": "設定",
+        "title": "設定",
+        "userLabel": "ユーザー",
+        "menu": {
+            "title": "メニュー",
+            "account": "アカウント",
+            "profile": "個人情報",
+            "theme": "外観",
+            "language": "言語",
+            "notifications": "通知",
+            "security": "セキュリティ",
+            "system": "システム",
+            "help": "ヘルプ",
+            "logout": "ログアウト"
+        },
+        "backHome": "ホーム",
+        "userDisplay": "ユーザー名: {{username}}",
+        "meta": {
+            "language": "言語",
+            "theme": "テーマ"
+        },
+        "common": {
+            "saving": "保存中...",
+            "autoSave": "変更は自動的に保存されます",
+            "error": "エラーが発生しました"
+        },
+        "overview": {
+            "title": "アカウント設定",
+            "subtitle": "アカウント情報を管理します。",
+            "user": "アカウント",
+            "usernameLabel": "ユーザー名",
+            "emailLabel": "メール",
+            "edit": "アカウントを編集"
+        },
+        "language": {
+            "title": "言語設定",
+            "subtitle": "アプリ全体の表示言語を選択します。",
+            "label": "言語",
+            "options": {
+                "vi": "ベトナム語",
+                "jp": "日本語"
+            }
+        },
+        "theme": {
+            "title": "ライト/ダークテーマ",
+            "subtitle": "アプリの背景色を切り替えます。",
+            "label": "テーマ",
+            "options": {
+                "light": "ライト",
+                "dark": "ダーク"
+            }
+        },
+        "notifications": {
+            "title": "通知設定",
+            "subtitle": "通知とアラートを管理します。",
+            "comingSoon": "この機能は間もなく利用可能になります。"
+        },
+        "security": {
+            "title": "セキュリティ設定",
+            "subtitle": "パスワードとその他のセキュリティ設定を管理します。",
+            "comingSoon": "この機能は間もなく利用可能になります。"
+        },
+        "system": {
+            "title": "システム設定",
+            "subtitle": "システムオプションと高度な設定。",
+            "comingSoon": "この機能は間もなく利用可能になります。"
+        },
+        "help": {
+            "title": "ヘルプ",
+            "subtitle": "よくある質問の回答を見つけます。",
+            "comingSoon": "この機能は間もなく利用可能になります。"
+        },
+        "logout": {
+            "title": "ログアウト",
+            "subtitle": "現在のセッションを終了します。",
+            "cta": "ログアウトする",
+            "processing": "ログアウト中..."
+        }
+    },
+    "tutorial": {
+        "pageTitle": "使い方ガイド",
+        "topBannerBtn": "すべて理解しましたか？",
+        "stepBadge": "ステップ",
+        "cta": {
+            "title": "準備はできましたか？",
+            "desc": "上記の手順を理解したら、チャットを開始してみましょう！",
+            "btn": "理解しました & チャット開始",
+            "loading": "処理中...",
+            "note": "*上のボタンを押すと、使用方法を理解したことになります。"
+        },
+        "steps": {
+            "step1": {
+                "title": "メッセージ入力",
+                "desc": "チャットボックスにベトナム語または日本語で送信したい内容を入力します。システムが即座に入力情報を受け取ります。"
+            },
+            "step2": {
+                "title": "AI分析",
+                "desc": "AIシステムが自動的に文法や文体をチェックし、最も自然でプロフェッショナルな文章になるよう修正を提案します。"
+            },
+            "step3": {
+                "title": "選択 & 送信",
+                "desc": "AIからの提案を確認し、文脈に最も適した回答を選択して、パートナーにメッセージを送信します。"
+            }
+        }
+    },
+    "home": {
+        "title": "Smart Exchangeへようこそ",
+        "appName": "Smart Exchange",
+        "userInfo": {
+            "email": "メール",
+            "jobTitle": "役職",
+            "language": "言語",
+            "theme": "テーマ",
+            "notAvailable": "情報なし"
+        },
+        "actions": {
+            "goToProfile": "プロフィールへ",
+            "goToSettings": "設定へ",
+            "goToChat": "チャットへ",
+            "logout": "ログアウト",
+            "loggingOut": "ログアウト中..."
+        }
+    },
+    "chat": {
+        "title": "チャット",
+        "header": {
+            "appName": "Smart Exchange"
+        },
+        "sidebar": {
+            "backHome": "ホーム",
+            "recentChats": "最近のチャット",
+            "otherUsers": "他のユーザー",
+            "noMessages": "メッセージなし"
+        },
+        "placeholder": {
+            "selectChat": "会話を選択して開始"
+        },
+        "loading": "チャットを読み込み中...",
+        "input": {
+            "placeholder": "メッセージを入力...",
+            "checkButton": "提案をチェック",
+            "sendButton": "送信"
+        },
+        "ai": {
+            "checking": "AIがチェック中...",
+            "modalTitle": "表現・文化チェック",
+            "originalText": "入力されたテキスト",
+            "culturalNotes": "文化的な注意",
+            "suggestions": "提案された選択肢",
+            "sendOriginal": "元通り送信",
+            "sendSelected": "選択した文を送信",
+            "continueEditing": "修正を続ける",
+            "checkFailed": "AIチェックに失敗しました",
+            "noSuggestions": "提案がありません"
+        }
+    },
+    "common": {
+        "loading": "読み込み中...",
+        "processing": "処理中...",
+        "saving": "保存中...",
+        "saved": "保存しました",
+        "success": "成功！",
+        "error": "エラーが発生しました",
+        "confirm": "確認",
+        "cancel": "キャンセル",
+        "close": "閉じる",
+        "save": "保存",
+        "edit": "編集",
+        "delete": "削除",
+        "back": "戻る",
+        "next": "次へ",
+        "submit": "送信",
+        "yes": "はい",
+        "no": "いいえ",
+        "validation": {
+            "required": "この項目は必須です",
+            "invalidEmail": "メールアドレスが無効です",
+            "passwordTooShort": "パスワードが短すぎます",
+            "passwordMismatch": "パスワードが一致しません"
+        },
+        "messages": {
+            "updateSuccess": "更新に成功しました！",
+            "updateFailed": "更新に失敗しました",
+            "deleteSuccess": "削除に成功しました！",
+            "deleteFailed": "削除に失敗しました",
+            "saveSuccess": "保存に成功しました！",
+            "saveFailed": "保存に失敗しました",
+            "networkError": "ネットワークエラー",
+            "unauthorized": "アクセス権限がありません",
+            "notFound": "見つかりません",
+            "serverError": "サーバーエラー"
+        }
+    }
+}

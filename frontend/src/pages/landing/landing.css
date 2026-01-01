@@ -1,0 +1,397 @@
+/* ================= TOKENS ================= */
+.landing {
+  --bg: #ffffff;
+  --bg-soft: #f8fafc;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: #e5e7eb;
+  --primary: #2563eb;
+  --danger: #ef4444;
+
+  --radius: 14px;
+  --shadow-sm: 0 6px 18px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 12px 30px rgba(15, 23, 42, 0.08);
+
+  --container: 1120px;
+
+  font-family: "Inter", "Noto Sans JP", Arial, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  min-height: 100vh;
+}
+
+/* tránh ảnh hưởng global */
+.landing * { box-sizing: border-box; }
+.landing img { max-width: 100%; display: block; }
+
+/* ================= HEADER ================= */
+.landing-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 14px 64px;
+  border-bottom: 1px solid var(--border);
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* pill switch giống figma */
+.lang-btn {
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: #fff;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.lang-btn:hover {
+  background: #f3f4f6;
+}
+
+.lang-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+/* login button */
+.login-btn {
+  background: #0b1220;
+  color: white;
+  padding: 8px 16px;
+  border: 1px solid #0b1220;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.login-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ================= HERO ================= */
+/* Figma thường: nền trắng + 1 chút gradient rất nhẹ */
+.hero {
+  background:
+    radial-gradient(900px 500px at 70% 35%, rgba(37, 99, 235, 0.08), transparent 55%),
+    radial-gradient(900px 500px at 30% 30%, rgba(239, 68, 68, 0.06), transparent 55%),
+    #ffffff;
+
+  padding: 92px 24px 72px;
+
+  /* nếu hero là full width section thì vẫn giữ content gọn gàng */
+}
+
+.hero h1 {
+  max-width: 720px;
+  margin: 0 auto;
+
+  font-size: 44px;
+  font-weight: 900;
+  line-height: 1.18;
+  letter-spacing: -0.03em;
+  white-space: pre-line;
+  color: #0b1220;
+  text-align: left;
+}
+
+.hero p {
+  max-width: 720px;
+  margin: 18px auto 0;
+
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.75;
+  text-align: left;
+}
+
+.register-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 26px;
+  padding: 14px 34px;
+
+  background: var(--danger);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 800;
+
+  box-shadow: 0 12px 24px rgba(239, 68, 68, 0.22);
+}
+
+.register-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 30px rgba(239, 68, 68, 0.28);
+}
+
+/* ================= SECTION COMMON ================= */
+.landing section {
+  padding: 86px 24px;
+}
+
+.landing section h2 {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  margin: 0 0 26px;
+  color: #0b1220;
+}
+
+/* ================= STEPS ================= */
+.steps {
+  background: #ffffff;
+  text-align: center;
+  border-top: 1px solid var(--border);
+}
+
+.steps-subtitle {
+  color: var(--muted);
+  font-size: 14px;
+  margin: -10px 0 48px;
+}
+
+.step-list {
+  max-width: var(--container);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+.step-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 8px;
+}
+
+.step-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 999px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow-sm);
+}
+
+.step-card.red .step-icon { background: var(--danger); }
+.step-card.blue .step-icon { background: var(--primary); }
+.step-card.green .step-icon { background: #10b981; }
+
+.step-title {
+  font-weight: 800;
+  margin-bottom: 8px;
+  color: #0b1220;
+}
+
+.step-desc {
+  font-size: 13px;
+  color: var(--muted);
+  max-width: 280px;
+  line-height: 1.7;
+}
+
+/* ================= VALUES ================= */
+.values {
+  background: var(--bg-soft);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.value-list {
+  max-width: var(--container);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.value-list > div {
+  background: white;
+  padding: 26px 22px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  text-align: left;
+}
+
+.value-list > div:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.value-icon {
+  font-size: 26px;
+  margin-bottom: 10px;
+}
+
+.value-icon.red { color: var(--danger); }
+.value-icon.blue { color: var(--primary); }
+.value-icon.green { color: #10b981; }
+
+/* ================= STATS ================= */
+/* làm giống figma: 1 khung trắng ở giữa */
+.stats {
+  max-width: var(--container);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+
+  text-align: center;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 26px 18px;
+  box-shadow: var(--shadow-sm);
+}
+
+.stats strong {
+  font-size: 34px;
+  display: block;
+  margin-bottom: 6px;
+  letter-spacing: -0.02em;
+}
+
+.stats div {
+  padding: 8px 6px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.stats div:nth-child(1) strong { color: var(--primary); }
+.stats div:nth-child(2) strong { color: var(--danger); }
+.stats div:nth-child(3) strong { color: #10b981; }
+.stats div:nth-child(4) strong { color: #f59e0b; }
+
+/* ================= USERS ================= */
+.users ul {
+  max-width: var(--container);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  list-style: none;
+  padding: 0;
+}
+
+.users li {
+  background: white;
+  padding: 26px 20px;
+  border-radius: var(--radius);
+  text-align: center;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+.users li:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.user-icon {
+  font-size: 26px;
+  margin-bottom: 10px;
+}
+
+.user-icon.blue { color: var(--primary); }
+.user-icon.red { color: var(--danger); }
+.user-icon.yellow { color: #f59e0b; }
+
+/* ================= FOOTER CTA ================= */
+.footer-cta {
+  background: radial-gradient(900px 450px at 30% 30%, rgba(37,99,235,0.18), transparent 60%),
+              linear-gradient(135deg, #0b1220, #111827);
+  color: white;
+  text-align: center;
+  padding: 92px 24px;
+}
+
+.footer-cta button {
+  margin-top: 24px;
+  padding: 14px 42px;
+  background: var(--danger);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  cursor: pointer;
+  font-weight: 900;
+  box-shadow: 0 14px 28px rgba(239, 68, 68, 0.25);
+}
+
+.footer-cta button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 34px rgba(239, 68, 68, 0.30);
+}
+
+/* ================= FOOTER ================= */
+.footer {
+  background: #ffffff;
+  text-align: center;
+  padding: 22px 24px;
+  font-size: 12px;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 1024px) {
+  .landing-header { padding: 14px 24px; }
+}
+
+@media (max-width: 768px) {
+  .hero { padding: 72px 18px 56px; }
+  .hero h1 {
+    font-size: 32px;
+    text-align: left;
+  }
+  .hero p { font-size: 14px; }
+
+  .step-list,
+  .value-list,
+  .stats,
+  .users ul {
+    grid-template-columns: 1fr;
+  }
+
+  .stats { padding: 22px 14px; }
+}
+/* Center register button only */
+.hero .register-btn {
+  display: block;
+  margin: 28px auto 0;  /* auto left/right => ra giữa */
+}

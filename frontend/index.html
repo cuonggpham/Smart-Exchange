@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>frontend</title>
+  <script>
+    (function() {
+      try {
+        const saved = localStorage.getItem('settings');
+        if (saved) {
+          const settings = JSON.parse(saved);
+          if (settings.theme) {
+            document.documentElement.setAttribute('data-theme', settings.theme);
+          }
+        } else {
+          const oldTheme = localStorage.getItem('theme');
+          if (oldTheme === 'light' || oldTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', oldTheme);
+          }
+        }
+      } catch (e) {
+        // Ignore errors
+      }
+    })();
+  </script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
+</html>

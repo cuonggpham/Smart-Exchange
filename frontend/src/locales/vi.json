@@ -1,0 +1,257 @@
+{
+    "auth": {
+        "login": {
+            "title": "Đăng nhập",
+            "emailLabel": "Email",
+            "emailPlaceholder": "Nhập địa chỉ email",
+            "passwordLabel": "Mật khẩu",
+            "passwordPlaceholder": "Nhập mật khẩu",
+            "submit": "Đăng nhập",
+            "google": "Đăng nhập bằng Google",
+            "noAccount": "Chưa có tài khoản?",
+            "register": "Đăng ký",
+            "loginProcessing": "Đang đăng nhập...",
+            "errorMissing": "Vui lòng nhập email và mật khẩu.",
+            "errorLoginFailed": "Đăng nhập thất bại."
+        },
+        "register": {
+            "title": "Đăng ký",
+            "fullNameLabel": "Họ và tên",
+            "fullNamePlaceholder": "Nhập họ và tên",
+            "emailLabel": "Email",
+            "emailPlaceholder": "Nhập địa chỉ email",
+            "passwordLabel": "Mật khẩu",
+            "passwordPlaceholder": "Nhập mật khẩu",
+            "passwordConfirmLabel": "Xác nhận mật khẩu",
+            "passwordConfirmPlaceholder": "Nhập lại mật khẩu",
+            "submit": "Đăng ký",
+            "bottomText": "Đã có tài khoản?",
+            "bottomLinkText": "Đăng nhập",
+            "registerProcessing": "Đang đăng ký...",
+            "errorMissing": "Vui lòng điền đầy đủ thông tin.",
+            "errorPasswordMismatch": "Mật khẩu và xác nhận mật khẩu không trùng nhau.",
+            "errorRegisterFailed": "Đăng ký thất bại.",
+            "errorGeneric": "Có lỗi xảy ra, vui lòng thử lại."
+        },
+        "googleAlt": "Đăng nhập bằng tài khoản Google"
+    },
+    "profile": {
+        "title": "Hồ sơ cá nhân",
+        "emailLabel": "Địa chỉ Email",
+        "careerLabel": "Sự nghiệp của tôi",
+        "careerPlaceholder": "Vui lòng nhập thông tin về sự nghiệp...",
+        "positionLabel": "Vị trí của tôi",
+        "positionPlaceholder": "Vui lòng nhập thông tin về vị trí...",
+        "updateButton": "Cập nhật",
+        "updating": "Đang cập nhật...",
+        "settingsBackButton": "Quay lại cài đặt",
+        "successMessage": "Cập nhật hồ sơ thành công!",
+        "errorNotAuthenticated": "Bạn chưa đăng nhập.",
+        "errorUpdateFailed": "Cập nhật hồ sơ thất bại.",
+        "avatarLabel": "Avatar",
+        "avatarAlt": "Ảnh đại diện",
+        "avatarEmpty": "Chưa có",
+        "avatarUrlPlaceholder": "Dán URL ảnh hoặc chọn file",
+        "errorAvatarInvalid": "Chỉ chấp nhận file hình ảnh.",
+        "errorAvatarReadFailed": "Không đọc được file ảnh."
+},
+
+    "lang": {
+        "ariaVi": "Chuyển sang tiếng Việt",
+        "ariaJp": "Chuyển sang tiếng Nhật"
+    },
+    "settings": {
+        "breadcrumb": "Cài đặt",
+        "title": "Cài đặt",
+        "userLabel": "Người dùng",
+        "menu": {
+            "title": "Menu",
+            "account": "Tài khoản",
+            "profile": "Thông tin cá nhân",
+            "theme": "Giao diện",
+            "language": "Ngôn ngữ",
+            "notifications": "Thông báo",
+            "security": "Bảo mật",
+            "system": "Hệ thống",
+            "help": "Trợ giúp",
+            "logout": "Đăng xuất"
+        },
+        "backHome": "Trang chủ",
+        "userDisplay": "Tên người dùng: {{username}}",
+        "meta": {
+            "language": "Ngôn ngữ",
+            "theme": "Chủ đề"
+        },
+        "common": {
+            "saving": "Đang lưu thay đổi...",
+            "autoSave": "Thay đổi sẽ được lưu tự động",
+            "error": "Đã có lỗi xảy ra"
+        },
+        "overview": {
+            "title": "Cài đặt tài khoản",
+            "subtitle": "Quản lý thông tin tài khoản của bạn.",
+            "user": "Tài khoản",
+            "usernameLabel": "Tên người dùng",
+            "emailLabel": "Email",
+            "edit": "Chỉnh sửa tài khoản"
+        },
+        "language": {
+            "title": "Cài đặt ngôn ngữ",
+            "subtitle": "Chọn ngôn ngữ hiển thị cho toàn bộ ứng dụng.",
+            "label": "Ngôn ngữ",
+            "options": {
+                "vi": "Tiếng Việt",
+                "jp": "Tiếng Nhật"
+            }
+        },
+        "theme": {
+            "title": "Chủ đề sáng/tối",
+            "subtitle": "Tùy chỉnh màu nền ứng dụng.",
+            "label": "Chủ đề",
+            "options": {
+                "light": "Sáng (Light)",
+                "dark": "Tối (Dark)"
+            }
+        },
+        "notifications": {
+            "title": "Cài đặt thông báo",
+            "subtitle": "Quản lý các thông báo và cảnh báo của bạn.",
+            "comingSoon": "Tính năng này sẽ sớm có mặt."
+        },
+        "security": {
+            "title": "Cài đặt bảo mật",
+            "subtitle": "Quản lý mật khẩu và các thiết lập bảo mật khác.",
+            "comingSoon": "Tính năng này sẽ sớm có mặt."
+        },
+        "system": {
+            "title": "Cài đặt hệ thống",
+            "subtitle": "Các tùy chọn hệ thống và cấu hình nâng cao.",
+            "comingSoon": "Tính năng này sẽ sớm có mặt."
+        },
+        "help": {
+            "title": "Trợ giúp",
+            "subtitle": "Tìm câu trả lời cho các câu hỏi thường gặp.",
+            "comingSoon": "Tính năng này sẽ sớm có mặt."
+        },
+        "logout": {
+            "title": "Đăng xuất",
+            "subtitle": "Kết thúc phiên làm việc hiện tại của bạn.",
+            "cta": "Đăng xuất",
+            "processing": "Đang đăng xuất..."
+        }
+    },
+    "tutorial": {
+        "pageTitle": "HƯỚNG DẪN SỬ DỤNG",
+        "topBannerBtn": "Bạn đã hiểu hết chưa?",
+        "stepBadge": "BƯỚC",
+        "cta": {
+            "title": "Bạn đã sẵn sàng trải nghiệm chưa?",
+            "desc": "Nếu đã hiểu rõ các bước trên, hãy bắt đầu cuộc trò chuyện ngay!",
+            "btn": "Đã hiểu & Bắt đầu chat",
+            "loading": "Đang xử lý...",
+            "note": "*Nhấn nút trên đồng nghĩa với việc bạn đã hiểu rõ cách sử dụng."
+        },
+        "steps": {
+            "step1": {
+                "title": "Nhập tin nhắn",
+                "desc": "Nhập nội dung bạn muốn gửi bằng tiếng Việt hoặc tiếng Nhật vào khung chat. Hệ thống sẽ tiếp nhận thông tin đầu vào của bạn ngay lập tức."
+            },
+            "step2": {
+                "title": "AI Phân tích",
+                "desc": "Hệ thống AI sẽ tự động kiểm tra ngữ pháp, văn phong và đề xuất chỉnh sửa để câu văn trở nên tự nhiên, chuyên nghiệp nhất."
+            },
+            "step3": {
+                "title": "Chọn & Gửi",
+                "desc": "Xem xét các gợi ý từ AI, lựa chọn câu trả lời phù hợp nhất với ngữ cảnh và gửi tin nhắn đi cho đối tác."
+            }
+        }
+    },
+    "home": {
+        "title": "Chào mừng đến với Smart Exchange",
+        "appName": "Smart Exchange",
+        "userInfo": {
+            "email": "Email",
+            "jobTitle": "Chức danh công việc",
+            "language": "Ngôn ngữ",
+            "theme": "Giao diện",
+            "notAvailable": "Chưa có thông tin"
+        },
+        "actions": {
+            "goToProfile": "Đi đến Hồ sơ",
+            "goToSettings": "Đi đến Cài đặt",
+            "goToChat": "Đi đến Chat",
+            "logout": "Đăng xuất",
+            "loggingOut": "Đang đăng xuất..."
+        }
+    },
+    "chat": {
+        "title": "Chat",
+        "header": {
+            "appName": "Smart Exchange"
+        },
+        "sidebar": {
+            "backHome": "Trang chủ",
+            "recentChats": "Đã chat gần đây",
+            "otherUsers": "Người dùng khác",
+            "noMessages": "Chưa có tin nhắn"
+        },
+        "placeholder": {
+            "selectChat": "Chọn một cuộc trò chuyện để bắt đầu"
+        },
+        "loading": "Đang tải chat...",
+        "input": {
+            "placeholder": "Nhập tin nhắn...",
+            "checkButton": "Kiểm tra đề xuất",
+            "sendButton": "Gửi"
+        },
+        "ai": {
+            "checking": "AI đang kiểm tra...",
+            "modalTitle": "Kiểm tra Văn hóa & Biểu đạt",
+            "originalText": "Văn bản đã nhập",
+            "culturalNotes": "Lưu ý văn hóa",
+            "suggestions": "Các đề xuất",
+            "sendOriginal": "Gửi bản gốc",
+            "sendSelected": "Gửi văn bản đã chọn",
+            "continueEditing": "Tiếp tục chỉnh sửa",
+            "checkFailed": "Kiểm tra AI thất bại",
+            "noSuggestions": "Không có đề xuất"
+        }
+    },
+    "common": {
+        "loading": "Đang tải...",
+        "processing": "Đang xử lý...",
+        "saving": "Đang lưu...",
+        "saved": "Đã lưu",
+        "success": "Thành công!",
+        "error": "Đã có lỗi xảy ra",
+        "confirm": "Xác nhận",
+        "cancel": "Hủy",
+        "close": "Đóng",
+        "save": "Lưu",
+        "edit": "Chỉnh sửa",
+        "delete": "Xóa",
+        "back": "Quay lại",
+        "next": "Tiếp theo",
+        "submit": "Gửi",
+        "yes": "Có",
+        "no": "Không",
+        "validation": {
+            "required": "Trường này là bắt buộc",
+            "invalidEmail": "Email không hợp lệ",
+            "passwordTooShort": "Mật khẩu quá ngắn",
+            "passwordMismatch": "Mật khẩu không khớp"
+        },
+        "messages": {
+            "updateSuccess": "Cập nhật thành công!",
+            "updateFailed": "Cập nhật thất bại",
+            "deleteSuccess": "Xóa thành công!",
+            "deleteFailed": "Xóa thất bại",
+            "saveSuccess": "Lưu thành công!",
+            "saveFailed": "Lưu thất bại",
+            "networkError": "Lỗi kết nối mạng",
+            "unauthorized": "Bạn không có quyền truy cập",
+            "notFound": "Không tìm thấy",
+            "serverError": "Lỗi máy chủ"
+        }
+    }
+}

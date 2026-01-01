@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model User {
+  userId String @id @default(uuid()) @db.VarChar(36)
+
+  email String @unique @db.VarChar(50)
+
+  password String @db.VarChar(80)
+
+  fullName String  @db.VarChar(100)
+  jobTitle String? @db.VarChar(100)
+
+  isTutorialCompleted Boolean @default(false)
+
+  languageCode String @default("jp") @db.VarChar(3)
+  themeMode    String @default("light") @db.VarChar(7)
+
+  createdAt DateTime @default(now()) @db.Timestamp(0)
+
+  chatsAsUserOne Chat[]    @relation("UserOne")
+  chatsAsUserTwo Chat[]    @relation("UserTwo")
+  messagesSent   Message[]
+
+  @@map("Users")
+}
+
+model Chat {
+  chatId    String   @id @default(uuid()) @db.VarChar(36)
+  userOneId String   @db.VarChar(36)
+  userTwoId String   @db.VarChar(36)
+  updateAt  DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  userOne  User      @relation("UserOne", fields: [userOneId], references: [userId], onDelete: NoAction, onUpdate: NoAction)
+  userTwo  User      @relation("UserTwo", fields: [userTwoId], references: [userId], onDelete: NoAction, onUpdate: NoAction)
+  messages Message[]
+
+  @@unique([userOneId, userTwoId], name: "UQ_ConversationPair")
+  @@index([userOneId, updateAt(sort: Desc)], name: "IDX_Chat_UserOne_Sort")
+  @@index([userTwoId, updateAt(sort: Desc)], name: "IDX_Chat_UserTwo_Sort")
+  @@map("Chat")
+}
+
+model Message {
+  messageId         String  @id @default(uuid()) @db.VarChar(36)
+  chatId            String  @db.VarChar(36)
+  senderId          String  @db.VarChar(36)
+  content           String  @db.Text
+  aiAnalysisContent String? @db.Text
+
+  createdAt DateTime @default(now()) @db.Timestamp(0)
+  isRead    Boolean  @default(false)
+  chat      Chat     @relation(fields: [chatId], references: [chatId], onDelete: Cascade)
+  sender    User     @relation(fields: [senderId], references: [userId], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([chatId, createdAt(sort: Desc)], name: "IDX_Messages_GetContent")
+  @@map("Messages")
+}
