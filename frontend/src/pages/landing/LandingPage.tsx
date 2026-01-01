@@ -1,6 +1,17 @@
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../../contexts/LanguageContext";
 import "./landing.css";
+import {
+  Bot,
+  Send,
+  PenTool,
+  FileText,
+  Clock,
+  Shield,
+  Laptop,
+  Briefcase,
+  GraduationCap
+} from "lucide-react";
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -75,7 +86,9 @@ export default function LandingPage() {
 
         <div className="step-list">
           <div className="step-card red">
-            <div className="step-icon">✍️</div>
+            <div className="step-icon">
+              <PenTool size={32} />
+            </div>
             <div className="step-title">
               {isJP ? "メッセージ入力" : "Nhập nội dung"}
             </div>
@@ -87,7 +100,9 @@ export default function LandingPage() {
           </div>
 
           <div className="step-card blue">
-            <div className="step-icon">🤖</div>
+            <div className="step-icon">
+              <Bot size={32} />
+            </div>
             <div className="step-title">
               {isJP ? "AI分析・提案" : "AI phân tích & đề xuất"}
             </div>
@@ -99,7 +114,9 @@ export default function LandingPage() {
           </div>
 
           <div className="step-card green">
-            <div className="step-icon">📤</div>
+            <div className="step-icon">
+              <Send size={32} />
+            </div>
             <div className="step-title">
               {isJP ? "選択＆送信" : "Chọn và gửi"}
             </div>
@@ -122,7 +139,9 @@ export default function LandingPage() {
 
         <div className="value-list">
           <div>
-            <div className="value-icon red">📝</div>
+            <div className="value-icon red">
+              <FileText size={24} />
+            </div>
             <strong>{isJP ? "文章品質の向上" : "Cải thiện chất lượng câu văn"}</strong>
             <p>
               {isJP
@@ -132,7 +151,9 @@ export default function LandingPage() {
           </div>
 
           <div>
-            <div className="value-icon blue">⏱️</div>
+            <div className="value-icon blue">
+              <Clock size={24} />
+            </div>
             <strong>
               {isJP
                 ? "コミュニケーション速度の最適化"
@@ -146,7 +167,9 @@ export default function LandingPage() {
           </div>
 
           <div>
-            <div className="value-icon green">🛡️</div>
+            <div className="value-icon green">
+              <Shield size={24} />
+            </div>
             <strong>
               {isJP
                 ? "文化的リスクの最小化"
@@ -175,19 +198,25 @@ export default function LandingPage() {
 
         <ul>
           <li>
-            <div className="user-icon blue">💻</div>
+            <div className="user-icon blue">
+              <Laptop size={20} />
+            </div>
             {isJP
               ? "日本企業と協働するベトナム人エンジニア"
               : "Kỹ sư Việt Nam làm việc với doanh nghiệp Nhật"}
           </li>
           <li>
-            <div className="user-icon red">👔</div>
+            <div className="user-icon red">
+              <Briefcase size={20} />
+            </div>
             {isJP
               ? "ベトナムチームと協働する日本人マネージャー／リーダー"
               : "Quản lý / leader Nhật làm việc với team Việt"}
           </li>
           <li>
-            <div className="user-icon yellow">🎓</div>
+            <div className="user-icon yellow">
+              <GraduationCap size={20} />
+            </div>
             {isJP
               ? "教育者、エンジニアなど"
               : "Giáo viên, kỹ sư và các đối tượng khác"}

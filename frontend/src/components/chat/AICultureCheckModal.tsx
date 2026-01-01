@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { AICheckResponse, AISuggestion } from "../../types/ai.types";
 import "../../styles/AICultureCheckModal.css";
+import { Lightbulb, AlertTriangle } from "lucide-react";
 
 interface Props {
     isOpen: boolean;
@@ -66,7 +67,7 @@ export default function AICultureCheckModal({
             <div className="ai-modal-container" onClick={(e) => e.stopPropagation()}>
                 <div className="ai-modal-header">
                     <div className="ai-modal-title">
-                        <span className="icon">💡</span>
+                        <span className="icon"><Lightbulb size={24} /></span>
                         <span>{t('chat.ai.modalTitle')}</span>
                     </div>
                     <button className="ai-modal-close" onClick={handleClose}>
@@ -83,7 +84,7 @@ export default function AICultureCheckModal({
                     {response.culturalNotes && (
                         <div className="ai-cultural-notes-box">
                             <div className="label">
-                                <span>⚠</span>
+                                <span><AlertTriangle size={16} /></span>
                                 <span>{t('chat.ai.culturalNotes')}</span>
                             </div>
                             <div className="text">{response.culturalNotes}</div>
@@ -96,9 +97,8 @@ export default function AICultureCheckModal({
                             {response.suggestions.map((suggestion) => (
                                 <div
                                     key={suggestion.id}
-                                    className={`ai-suggestion-card ${
-                                        selectedSuggestion?.id === suggestion.id ? "selected" : ""
-                                    }`}
+                                    className={`ai-suggestion-card ${selectedSuggestion?.id === suggestion.id ? "selected" : ""
+                                        }`}
                                     onClick={() => handleSuggestionClick(suggestion)}
                                 >
                                     <div className="ai-suggestion-header">

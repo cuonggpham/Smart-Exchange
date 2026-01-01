@@ -14,4 +14,8 @@
 # OS / editor
 /.vscode
 /.idea
-*.log
+*.log 
+
+# UI 
+.agent
+.shared

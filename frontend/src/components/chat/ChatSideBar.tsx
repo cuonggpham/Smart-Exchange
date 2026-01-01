@@ -4,6 +4,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useSocket } from "../../contexts/SocketContext";
 import { chatService } from "../../services/chat.service";
 import type { ChatSession, ChatUser } from "../../services/chat.service";
+import { User, Users } from "lucide-react";
 
 interface Props {
     onSelectChat: (chat: ChatSession, partner: ChatUser) => void;
@@ -82,42 +83,113 @@ export default function ChatSideBar({ onSelectChat, selectedChatId, onRefreshRef
         }
     };
 
+    // Get initials for avatar placeholder
+    const getInitials = (name: string) => {
+        return name
+            .split(' ')
+            .map(n => n[0])
+            .join('')
+            .toUpperCase()
+            .slice(0, 2);
+    };
+
     return (
         <div className="chat-sidebar">
-            <a href="/" className="back-link">
-                ← {t('chat.sidebar.backHome')}
-            </a>
-
-            <div className="history-title">{t('chat.sidebar.recentChats')}</div>
+            <div className="history-title" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <User size={14} />
+                {t('chat.sidebar.recentChats')}
+            </div>
             <div className="history-list">
-                {chats.map((chat) => {
-                    const partner = getPartner(chat);
-                    return (
-                        <div
-                            key={chat.chatId}
-                            className={`history-item ${
-                                selectedChatId === chat.chatId ? "selected" : ""
-                            }`}
-                            onClick={() => onSelectChat(chat, partner)}
-                        >
-                            <div style={{ fontWeight: "bold" }}>{partner.fullName}</div>
-                            <div style={{ fontSize: "12px", color: "#666" }}>
-                                {chat.messages[0]?.content || t('chat.sidebar.noMessages')}
+                {chats.length === 0 ? (
+                    <div className="text-muted text-sm" style={{ padding: '12px 0' }}>
+                        {t('chat.sidebar.noChats') || 'No conversations yet'}
+                    </div>
+                ) : (
+                    chats.map((chat) => {
+                        const partner = getPartner(chat);
+                        const isSelected = selectedChatId === chat.chatId;
+                        return (
+                            <div
+                                key={chat.chatId}
+                                className={`history-item ${isSelected ? "selected" : ""}`}
+                                onClick={() => onSelectChat(chat, partner)}
+                                role="button"
+                                tabIndex={0}
+                                onKeyDown={(e) => e.key === 'Enter' && onSelectChat(chat, partner)}
+                            >
+                                <div
+                                    className="history-item-avatar"
+                                    style={{
+                                        width: 36,
+                                        height: 36,
+                                        borderRadius: '50%',
+                                        background: isSelected ? 'var(--primary-color)' : 'var(--bg-tertiary)',
+                                        color: isSelected ? '#fff' : 'var(--text-muted)',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        fontWeight: 600,
+                                        fontSize: 13,
+                                        flexShrink: 0,
+                                    }}
+                                >
+                                    {getInitials(partner.fullName || partner.email)}
+                                </div>
+                                <div className="history-item-info">
+                                    <div className="history-item-name">{partner.fullName || partner.email}</div>
+                                    <div className="history-item-preview">
+                                        {chat.messages[0]?.content || t('chat.sidebar.noMessages')}
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    );
-                })}
+                        );
+                    })
+                )}
             </div>
 
-            <div className="history-title" style={{ marginTop: "20px" }}>
+            <div className="history-title" style={{ marginTop: "24px", display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Users size={14} />
                 {t('chat.sidebar.otherUsers')}
             </div>
             <div className="history-list">
-                {users.map((u) => (
-                    <div key={u.userId} className="history-item" onClick={() => handleUserClick(u)}>
-                        {u.fullName}
+                {users.length === 0 ? (
+                    <div className="text-muted text-sm" style={{ padding: '12px 0' }}>
+                        {t('chat.sidebar.noOtherUsers') || 'No other users available'}
                     </div>
-                ))}
+                ) : (
+                    users.map((u) => (
+                        <div
+                            key={u.userId}
+                            className="history-item"
+                            onClick={() => handleUserClick(u)}
+                            role="button"
+                            tabIndex={0}
+                            onKeyDown={(e) => e.key === 'Enter' && handleUserClick(u)}
+                        >
+                            <div
+                                style={{
+                                    width: 36,
+                                    height: 36,
+                                    borderRadius: '50%',
+                                    background: 'var(--secondary-light)',
+                                    color: 'var(--secondary-color)',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    fontWeight: 600,
+                                    fontSize: 13,
+                                    flexShrink: 0,
+                                }}
+                            >
+                                {getInitials(u.fullName || u.email)}
+                            </div>
+                            <div className="history-item-info">
+                                <div className="history-item-name">{u.fullName || u.email}</div>
+                                <div className="history-item-preview">{u.email}</div>
+                            </div>
+                        </div>
+                    ))
+                )}
             </div>
         </div>
     );
