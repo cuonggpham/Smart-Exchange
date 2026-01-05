@@ -30,6 +30,7 @@ export interface AICheckWithSummaryRequest {
     existingSummary?: string;
     displayLanguage?: "vi" | "jp";
     contextDescription?: string;  // User-defined context
+    userId?: string;
 }
 
 export interface AICheckWithSummaryResponse extends AICheckResponse {

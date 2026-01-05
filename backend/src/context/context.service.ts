@@ -9,13 +9,18 @@ export class ContextService {
 
     // ============== Chat Context Operations ==============
 
-    async getContext(chatId: string) {
+    async getContext(chatId: string, userId: string) {
         return this.prisma.chatContext.findUnique({
-            where: { chatId },
+            where: {
+                UQ_ChatUserContext: {
+                    chatId,
+                    userId,
+                },
+            },
         });
     }
 
-    async upsertContext(chatId: string, contextDescription: string) {
+    async upsertContext(chatId: string, userId: string, contextDescription: string) {
         // Verify chat exists
         const chat = await this.prisma.chat.findUnique({
             where: { chatId },
@@ -26,18 +31,29 @@ export class ContextService {
         }
 
         return this.prisma.chatContext.upsert({
-            where: { chatId },
+            where: {
+                UQ_ChatUserContext: {
+                    chatId,
+                    userId,
+                },
+            },
             update: { contextDescription },
             create: {
                 chatId,
+                userId,
                 contextDescription,
             },
         });
     }
 
-    async deleteContext(chatId: string) {
+    async deleteContext(chatId: string, userId: string) {
         const existing = await this.prisma.chatContext.findUnique({
-            where: { chatId },
+            where: {
+                UQ_ChatUserContext: {
+                    chatId,
+                    userId,
+                },
+            },
         });
 
         if (!existing) {
@@ -45,7 +61,12 @@ export class ContextService {
         }
 
         return this.prisma.chatContext.delete({
-            where: { chatId },
+            where: {
+                UQ_ChatUserContext: {
+                    chatId,
+                    userId,
+                },
+            },
         });
     }
 

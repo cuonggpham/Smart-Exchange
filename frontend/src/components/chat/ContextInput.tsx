@@ -25,15 +25,22 @@ export default function ContextInput({ chatId, onContextChange }: Props) {
     useEffect(() => {
         if (chatId) {
             contextService.getContext(chatId).then((data) => {
-                setContext(data.contextDescription || "");
+                const contextValue = data.contextDescription || "";
+                setContext(contextValue);
+                if (onContextChange) {
+                    onContextChange(contextValue);
+                }
                 if (data.contextDescription) {
                     setIsSaved(true);
                 }
             }).catch(() => {
                 setContext("");
+                if (onContextChange) {
+                    onContextChange("");
+                }
             });
         }
-    }, [chatId]);
+    }, [chatId, onContextChange]);
 
     // Load templates when showing template panel
     useEffect(() => {

@@ -80,7 +80,7 @@ export class ChatService {
      * Analyze message asynchronously and save to DB
      * Called manually from controller
      */
-    async analyzeAndSave(messageId: string) {
+    async analyzeAndSave(messageId: string, userId: string) {
         try {
             const message = await this.prisma.message.findUnique({
                 where: { messageId },
@@ -99,9 +99,14 @@ export class ChatService {
                 return;
             }
 
-            // Get context description if available
+            // Get context description if available for THIS user
             const chatContext = await this.prisma.chatContext.findUnique({
-                where: { chatId },
+                where: {
+                    UQ_ChatUserContext: {
+                        chatId,
+                        userId,
+                    },
+                },
             });
 
             // Analyze the message

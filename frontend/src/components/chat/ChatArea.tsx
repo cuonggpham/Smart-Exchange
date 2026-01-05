@@ -51,13 +51,23 @@ export default function ChatArea({ chatId, receiver, onChatCreated }: Props) {
     const [conversationSummary, setConversationSummary] = useState<ConversationSummary | null>(null);
 
     // Context description for AI analysis
-    const [contextDescription, setContextDescription] = useState("");
+
 
     useEffect(() => {
+        if (!chatId && receiver.userId) {
+            chatService.initChat(receiver.userId)
+                .then((chat) => {
+                    if (onChatCreated) {
+                        onChatCreated(chat.chatId);
+                    }
+                })
+                .catch((err) => console.error("Failed to init chat:", err));
+        }
+
         currentChatIdRef.current = chatId;
         // Reset conversation summary when changing chats
         setConversationSummary(null);
-    }, [chatId]);
+    }, [chatId, receiver.userId, onChatCreated]);
 
     useEffect(() => {
         displayedMessageIds.current.clear();
@@ -190,12 +200,13 @@ export default function ChatArea({ chatId, receiver, onChatCreated }: Props) {
             }));
 
             // Pass existing summary and user-defined context for better analysis
+            // Note: contextDescription is now fetched from DB by backend using chatId/userId
             const response = await aiService.checkCulture(
                 text,
                 context,
                 conversationSummary?.summary,
                 chatId || undefined,
-                contextDescription  // User-defined context
+                undefined  // Removed payload contextDescription as requested
             );
 
             setAIResponse(response);
@@ -249,7 +260,6 @@ export default function ChatArea({ chatId, receiver, onChatCreated }: Props) {
             </div>
             <ContextInput
                 chatId={chatId}
-                onContextChange={setContextDescription}
             />
             <div className="chat-area" ref={listRef}>
                 <MsgList

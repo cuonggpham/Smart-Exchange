@@ -27,8 +27,11 @@ export class ContextController {
     @ApiOperation({ summary: "Get context for a specific chat" })
     @ApiResponse({ status: 200, description: "Context retrieved successfully" })
     @ApiResponse({ status: 404, description: "Context not found" })
-    async getContext(@Param("chatId") chatId: string) {
-        const context = await this.contextService.getContext(chatId);
+    async getContext(
+        @Param("chatId") chatId: string,
+        @User("userId") userId: string
+    ) {
+        const context = await this.contextService.getContext(chatId, userId);
         return context || { contextDescription: "" };
     }
 
@@ -37,16 +40,20 @@ export class ContextController {
     @ApiResponse({ status: 200, description: "Context updated successfully" })
     async upsertContext(
         @Param("chatId") chatId: string,
+        @User("userId") userId: string,
         @Body() dto: UpdateContextDto
     ) {
-        return this.contextService.upsertContext(chatId, dto.contextDescription);
+        return this.contextService.upsertContext(chatId, userId, dto.contextDescription);
     }
 
     @Delete(":chatId")
     @ApiOperation({ summary: "Delete context for a chat" })
     @ApiResponse({ status: 200, description: "Context deleted successfully" })
-    async deleteContext(@Param("chatId") chatId: string) {
-        return this.contextService.deleteContext(chatId);
+    async deleteContext(
+        @Param("chatId") chatId: string,
+        @User("userId") userId: string
+    ) {
+        return this.contextService.deleteContext(chatId, userId);
     }
 
     // ============== Context Template Endpoints ==============

@@ -27,6 +27,7 @@ model User {
   chatsAsUserTwo   Chat[]            @relation("UserTwo")
   messagesSent     Message[]
   contextTemplates ContextTemplate[]
+  chatContexts     ChatContext[]
 
   @@map("Users")
 }
@@ -37,10 +38,10 @@ model Chat {
   userTwoId String   @db.VarChar(36)
   updateAt  DateTime @default(now()) @updatedAt @db.Timestamp(0)
 
-  userOne  User         @relation("UserOne", fields: [userOneId], references: [userId], onDelete: NoAction, onUpdate: NoAction)
-  userTwo  User         @relation("UserTwo", fields: [userTwoId], references: [userId], onDelete: NoAction, onUpdate: NoAction)
+  userOne  User          @relation("UserOne", fields: [userOneId], references: [userId], onDelete: NoAction, onUpdate: NoAction)
+  userTwo  User          @relation("UserTwo", fields: [userTwoId], references: [userId], onDelete: NoAction, onUpdate: NoAction)
   messages Message[]
-  context  ChatContext?
+  contexts ChatContext[]
 
   @@unique([userOneId, userTwoId], name: "UQ_ConversationPair")
   @@index([userOneId, updateAt(sort: Desc)], name: "IDX_Chat_UserOne_Sort")
@@ -66,13 +67,16 @@ model Message {
 
 model ChatContext {
   contextId          String   @id @default(uuid()) @db.VarChar(36)
-  chatId             String   @unique @db.VarChar(36)
+  chatId             String   @db.VarChar(36)
+  userId             String   @db.VarChar(36)
   contextDescription String   @db.Text
 
   updatedAt DateTime @default(now()) @updatedAt @db.Timestamp(0)
 
   chat Chat @relation(fields: [chatId], references: [chatId], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [userId], onDelete: Cascade)
 
+  @@unique([chatId, userId], name: "UQ_ChatUserContext")
   @@map("ChatContexts")
 }
 

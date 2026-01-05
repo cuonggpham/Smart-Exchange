@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Post, UseGuards, Request as Req } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
 import { AIService } from "./ai.service";
 import { CheckCultureDto } from "./dto/check-culture.dto";
@@ -22,7 +22,7 @@ export class AIController {
         status: 200,
         description: "Cultural analysis with suggestions and optional conversation summary",
     })
-    async checkCulture(@Body() dto: CheckCultureDto) {
+    async checkCulture(@Body() dto: CheckCultureDto, @Req() req: any) {
         return this.aiService.checkCultureWithSummary({
             text: dto.text,
             context: dto.context,
@@ -30,6 +30,7 @@ export class AIController {
             existingSummary: dto.existingSummary,
             displayLanguage: dto.displayLanguage,
             contextDescription: dto.contextDescription,
+            userId: req.user.userId,
         });
     }
 

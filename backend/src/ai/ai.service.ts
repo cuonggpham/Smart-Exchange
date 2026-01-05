@@ -6,7 +6,7 @@ import * as z from "zod";
 
 import { AISuggestion, AICheckResponse, ContextMessage, ConversationSummary, AICheckWithSummaryRequest, AICheckWithSummaryResponse, ReceivedMessageAnalysis, getAISuggestionSchema, getAICheckResponseSchema, getConversationSummarySchema, getReceivedMessageAnalysisSchema } from "./types/ai.types";
 import { getSystemPrompt, getSummarySystemPrompt, getReceivedMessagePrompt } from "./prompts/ai.prompts";
-
+import { PrismaService } from "../prisma/prisma.service";
 
 const MAX_MESSAGES_BEFORE_SUMMARY = 10;
 const MAX_CONTEXT_MESSAGES = 5;
@@ -18,8 +18,94 @@ export class AIService {
     private chatModel?: ChatOpenAI;
     private summaryModel?: ChatOpenAI;
 
-    constructor(private configService: ConfigService) {
+    constructor(
+        private configService: ConfigService,
+        private readonly prisma: PrismaService
+    ) {
         this.initializeModels();
+    }
+
+    // ... initializeModels method
+
+    // ... checkCulture method
+
+    /**
+     * Check cultural context with automatic conversation summarization
+     * When message count exceeds threshold, generates a summary for efficient context management
+     */
+    async checkCultureWithSummary(request: AICheckWithSummaryRequest & { userId?: string }): Promise<AICheckWithSummaryResponse> {
+        const { text, context, existingSummary, displayLanguage, conversationId, userId } = request;
+
+        if (!this.chatModel) {
+            return {
+                ...this.getDefaultResponse("AI service is not configured."),
+            };
+        }
+
+        if (!text?.trim()) {
+            return {
+                ...this.getDefaultResponse("Content is empty."),
+            };
+        }
+
+        let contextDescription = request.contextDescription;
+
+        // Fetch context from DB if conversationId and userId are provided
+        if (conversationId && userId) {
+            try {
+                const chatContext = await this.prisma.chatContext.findUnique({
+                    where: {
+                        UQ_ChatUserContext: {
+                            chatId: conversationId,
+                            userId: userId,
+                        },
+                    },
+                });
+
+                if (chatContext?.contextDescription) {
+                    contextDescription = chatContext.contextDescription;
+                }
+            } catch (error) {
+                this.logger.error("Failed to fetch context from DB:", error);
+            }
+        }
+
+        try {
+            // Build messages with summary context and user-defined context if available
+            const messages = this.buildCultureCheckMessages(text, context, existingSummary, displayLanguage, contextDescription);
+            this.logger.debug(`Culture Check With Summary Messages: ${JSON.stringify(messages, null, 2)}`);
+            const structuredModel = this.chatModel.withStructuredOutput(getAICheckResponseSchema(displayLanguage));
+            const response = await structuredModel.invoke(messages);
+            this.logger.debug(`Culture Check With Summary Response: ${JSON.stringify(response, null, 2)}`);
+
+            const result: AICheckWithSummaryResponse = {
+                culturalNotes: response.culturalNotes,
+                suggestions: response.suggestions.map((s, idx) => ({
+                    ...s,
+                    id: s.id || String(idx + 1),
+                })),
+            };
+
+            // Generate summary if context exceeds threshold
+            const contextLength = context?.length || 0;
+            if (contextLength >= MAX_MESSAGES_BEFORE_SUMMARY) {
+                const summary = await this.generateConversationSummary(context!, existingSummary, displayLanguage);
+                if (summary) {
+                    result.conversationSummary = {
+                        summary: summary.summary,
+                        messageCount: contextLength,
+                        lastUpdated: new Date(),
+                    };
+                }
+            }
+
+            return result;
+        } catch (error) {
+            this.logger.error("Culture check with summary error:", error);
+            return {
+                ...this.getDefaultResponse(),
+            };
+        }
     }
 
     private initializeModels(): void {
@@ -67,8 +153,10 @@ export class AIService {
 
         try {
             const messages = this.buildCultureCheckMessages(text, context, undefined, displayLanguage);
+            this.logger.debug(`Culture Check Messages: ${JSON.stringify(messages, null, 2)}`);
             const structuredModel = this.chatModel.withStructuredOutput(getAICheckResponseSchema(displayLanguage));
             const response = await structuredModel.invoke(messages);
+            this.logger.debug(`Culture Check Response: ${JSON.stringify(response, null, 2)}`);
 
             return {
                 culturalNotes: response.culturalNotes,
@@ -83,60 +171,6 @@ export class AIService {
         }
     }
 
-    /**
-     * Check cultural context with automatic conversation summarization
-     * When message count exceeds threshold, generates a summary for efficient context management
-     */
-    async checkCultureWithSummary(request: AICheckWithSummaryRequest): Promise<AICheckWithSummaryResponse> {
-        const { text, context, existingSummary, displayLanguage } = request;
-
-        if (!this.chatModel) {
-            return {
-                ...this.getDefaultResponse("AI service is not configured."),
-            };
-        }
-
-        if (!text?.trim()) {
-            return {
-                ...this.getDefaultResponse("Content is empty."),
-            };
-        }
-
-        try {
-            // Build messages with summary context and user-defined context if available
-            const messages = this.buildCultureCheckMessages(text, context, existingSummary, displayLanguage, request.contextDescription);
-            const structuredModel = this.chatModel.withStructuredOutput(getAICheckResponseSchema(displayLanguage));
-            const response = await structuredModel.invoke(messages);
-
-            const result: AICheckWithSummaryResponse = {
-                culturalNotes: response.culturalNotes,
-                suggestions: response.suggestions.map((s, idx) => ({
-                    ...s,
-                    id: s.id || String(idx + 1),
-                })),
-            };
-
-            // Generate summary if context exceeds threshold
-            const contextLength = context?.length || 0;
-            if (contextLength >= MAX_MESSAGES_BEFORE_SUMMARY) {
-                const summary = await this.generateConversationSummary(context!, existingSummary, displayLanguage);
-                if (summary) {
-                    result.conversationSummary = {
-                        summary: summary.summary,
-                        messageCount: contextLength,
-                        lastUpdated: new Date(),
-                    };
-                }
-            }
-
-            return result;
-        } catch (error) {
-            this.logger.error("Culture check with summary error:", error);
-            return {
-                ...this.getDefaultResponse(),
-            };
-        }
-    }
 
     /**
      * Generate a summary of the conversation history
@@ -271,8 +305,10 @@ export class AIService {
                 )
             );
 
+            this.logger.debug(`Received Message Analysis Messages: ${JSON.stringify(messages, null, 2)}`);
             const structuredModel = this.chatModel.withStructuredOutput(getReceivedMessageAnalysisSchema(displayLanguage));
             const response = (await structuredModel.invoke(messages)) as ReceivedMessageAnalysis;
+            this.logger.debug(`Received Message Analysis Response: ${JSON.stringify(response, null, 2)}`);
 
             return response;
         } catch (error) {

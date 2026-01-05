@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Delete, Param, Query, UseGuards, Request } from "@nestjs/common";
+import { Controller, Get, Post, Delete, Param, Query, UseGuards, Request, Body } from "@nestjs/common";
 import { JwtAuthGuard } from "../common/guards/jwt-auth.guard";
 import { ChatService } from "./chat.service";
 
@@ -15,6 +15,12 @@ export class ChatController {
     ) {
         const parsedLimit = Math.min(Math.max(Number(limit) || 50, 1), 200);
         return this.chatService.getMessages(chatId, req.user.userId, parsedLimit);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Post("init")
+    async initChat(@Body() body: { partnerId: string }, @Request() req: any) {
+        return this.chatService.findOrCreateChat(req.user.userId, body.partnerId);
     }
 
     @UseGuards(JwtAuthGuard)
@@ -36,6 +42,6 @@ export class ChatController {
         const message = await this.chatService.getMessageById(messageId);
         await this.chatService.ensureChatAccess(message.chatId, req.user.userId);
 
-        return this.chatService.analyzeAndSave(messageId);
+        return this.chatService.analyzeAndSave(messageId, req.user.userId);
     }
 }

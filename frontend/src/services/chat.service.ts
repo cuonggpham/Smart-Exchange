@@ -49,6 +49,10 @@ class ChatService {
     async analyzeMessage(messageId: string): Promise<any> {
         return axiosInstance.post(`/chats/messages/${messageId}/analyze`);
     }
+
+    async initChat(partnerId: string): Promise<ChatSession> {
+        return axiosInstance.post("/chats/init", { partnerId });
+    }
 }
 
 export const chatService = new ChatService();
