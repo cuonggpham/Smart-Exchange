@@ -23,9 +23,10 @@ model User {
 
   createdAt DateTime @default(now()) @db.Timestamp(0)
 
-  chatsAsUserOne Chat[]    @relation("UserOne")
-  chatsAsUserTwo Chat[]    @relation("UserTwo")
-  messagesSent   Message[]
+  chatsAsUserOne   Chat[]            @relation("UserOne")
+  chatsAsUserTwo   Chat[]            @relation("UserTwo")
+  messagesSent     Message[]
+  contextTemplates ContextTemplate[]
 
   @@map("Users")
 }
@@ -36,9 +37,10 @@ model Chat {
   userTwoId String   @db.VarChar(36)
   updateAt  DateTime @default(now()) @updatedAt @db.Timestamp(0)
 
-  userOne  User      @relation("UserOne", fields: [userOneId], references: [userId], onDelete: NoAction, onUpdate: NoAction)
-  userTwo  User      @relation("UserTwo", fields: [userTwoId], references: [userId], onDelete: NoAction, onUpdate: NoAction)
+  userOne  User         @relation("UserOne", fields: [userOneId], references: [userId], onDelete: NoAction, onUpdate: NoAction)
+  userTwo  User         @relation("UserTwo", fields: [userTwoId], references: [userId], onDelete: NoAction, onUpdate: NoAction)
   messages Message[]
+  context  ChatContext?
 
   @@unique([userOneId, userTwoId], name: "UQ_ConversationPair")
   @@index([userOneId, updateAt(sort: Desc)], name: "IDX_Chat_UserOne_Sort")
@@ -61,3 +63,29 @@ model Message {
   @@index([chatId, createdAt(sort: Desc)], name: "IDX_Messages_GetContent")
   @@map("Messages")
 }
+
+model ChatContext {
+  contextId          String   @id @default(uuid()) @db.VarChar(36)
+  chatId             String   @unique @db.VarChar(36)
+  contextDescription String   @db.Text
+
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamp(0)
+
+  chat Chat @relation(fields: [chatId], references: [chatId], onDelete: Cascade)
+
+  @@map("ChatContexts")
+}
+
+model ContextTemplate {
+  templateId   String @id @default(uuid()) @db.VarChar(36)
+  userId       String @db.VarChar(36)
+  templateName String @db.VarChar(100)
+  description  String @db.Text
+
+  createdAt DateTime @default(now()) @db.Timestamp(0)
+
+  user User @relation(fields: [userId], references: [userId], onDelete: Cascade)
+
+  @@map("ContextTemplates")
+}
+

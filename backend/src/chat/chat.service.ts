@@ -1,11 +1,17 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
+import { AIService } from "../ai/ai.service";
 import { AppException } from "../common/exceptions/app.exception";
 import { ExceptionCode } from "../common/constants/exception-code.constant";
 
 @Injectable()
 export class ChatService {
-    constructor(private readonly prisma: PrismaService) {}
+    private readonly logger = new Logger(ChatService.name);
+
+    constructor(
+        private readonly prisma: PrismaService,
+        private readonly aiService: AIService
+    ) { }
 
     private sortUserIds(userA: string, userB: string) {
         return userA < userB ? [userA, userB] : [userB, userA];
@@ -64,7 +70,61 @@ export class ChatService {
             data: { updateAt: new Date() },
         });
 
+        // Async AI analysis for Japanese messages (non-blocking) - DISABLED for manual trigger
+        // this.analyzeAndSaveAsync(message.messageId, content, chatId);
+
         return message;
+    }
+
+    /**
+     * Analyze message asynchronously and save to DB
+     * Called manually from controller
+     */
+    async analyzeAndSave(messageId: string) {
+        try {
+            const message = await this.prisma.message.findUnique({
+                where: { messageId },
+            });
+
+            if (!message) {
+                throw new AppException(ExceptionCode.NOT_FOUND, "Message not found");
+            }
+
+            const content = message.content;
+            const chatId = message.chatId;
+
+            // Check if message contains Japanese characters
+            const hasJapanese = /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF]/.test(content);
+            if (!hasJapanese) {
+                return;
+            }
+
+            // Get context description if available
+            const chatContext = await this.prisma.chatContext.findUnique({
+                where: { chatId },
+            });
+
+            // Analyze the message
+            const analysis = await this.aiService.analyzeReceivedMessage(
+                content,
+                chatContext?.contextDescription,
+                undefined // No conversation history for now
+            );
+
+            // Save analysis to database
+            await this.prisma.message.update({
+                where: { messageId },
+                data: {
+                    aiAnalysisContent: JSON.stringify(analysis),
+                },
+            });
+
+            this.logger.log(`AI analysis saved for message ${messageId}`);
+            return analysis;
+        } catch (error) {
+            this.logger.error(`Failed to analyze message ${messageId}:`, error);
+            return null;
+        }
     }
 
     async getMessages(chatId: string, userId: string, limit = 50) {
@@ -124,4 +184,17 @@ export class ChatService {
 
         return { messageId, chatId: message.chatId };
     }
+
+    async getMessageById(messageId: string) {
+        const message = await this.prisma.message.findUnique({
+            where: { messageId },
+        });
+
+        if (!message) {
+            throw new AppException(ExceptionCode.NOT_FOUND, "Message not found");
+        }
+
+        return message;
+    }
 }
+

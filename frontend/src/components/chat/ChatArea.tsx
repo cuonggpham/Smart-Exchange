@@ -3,12 +3,13 @@ import MsgList from "./MsgList";
 import MessageInput from "./MessageInput";
 import type { MessageInputRef } from "./MessageInput";
 import AICultureCheckModal from "./AICultureCheckModal";
+import ContextInput from "./ContextInput";
 import { useSocket } from "../../contexts/SocketContext";
 import { useAuth } from "../../contexts/AuthContext";
 import { chatService } from "../../services/chat.service";
 import { aiService } from "../../services/ai.service";
 import type { ChatUser } from "../../services/chat.service";
-import type { AICheckResponse } from "../../types/ai.types";
+import type { AICheckResponse, ConversationSummary } from "../../types/ai.types";
 import "../../styles/ChatPage.css";
 
 export interface DisplayMessage {
@@ -16,6 +17,12 @@ export interface DisplayMessage {
     sender: "user" | "other";
     text: string;
     timestamp: string;
+    aiAnalysis?: {
+        translatedText: string;
+        intentSummary: string;
+        culturalNote: string;
+        isIndirectExpression: boolean;
+    };
 }
 
 interface Props {
@@ -40,8 +47,16 @@ export default function ChatArea({ chatId, receiver, onChatCreated }: Props) {
     const [aiResponse, setAIResponse] = useState<AICheckResponse | null>(null);
     const [pendingText, setPendingText] = useState("");
 
+    // Conversation summary state - persists across AI checks
+    const [conversationSummary, setConversationSummary] = useState<ConversationSummary | null>(null);
+
+    // Context description for AI analysis
+    const [contextDescription, setContextDescription] = useState("");
+
     useEffect(() => {
         currentChatIdRef.current = chatId;
+        // Reset conversation summary when changing chats
+        setConversationSummary(null);
     }, [chatId]);
 
     useEffect(() => {
@@ -58,15 +73,26 @@ export default function ChatArea({ chatId, receiver, onChatCreated }: Props) {
         if (chatId) {
             chatService.getMessages(chatId).then((data) => {
                 const formatted = data
-                    .map<DisplayMessage>((m) => ({
-                        id: m.messageId,
-                        sender: m.senderId === user?.id ? "user" : "other",
-                        text: m.content,
-                        timestamp: new Date(m.createdAt).toLocaleTimeString([], {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                        }),
-                    }))
+                    .map<DisplayMessage>((m) => {
+                        let aiAnalysis = undefined;
+                        if (m.aiAnalysisContent) {
+                            try {
+                                aiAnalysis = JSON.parse(m.aiAnalysisContent);
+                            } catch (e) {
+                                console.error("Failed to parse AI analysis:", e);
+                            }
+                        }
+                        return {
+                            id: m.messageId,
+                            sender: m.senderId === user?.id ? "user" : "other",
+                            text: m.content,
+                            timestamp: new Date(m.createdAt).toLocaleTimeString([], {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                            }),
+                            aiAnalysis,
+                        };
+                    })
                     .reverse();
                 formatted.forEach((m) => displayedMessageIds.current.add(m.id));
                 setMessages(formatted);
@@ -158,14 +184,27 @@ export default function ChatArea({ chatId, receiver, onChatCreated }: Props) {
 
         try {
             // Build context from recent messages
-            const context = messages.slice(-5).map((msg) => ({
+            const context = messages.slice(-10).map((msg) => ({
                 sender: msg.sender,
                 text: msg.text,
             }));
 
-            const response = await aiService.checkCulture(text, context);
+            // Pass existing summary and user-defined context for better analysis
+            const response = await aiService.checkCulture(
+                text,
+                context,
+                conversationSummary?.summary,
+                chatId || undefined,
+                contextDescription  // User-defined context
+            );
+
             setAIResponse(response);
             setIsAIModalOpen(true);
+
+            // Update conversation summary if returned
+            if (response.conversationSummary) {
+                setConversationSummary(response.conversationSummary);
+            }
         } catch (error) {
             console.error("AI check failed:", error);
             handleSend(text);
@@ -208,8 +247,15 @@ export default function ChatArea({ chatId, receiver, onChatCreated }: Props) {
             >
                 Đang chat với: {receiver.fullName}
             </div>
+            <ContextInput
+                chatId={chatId}
+                onContextChange={setContextDescription}
+            />
             <div className="chat-area" ref={listRef}>
-                <MsgList messages={messages} onDeleteMessage={handleDeleteMessage} />
+                <MsgList
+                    messages={messages}
+                    onDeleteMessage={handleDeleteMessage}
+                />
             </div>
             <MessageInput ref={messageInputRef} onSend={handleSend} onAICheck={handleAICheck} />
 

@@ -1,0 +1,38 @@
+# Dependencies
+node_modules
+npm-debug.log
+
+# Build artifacts
+dist
+build
+*.log
+
+# Environment
+.env
+.env.local
+.env.production
+
+# Testing
+coverage
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile
+.dockerignore
+nginx.conf
+
+# Documentation
+*.md
+
+# OS
+.DS_Store
+Thumbs.db

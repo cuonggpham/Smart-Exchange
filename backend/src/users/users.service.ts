@@ -11,7 +11,7 @@ import * as crypto from "crypto";
 
 @Injectable()
 export class UsersService {
-    constructor(private readonly prisma: PrismaService) {}
+    constructor(private readonly prisma: PrismaService) { }
 
     async create(createUserDto: CreateUserDto) {
         const existing = await this.prisma.user.findUnique({
@@ -37,8 +37,19 @@ export class UsersService {
         return this.serialize(user);
     }
 
-    async findAll() {
-        const users = await this.prisma.user.findMany();
+    async findAll(search?: string) {
+        const whereClause = search
+            ? {
+                OR: [
+                    { fullName: { contains: search, mode: 'insensitive' as const } },
+                    { email: { contains: search, mode: 'insensitive' as const } },
+                ],
+            }
+            : {};
+
+        const users = await this.prisma.user.findMany({
+            where: whereClause,
+        });
         return users.map((user) => this.serialize(user));
     }
 

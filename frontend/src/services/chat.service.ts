@@ -24,6 +24,7 @@ export interface ChatMessage {
     senderId: string;
     content: string;
     createdAt: string;
+    aiAnalysisContent?: string; // JSON string of AI analysis
 }
 
 class ChatService {
@@ -36,12 +37,17 @@ class ChatService {
         return axiosInstance.get(`/chats/${chatId}/messages`);
     }
 
-    async getAllUsers(): Promise<ChatUser[]> {
-        return axiosInstance.get("/users");
+    async getAllUsers(search?: string): Promise<ChatUser[]> {
+        const params = search ? { search } : {};
+        return axiosInstance.get("/users", { params });
     }
 
     async deleteMessage(messageId: string): Promise<{ messageId: string; chatId: string }> {
         return axiosInstance.delete(`/chats/messages/${messageId}`);
+    }
+
+    async analyzeMessage(messageId: string): Promise<any> {
+        return axiosInstance.post(`/chats/messages/${messageId}/analyze`);
     }
 }
 

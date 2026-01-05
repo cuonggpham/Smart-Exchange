@@ -4,7 +4,8 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useSocket } from "../../contexts/SocketContext";
 import { chatService } from "../../services/chat.service";
 import type { ChatSession, ChatUser } from "../../services/chat.service";
-import { User, Users } from "lucide-react";
+import { User, Users, Search } from "lucide-react";
+import { useDebounce } from "../../hooks/useDebounce";
 
 interface Props {
     onSelectChat: (chat: ChatSession, partner: ChatUser) => void;
@@ -18,14 +19,26 @@ export default function ChatSideBar({ onSelectChat, selectedChatId, onRefreshRef
     const { socket } = useSocket();
     const [chats, setChats] = useState<ChatSession[]>([]);
     const [users, setUsers] = useState<ChatUser[]>([]);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [isSearching, setIsSearching] = useState(false);
+    const debouncedSearchQuery = useDebounce(searchQuery, 500);
 
-    const loadData = useCallback(async () => {
+    const loadChats = useCallback(async () => {
         try {
+            const myChats = await chatService.getMyChats();
+            setChats(myChats);
+        } catch (error) {
+            console.error("Failed to load chats", error);
+        }
+    }, []);
+
+    const loadUsers = useCallback(async (search?: string) => {
+        try {
+            setIsSearching(true);
             const [myChats, allUsers] = await Promise.all([
                 chatService.getMyChats(),
-                chatService.getAllUsers(),
+                chatService.getAllUsers(search),
             ]);
-            setChats(myChats);
 
             const chattedUserIds = new Set(
                 myChats.flatMap((c) => [c.userOne.userId, c.userTwo.userId])
@@ -34,23 +47,30 @@ export default function ChatSideBar({ onSelectChat, selectedChatId, onRefreshRef
                 allUsers.filter((u) => u.userId !== user?.id && !chattedUserIds.has(u.userId))
             );
         } catch (error) {
-            console.error("Failed to load chats", error);
+            console.error("Failed to load users", error);
+        } finally {
+            setIsSearching(false);
         }
     }, [user?.id]);
 
     useEffect(() => {
-        loadData();
-    }, [loadData]);
+        loadChats();
+        loadUsers();
+    }, [loadChats, loadUsers]);
 
     useEffect(() => {
-        onRefreshRef?.(loadData);
-    }, [onRefreshRef, loadData]);
+        onRefreshRef?.(() => {
+            loadChats();
+            loadUsers(debouncedSearchQuery);
+        });
+    }, [onRefreshRef, loadChats, loadUsers, debouncedSearchQuery]);
 
     useEffect(() => {
         if (!socket) return;
 
         const handleNewMessageNotification = () => {
-            loadData();
+            loadChats();
+            loadUsers(debouncedSearchQuery);
         };
 
         socket.on("new_message_notification", handleNewMessageNotification);
@@ -58,7 +78,12 @@ export default function ChatSideBar({ onSelectChat, selectedChatId, onRefreshRef
         return () => {
             socket.off("new_message_notification", handleNewMessageNotification);
         };
-    }, [socket, loadData]);
+    }, [socket, loadChats, loadUsers, debouncedSearchQuery]);
+
+    // Debounced search effect
+    useEffect(() => {
+        loadUsers(debouncedSearchQuery);
+    }, [debouncedSearchQuery, loadUsers]);
 
     const getPartner = (chat: ChatSession): ChatUser => {
         return chat.userOne.userId === user?.id ? chat.userTwo : chat.userOne;
@@ -151,10 +176,63 @@ export default function ChatSideBar({ onSelectChat, selectedChatId, onRefreshRef
                 <Users size={14} />
                 {t('chat.sidebar.otherUsers')}
             </div>
+
+            {/* Search Input */}
+            <div style={{
+                padding: '8px 0',
+                marginBottom: '8px'
+            }}>
+                <div style={{
+                    position: 'relative',
+                    display: 'flex',
+                    alignItems: 'center'
+                }}>
+                    <Search
+                        size={16}
+                        style={{
+                            position: 'absolute',
+                            left: '12px',
+                            color: 'var(--text-muted)',
+                            pointerEvents: 'none'
+                        }}
+                    />
+                    <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder={t('chat.sidebar.searchPlaceholder')}
+                        style={{
+                            width: '100%',
+                            padding: '10px 12px 10px 36px',
+                            border: '1px solid var(--border-color)',
+                            borderRadius: '8px',
+                            fontSize: '14px',
+                            backgroundColor: 'var(--bg-primary)',
+                            color: 'var(--text-primary)',
+                            outline: 'none',
+                            transition: 'border-color 0.2s ease',
+                        }}
+                        onFocus={(e) => {
+                            e.target.style.borderColor = 'var(--primary-color)';
+                        }}
+                        onBlur={(e) => {
+                            e.target.style.borderColor = 'var(--border-color)';
+                        }}
+                    />
+                </div>
+            </div>
+
             <div className="history-list">
-                {users.length === 0 ? (
+                {isSearching ? (
+                    <div className="text-muted text-sm" style={{ padding: '12px 0', textAlign: 'center' }}>
+                        Đang tìm kiếm...
+                    </div>
+                ) : users.length === 0 ? (
                     <div className="text-muted text-sm" style={{ padding: '12px 0' }}>
-                        {t('chat.sidebar.noOtherUsers') || 'No other users available'}
+                        {searchQuery
+                            ? `Không tìm thấy người dùng "${searchQuery}"`
+                            : t('chat.sidebar.noOtherUsers') || 'No other users available'
+                        }
                     </div>
                 ) : (
                     users.map((u) => (

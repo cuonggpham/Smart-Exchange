@@ -10,7 +10,11 @@ export default function MsgList({ messages, onDeleteMessage }: Props) {
     return (
         <div className="msg-list">
             {messages.map((msg) => (
-                <MessageBubble key={msg.id} msg={msg} onDelete={onDeleteMessage} />
+                <MessageBubble
+                    key={msg.id}
+                    msg={msg}
+                    onDelete={onDeleteMessage}
+                />
             ))}
         </div>
     );

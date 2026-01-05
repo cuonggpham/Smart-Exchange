@@ -1,0 +1,169 @@
+/* ======= AI ANALYSIS SECTION ======= */
+.ai-analysis-section {
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    border-left: 3px solid var(--primary-color);
+    font-size: 13px;
+    animation: slideDown 200ms ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ======= TRANSLATION ======= */
+.ai-translation {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    color: var(--text-color);
+    line-height: 1.5;
+}
+
+.translation-icon {
+    flex-shrink: 0;
+    margin-top: 3px;
+    color: var(--primary-color);
+}
+
+.translation-text {
+    flex: 1;
+}
+
+/* ======= INDIRECT WARNING ======= */
+.indirect-warning {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+    padding: 6px 10px;
+    background: rgba(255, 193, 7, 0.15);
+    color: #b8860b;
+    border-radius: var(--radius-sm);
+    font-size: 11px;
+    font-weight: 500;
+}
+
+/* ======= NOTE TOGGLE ======= */
+.ai-note-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    padding: 4px 0;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 12px;
+    transition: color var(--transition-fast);
+}
+
+.ai-note-toggle:hover {
+    color: var(--primary-color);
+}
+
+.note-icon {
+    color: var(--primary-color);
+}
+
+.note-label {
+    flex: 1;
+}
+
+.expand-arrow {
+    font-size: 10px;
+    transition: transform var(--transition-fast);
+}
+
+.expand-arrow.expanded {
+    transform: rotate(180deg);
+}
+
+/* ======= NOTE CONTENT ======= */
+.ai-note-content {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border-color);
+    animation: slideDown 150ms ease-out;
+}
+
+.note-section {
+    margin-bottom: 6px;
+    line-height: 1.5;
+    color: var(--text-color);
+}
+
+.note-section:last-child {
+    margin-bottom: 0;
+}
+
+.note-section strong {
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+/* ======= LOADING ======= */
+.ai-loading {
+    margin-top: 6px;
+    font-size: 12px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.loading-spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.analyze-msg-btn {
+    position: absolute;
+    bottom: -10px;
+    right: -10px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    color: white;
+    border: 2px solid white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s;
+    z-index: 10;
+}
+
+.analyze-msg-btn:hover {
+    transform: scale(1.1);
+    background: var(--primary-dark);
+}
+
+.analyze-msg-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}

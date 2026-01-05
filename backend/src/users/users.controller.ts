@@ -6,6 +6,7 @@ import {
     Param,
     Patch,
     Post,
+    Query,
     UseGuards,
     Request,
 } from "@nestjs/common";
@@ -18,7 +19,7 @@ import { UsersService } from "./users.service";
 
 @Controller("users")
 export class UsersController {
-    constructor(private readonly usersService: UsersService) {}
+    constructor(private readonly usersService: UsersService) { }
 
     @UseGuards(JwtAuthGuard)
     @Get("me")
@@ -42,8 +43,8 @@ export class UsersController {
     // ----------------------------------------------------------------
 
     @Get()
-    findAll() {
-        return this.usersService.findAll();
+    findAll(@Query("search") search?: string) {
+        return this.usersService.findAll(search);
     }
 
     @Get(":id")

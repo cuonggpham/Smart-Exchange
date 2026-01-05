@@ -12,7 +12,8 @@
             "register": "新規登録",
             "loginProcessing": "処理中...",
             "errorMissing": "メールとパスワードを入力してください。",
-            "errorLoginFailed": "ログインに失敗しました。"
+            "errorLoginFailed": "ログインに失敗しました。",
+            "googleError": "Googleログインに失敗しました。もう一度お試しください。"
         },
         "register": {
             "title": "登録",
@@ -54,8 +55,7 @@
         "avatarUrlPlaceholder": "画像URLを貼り付ける、またはファイルを選択",
         "errorAvatarInvalid": "画像ファイルのみ対応しています。",
         "errorAvatarReadFailed": "画像の読み込みに失敗しました。"
-},
-
+    },
     "lang": {
         "ariaVi": "ベトナム語に切り替える",
         "ariaJp": "日本語に切り替える"
@@ -169,7 +169,12 @@
     "home": {
         "title": "Smart Exchangeへようこそ",
         "appName": "Smart Exchange",
+        "welcome": "おかえりなさい！",
+        "profileDescription": "プロフィール情報を表示・編集",
+        "settingsDescription": "設定を構成",
+        "chatDescription": "会話を開始または続ける",
         "userInfo": {
+            "title": "あなたのアカウント",
             "email": "メール",
             "jobTitle": "役職",
             "language": "言語",
@@ -193,7 +198,10 @@
             "backHome": "ホーム",
             "recentChats": "最近のチャット",
             "otherUsers": "他のユーザー",
-            "noMessages": "メッセージなし"
+            "noMessages": "メッセージなし",
+            "noChats": "会話がまだありません",
+            "noOtherUsers": "他のユーザーがいません",
+            "searchPlaceholder": "ユーザーを検索..."
         },
         "placeholder": {
             "selectChat": "会話を選択して開始"
@@ -214,7 +222,27 @@
             "sendSelected": "選択した文を送信",
             "continueEditing": "修正を続ける",
             "checkFailed": "AIチェックに失敗しました",
-            "noSuggestions": "提案がありません"
+            "noSuggestions": "提案がありません",
+            "analyzing": "分析中..."
+        },
+        "context": {
+            "title": "会話の背景",
+            "helpText": "入力すると自動的に保存されます",
+            "placeholder": "会話の背景を記入... 例：「相手は部長で、報告書の遅延で怒っている」",
+            "selectTemplate": "テンプレート",
+            "saveAsTemplate": "テンプレとして保存",
+            "templateName": "テンプレート名...",
+            "noTemplates": "テンプレートがありません",
+            "saving": "保存中...",
+            "saved": "保存済み"
+        },
+        "aiNote": {
+            "indirectWarning": "間接的な表現の可能性があります",
+            "viewDetails": "詳細を見る",
+            "collapse": "閉じる",
+            "realIntent": "本当の意図",
+            "culturalContext": "文化的な背景",
+            "analyze": "メッセージを分析"
         }
     },
     "common": {

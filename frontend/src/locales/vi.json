@@ -12,7 +12,8 @@
             "register": "Đăng ký",
             "loginProcessing": "Đang đăng nhập...",
             "errorMissing": "Vui lòng nhập email và mật khẩu.",
-            "errorLoginFailed": "Đăng nhập thất bại."
+            "errorLoginFailed": "Đăng nhập thất bại.",
+            "googleError": "Đăng nhập Google thất bại. Vui lòng thử lại."
         },
         "register": {
             "title": "Đăng ký",
@@ -54,8 +55,7 @@
         "avatarUrlPlaceholder": "Dán URL ảnh hoặc chọn file",
         "errorAvatarInvalid": "Chỉ chấp nhận file hình ảnh.",
         "errorAvatarReadFailed": "Không đọc được file ảnh."
-},
-
+    },
     "lang": {
         "ariaVi": "Chuyển sang tiếng Việt",
         "ariaJp": "Chuyển sang tiếng Nhật"
@@ -169,7 +169,12 @@
     "home": {
         "title": "Chào mừng đến với Smart Exchange",
         "appName": "Smart Exchange",
+        "welcome": "Chào mừng trở lại!",
+        "profileDescription": "Xem và chỉnh sửa thông tin hồ sơ của bạn",
+        "settingsDescription": "Cấu hình các tùy chọn của bạn",
+        "chatDescription": "Bắt đầu hoặc tiếp tục các cuộc trò chuyện",
         "userInfo": {
+            "title": "Tài khoản của bạn",
             "email": "Email",
             "jobTitle": "Chức danh công việc",
             "language": "Ngôn ngữ",
@@ -193,7 +198,10 @@
             "backHome": "Trang chủ",
             "recentChats": "Đã chat gần đây",
             "otherUsers": "Người dùng khác",
-            "noMessages": "Chưa có tin nhắn"
+            "noMessages": "Chưa có tin nhắn",
+            "noChats": "Chưa có cuộc trò chuyện nào",
+            "noOtherUsers": "Không có người dùng khác",
+            "searchPlaceholder": "Tìm kiếm người dùng..."
         },
         "placeholder": {
             "selectChat": "Chọn một cuộc trò chuyện để bắt đầu"
@@ -214,7 +222,27 @@
             "sendSelected": "Gửi văn bản đã chọn",
             "continueEditing": "Tiếp tục chỉnh sửa",
             "checkFailed": "Kiểm tra AI thất bại",
-            "noSuggestions": "Không có đề xuất"
+            "noSuggestions": "Không có đề xuất",
+            "analyzing": "Đang phân tích..."
+        },
+        "context": {
+            "title": "Bối cảnh hội thoại",
+            "helpText": "Nội dung sẽ được tự động lưu khi bạn nhập",
+            "placeholder": "Mô tả bối cảnh cuộc trò chuyện... Ví dụ: 'Đối phương là sếp trưởng bộ phận, đang giận vì tôi nộp báo cáo muộn'",
+            "selectTemplate": "Chọn mẫu",
+            "saveAsTemplate": "Lưu làm mẫu",
+            "templateName": "Tên mẫu...",
+            "noTemplates": "Chưa có mẫu nào",
+            "saving": "Đang lưu...",
+            "saved": "Đã lưu"
+        },
+        "aiNote": {
+            "indirectWarning": "Có thể là cách nói gián tiếp",
+            "viewDetails": "Xem chi tiết",
+            "collapse": "Thu gọn",
+            "realIntent": "Ý định thực sự",
+            "culturalContext": "Bối cảnh văn hóa",
+            "analyze": "Phân tích tin nhắn"
         }
     },
     "common": {

@@ -1,10 +1,10 @@
-import { Controller, Get, Delete, Param, Query, UseGuards, Request } from "@nestjs/common";
+import { Controller, Get, Post, Delete, Param, Query, UseGuards, Request } from "@nestjs/common";
 import { JwtAuthGuard } from "../common/guards/jwt-auth.guard";
 import { ChatService } from "./chat.service";
 
 @Controller("chats")
 export class ChatController {
-    constructor(private readonly chatService: ChatService) {}
+    constructor(private readonly chatService: ChatService) { }
 
     @UseGuards(JwtAuthGuard)
     @Get(":chatId/messages")
@@ -27,5 +27,15 @@ export class ChatController {
     @Delete("messages/:messageId")
     async deleteMessage(@Param("messageId") messageId: string, @Request() req: any) {
         return this.chatService.deleteMessage(messageId, req.user.userId);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Post("messages/:messageId/analyze")
+    async analyzeMessage(@Param("messageId") messageId: string, @Request() req: any) {
+        // Ensure user has access to the chat containing this message
+        const message = await this.chatService.getMessageById(messageId);
+        await this.chatService.ensureChatAccess(message.chatId, req.user.userId);
+
+        return this.chatService.analyzeAndSave(messageId);
     }
 }
