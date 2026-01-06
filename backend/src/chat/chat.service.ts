@@ -56,12 +56,15 @@ export class ChatService {
         });
     }
 
-    async saveMessage(chatId: string, senderId: string, content: string) {
-        const message = await this.prisma.message.create({
+    async saveMessage(chatId: string, senderId: string, content?: string, attachment?: { url: string; name: string; type: string }) {
+        const message = await (this.prisma.message.create as any)({
             data: {
                 chatId,
                 senderId,
-                content,
+                content: content ?? (null as any),
+                attachmentUrl: attachment?.url,
+                attachmentName: attachment?.name,
+                attachmentType: attachment?.type,
             },
         });
 
@@ -70,9 +73,6 @@ export class ChatService {
             data: { updateAt: new Date() },
         });
 
-        // Async AI analysis for Japanese messages (non-blocking) - DISABLED for manual trigger
-        // this.analyzeAndSaveAsync(message.messageId, content, chatId);
-
         return message;
     }
 
@@ -80,7 +80,7 @@ export class ChatService {
      * Analyze message asynchronously and save to DB
      * Called manually from controller
      */
-    async analyzeAndSave(messageId: string, userId: string) {
+    async analyzeAndSave(messageId: string, userId: string, displayLanguage: "vi" | "jp" = "vi") {
         try {
             const message = await this.prisma.message.findUnique({
                 where: { messageId },
@@ -92,6 +92,10 @@ export class ChatService {
 
             const content = message.content;
             const chatId = message.chatId;
+
+            if (!content) {
+                return;
+            }
 
             // Check if message contains Japanese characters
             const hasJapanese = /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF]/.test(content);
@@ -113,7 +117,8 @@ export class ChatService {
             const analysis = await this.aiService.analyzeReceivedMessage(
                 content,
                 chatContext?.contextDescription,
-                undefined // No conversation history for now
+                undefined, // No conversation history for now
+                displayLanguage
             );
 
             // Save analysis to database

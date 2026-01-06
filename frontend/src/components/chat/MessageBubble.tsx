@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Languages, AlertTriangle, Lightbulb, ChevronDown, X, Sparkles, Loader2 } from "lucide-react";
+import i18n from "../../i18n";
+import { Languages, AlertTriangle, Lightbulb, ChevronDown, X, Sparkles, Loader2, File, Download } from "lucide-react";
 import type { DisplayMessage as Message } from "./ChatArea";
 import { chatService } from "../../services/chat.service";
 import avatarUser from "../../assets/avatar-user.png";
@@ -22,13 +23,14 @@ export default function MessageBubble({ msg, onDelete }: Props) {
     const isUser = msg.sender === "user";
     const aiAnalysis = localAnalysis;
 
-    const hasJapanese = /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF]/.test(msg.text);
+    const hasJapanese = msg.text ? /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF]/.test(msg.text) : false;
 
     const handleAnalyze = async () => {
         if (isAnalyzing || aiAnalysis) return;
         setIsAnalyzing(true);
         try {
-            const result = await chatService.analyzeMessage(msg.id);
+            const displayLanguage = i18n.language === "vi" ? "vi" : "jp";
+            const result = await chatService.analyzeMessage(msg.id, displayLanguage);
             if (result) {
                 setLocalAnalysis(result);
             }
@@ -37,6 +39,45 @@ export default function MessageBubble({ msg, onDelete }: Props) {
         } finally {
             setIsAnalyzing(false);
         }
+    };
+
+    const renderAttachment = () => {
+        if (!msg.attachmentUrl) return null;
+
+        const type = msg.attachmentType || "";
+        const url = msg.attachmentUrl;
+        const name = msg.attachmentName || "file";
+
+        if (type.startsWith("image/")) {
+            return (
+                <div className="message-attachment">
+                    <a href={url} target="_blank" rel="noopener noreferrer">
+                        <img src={url} alt={name} className="message-image" />
+                    </a>
+                </div>
+            );
+        }
+
+        if (type.startsWith("video/")) {
+            return (
+                <div className="message-attachment">
+                    <video src={url} controls className="message-video" />
+                </div>
+            );
+        }
+
+        return (
+            <div className="message-attachment">
+                <a href={url} target="_blank" rel="noopener noreferrer" className="file-attachment">
+                    <File size={24} />
+                    <div className="file-info">
+                        <span className="file-name-bubble">{name}</span>
+                        <span className="file-download-text">{t("chat.attachment.download") || "Click to download"}</span>
+                    </div>
+                    <Download size={18} />
+                </a>
+            </div>
+        );
     };
 
     return (
@@ -48,7 +89,8 @@ export default function MessageBubble({ msg, onDelete }: Props) {
             <img src={isUser ? avatarUser : avatarOther} className="avatar" alt="avatar" />
             <div className="bubble-wrapper">
                 <div className="bubble">
-                    {msg.text}
+                    {renderAttachment()}
+                    <div className="message-text">{msg.text}</div>
                     {isUser && showActions && onDelete && (
                         <button
                             className="delete-msg-btn"

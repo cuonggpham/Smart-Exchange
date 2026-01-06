@@ -22,12 +22,25 @@ export interface ChatSession {
 export interface ChatMessage {
     messageId: string;
     senderId: string;
-    content: string;
+    content: string | null;
     createdAt: string;
-    aiAnalysisContent?: string; // JSON string of AI analysis
+    aiAnalysisContent?: string;
+    attachmentUrl?: string;
+    attachmentName?: string;
+    attachmentType?: string;
 }
 
 class ChatService {
+    // Post file to upload
+    async uploadFile(file: File): Promise<{ url: string; name: string; type: string }> {
+        const formData = new FormData();
+        formData.append("file", file);
+        return axiosInstance.post("/chats/upload", formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
+    }
     // Get chat list
     async getMyChats(): Promise<ChatSession[]> {
         return axiosInstance.get("/chats");
@@ -46,8 +59,8 @@ class ChatService {
         return axiosInstance.delete(`/chats/messages/${messageId}`);
     }
 
-    async analyzeMessage(messageId: string): Promise<any> {
-        return axiosInstance.post(`/chats/messages/${messageId}/analyze`);
+    async analyzeMessage(messageId: string, displayLanguage: "vi" | "jp"): Promise<any> {
+        return axiosInstance.post(`/chats/messages/${messageId}/analyze`, { displayLanguage });
     }
 
     async initChat(partnerId: string): Promise<ChatSession> {

@@ -12,13 +12,13 @@ import { aiService } from "../../services/ai.service";
 import { historyService } from "../../services/history.service";
 import { contextService } from "../../services/context.service";
 import type { ChatUser } from "../../services/chat.service";
-import type { AICheckResponse, ConversationSummary, AISuggestion } from "../../types/ai.types";
+import type { AICheckResponse, ConversationSummary, AISuggestion, ContextMessage } from "../../types/ai.types";
 import "../../styles/ChatPage.css";
 
 export interface DisplayMessage {
     id: string;
     sender: "user" | "other";
-    text: string;
+    text: string | null;
     timestamp: string;
     aiAnalysis?: {
         translatedText: string;
@@ -26,6 +26,9 @@ export interface DisplayMessage {
         culturalNote: string;
         isIndirectExpression: boolean;
     };
+    attachmentUrl?: string;
+    attachmentName?: string;
+    attachmentType?: string;
 }
 
 interface Props {
@@ -106,6 +109,9 @@ export default function ChatArea({ chatId, receiver, onChatCreated }: Props) {
                                 minute: "2-digit",
                             }),
                             aiAnalysis,
+                            attachmentUrl: m.attachmentUrl,
+                            attachmentName: m.attachmentName,
+                            attachmentType: m.attachmentType,
                         };
                     })
                     .reverse();
@@ -138,6 +144,9 @@ export default function ChatArea({ chatId, receiver, onChatCreated }: Props) {
                     id: newMsg.messageId,
                     sender: newMsg.senderId === user?.id ? "user" : "other",
                     text: newMsg.content,
+                    attachmentUrl: newMsg.attachmentUrl,
+                    attachmentName: newMsg.attachmentName,
+                    attachmentType: newMsg.attachmentType,
                     timestamp: new Date(newMsg.createdAt).toLocaleTimeString([], {
                         hour: "2-digit",
                         minute: "2-digit",
@@ -179,13 +188,14 @@ export default function ChatArea({ chatId, receiver, onChatCreated }: Props) {
         }
     }, [messages]);
 
-    const handleSend = (text: string) => {
+    const handleSend = (text: string, attachment?: { url: string; name: string; type: string }) => {
         if (!socket || !user) return;
 
         socket.emit("send_message", {
             chatId: chatId || undefined,
             receiverId: receiver.userId,
-            content: text,
+            content: text || undefined,
+            attachment,
         });
 
         // Clear input after sending
@@ -199,9 +209,9 @@ export default function ChatArea({ chatId, receiver, onChatCreated }: Props) {
 
         try {
             // Build context from recent messages
-            const context = messages.slice(-10).map((msg) => ({
+            const context: ContextMessage[] = messages.slice(-10).map((msg): ContextMessage => ({
                 sender: msg.sender,
-                text: msg.text,
+                text: (msg.text || (msg.attachmentUrl ? `(${msg.attachmentName || "Tệp đính kèm"})` : "")) as string,
             }));
 
             // Pass existing summary and user-defined context for better analysis

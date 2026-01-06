@@ -7,9 +7,10 @@ import { AIModule } from "./ai/ai.module";
 import { ContextModule } from "./context/context.module";
 import { HistoryModule } from "./history/history.module";
 import { LoggerMiddleware } from "./common/middleware/logger.middleware";
+import { StorageModule } from "./common/storage/storage.module";
 
 @Module({
-    imports: [PrismaModule, UsersModule, AuthModule, ChatModule, AIModule, ContextModule, HistoryModule],
+    imports: [PrismaModule, UsersModule, AuthModule, ChatModule, AIModule, ContextModule, HistoryModule, StorageModule],
 })
 export class AppModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {

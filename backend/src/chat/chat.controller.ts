@@ -1,10 +1,23 @@
-import { Controller, Get, Post, Delete, Param, Query, UseGuards, Request, Body } from "@nestjs/common";
+import { Controller, Get, Post, Delete, Param, Query, UseGuards, Request, Body, UseInterceptors, UploadedFile } from "@nestjs/common";
+import "multer";
+import { FileInterceptor } from "@nestjs/platform-express";
 import { JwtAuthGuard } from "../common/guards/jwt-auth.guard";
 import { ChatService } from "./chat.service";
+import { StorageService } from "../common/storage/storage.service";
 
 @Controller("chats")
 export class ChatController {
-    constructor(private readonly chatService: ChatService) { }
+    constructor(
+        private readonly chatService: ChatService,
+        private readonly storageService: StorageService
+    ) { }
+
+    @UseGuards(JwtAuthGuard)
+    @Post("upload")
+    @UseInterceptors(FileInterceptor("file"))
+    async uploadFile(@UploadedFile() file: Express.Multer.File) {
+        return this.storageService.uploadFile(file);
+    }
 
     @UseGuards(JwtAuthGuard)
     @Get(":chatId/messages")
@@ -37,11 +50,15 @@ export class ChatController {
 
     @UseGuards(JwtAuthGuard)
     @Post("messages/:messageId/analyze")
-    async analyzeMessage(@Param("messageId") messageId: string, @Request() req: any) {
+    async analyzeMessage(
+        @Param("messageId") messageId: string,
+        @Body() body: { displayLanguage?: "vi" | "jp" },
+        @Request() req: any
+    ) {
         // Ensure user has access to the chat containing this message
         const message = await this.chatService.getMessageById(messageId);
         await this.chatService.ensureChatAccess(message.chatId, req.user.userId);
 
-        return this.chatService.analyzeAndSave(messageId, req.user.userId);
+        return this.chatService.analyzeAndSave(messageId, req.user.userId, body.displayLanguage);
     }
 }

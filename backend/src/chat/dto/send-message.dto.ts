@@ -9,6 +9,12 @@ export class SendMessageDto {
     receiverId: string;
 
     @IsString()
-    @IsNotEmpty({ message: "Content cannot be empty" })
-    content: string;
+    content?: string;
+
+    @IsNotEmpty()
+    attachment?: {
+        url: string;
+        name: string;
+        type: string;
+    };
 }

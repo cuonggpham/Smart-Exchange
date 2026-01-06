@@ -31,7 +31,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     constructor(
         private readonly chatService: ChatService,
         private readonly jwtService: JwtService
-    ) {}
+    ) { }
 
     async handleConnection(client: Socket) {
         try {
@@ -72,8 +72,12 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
             throw new AppException(ExceptionCode.UNAUTHORIZED, "User not authenticated");
         }
 
-        if (!payload.content || !payload.receiverId) {
-            throw new AppException(ExceptionCode.BAD_REQUEST, "Missing receiver or content");
+        if (!payload.content && !payload.attachment) {
+            throw new AppException(ExceptionCode.BAD_REQUEST, "Message must have content or attachment");
+        }
+
+        if (!payload.receiverId) {
+            throw new AppException(ExceptionCode.BAD_REQUEST, "Missing receiverId");
         }
 
         const chat = await this.chatService.findOrCreateChat(
@@ -85,17 +89,22 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         const message = await this.chatService.saveMessage(
             chat.chatId,
             user.userId,
-            payload.content
+            payload.content,
+            payload.attachment
         );
 
         const receiverId = chat.userOneId === user.userId ? chat.userTwoId : chat.userOneId;
+        const msg = message as any;
         const messageResponse = {
-            messageId: message.messageId,
+            messageId: msg.messageId,
             chatId: chat.chatId,
             senderId: user.userId,
             receiverId,
-            content: message.content,
-            createdAt: message.createdAt,
+            content: msg.content,
+            attachmentUrl: msg.attachmentUrl,
+            attachmentName: msg.attachmentName,
+            attachmentType: msg.attachmentType,
+            createdAt: msg.createdAt,
         };
 
         client.join(`chat-${chat.chatId}`);

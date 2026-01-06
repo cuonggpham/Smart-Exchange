@@ -54,8 +54,12 @@ model Message {
   messageId         String  @id @default(uuid()) @db.VarChar(36)
   chatId            String  @db.VarChar(36)
   senderId          String  @db.VarChar(36)
-  content           String  @db.Text
+  content           String? @db.Text
   aiAnalysisContent String? @db.Text
+
+  attachmentUrl  String? @db.VarChar(255)
+  attachmentType String? @db.VarChar(50)
+  attachmentName String? @db.VarChar(255)
 
   createdAt DateTime @default(now()) @db.Timestamp(0)
   isRead    Boolean  @default(false)
