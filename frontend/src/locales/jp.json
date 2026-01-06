@@ -1,4 +1,12 @@
 {
+    "navbar": {
+        "home": "ホーム",
+        "chat": "チャット",
+        "profile": "プロフィール",
+        "settings": "設定",
+        "logout": "ログアウト",
+        "menu": "メニュー"
+    },
     "auth": {
         "login": {
             "title": "ログイン",

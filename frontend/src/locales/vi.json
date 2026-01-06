@@ -1,4 +1,12 @@
 {
+    "navbar": {
+        "home": "Trang chủ",
+        "chat": "Chat",
+        "profile": "Hồ sơ",
+        "settings": "Cài đặt",
+        "logout": "Đăng xuất",
+        "menu": "Menu"
+    },
     "auth": {
         "login": {
             "title": "Đăng nhập",
