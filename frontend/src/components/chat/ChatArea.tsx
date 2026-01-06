@@ -9,8 +9,10 @@ import { useSocket } from "../../contexts/SocketContext";
 import { useAuth } from "../../contexts/AuthContext";
 import { chatService } from "../../services/chat.service";
 import { aiService } from "../../services/ai.service";
+import { historyService } from "../../services/history.service";
+import { contextService } from "../../services/context.service";
 import type { ChatUser } from "../../services/chat.service";
-import type { AICheckResponse, ConversationSummary } from "../../types/ai.types";
+import type { AICheckResponse, ConversationSummary, AISuggestion } from "../../types/ai.types";
 import "../../styles/ChatPage.css";
 
 export interface DisplayMessage {
@@ -232,8 +234,27 @@ export default function ChatArea({ chatId, receiver, onChatCreated }: Props) {
         closeAIModal();
     };
 
-    const handleSendSuggestion = (text: string) => {
-        handleSend(text);
+    const handleSendSuggestion = async (suggestion: AISuggestion) => {
+        handleSend(suggestion.text);
+
+        // Save to history asynchronously
+        if (chatId) {
+            try {
+                const context = await contextService.getContext(chatId);
+                await historyService.createHistory({
+                    receiverName: receiver.fullName,
+                    chatId,
+                    contextDescription: context.contextDescription,
+                    originalText: pendingText,
+                    selectedSuggestion: suggestion.text,
+                    suggestionLevel: suggestion.level,
+                    culturalNotes: aiResponse?.culturalNotes
+                });
+            } catch (error) {
+                console.error("Failed to save suggestion history:", error);
+            }
+        }
+
         closeAIModal();
     };
 

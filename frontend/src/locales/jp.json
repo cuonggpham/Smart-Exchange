@@ -2,6 +2,7 @@
     "navbar": {
         "home": "ホーム",
         "chat": "チャット",
+        "history": "履歴",
         "profile": "プロフィール",
         "settings": "設定",
         "logout": "ログアウト",
@@ -268,6 +269,26 @@
             "title": "チャット設定",
             "cultureCheck": "文化チェック",
             "cultureCheckDesc": "送信前にAIによる文化チェックを有効/無効にする"
+        },
+        "history": {
+            "title": "表現履歴",
+            "subtitle": "文脈に合わせた適切な表現の記録",
+            "empty": "履歴がありません",
+            "searchByReceiver": "相手の名前で検索...",
+            "filterAll": "すべての相手",
+            "usedContext": "会話の背景",
+            "original": "元のテキスト",
+            "suggestion": "選択した表現",
+            "level": "丁寧さ",
+            "culturalNote": "文化的な注意",
+            "copy": "コピー",
+            "copied": "コピーしました！",
+            "delete": "削除",
+            "deleteConfirm": "この履歴を削除してもよろしいですか？",
+            "receiver": "送信先",
+            "dateToday": "今日",
+            "dateYesterday": "昨日",
+            "noContext": "詳細な背景なし"
         }
     },
     "common": {

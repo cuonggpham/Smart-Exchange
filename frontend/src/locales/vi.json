@@ -2,6 +2,7 @@
     "navbar": {
         "home": "Trang chủ",
         "chat": "Chat",
+        "history": "Lịch sử",
         "profile": "Hồ sơ",
         "settings": "Cài đặt",
         "logout": "Đăng xuất",
@@ -268,6 +269,26 @@
             "title": "Cài đặt cuộc trò chuyện",
             "cultureCheck": "Kiểm tra văn hóa",
             "cultureCheckDesc": "Bật/tắt kiểm tra văn hóa AI trước khi gửi tin nhắn"
+        },
+        "history": {
+            "title": "Lịch sử gợi ý",
+            "subtitle": "Lưu các cách diễn đạt phù hợp với từng ngữ cảnh",
+            "empty": "Chưa có gợi ý nào được lưu",
+            "searchByReceiver": "Tìm theo người nhận...",
+            "filterAll": "Tất cả người nhận",
+            "usedContext": "Bối cảnh sử dụng",
+            "original": "Văn bản gốc",
+            "suggestion": "Gợi ý đã chọn",
+            "level": "Mức độ",
+            "culturalNote": "Lưu ý văn hóa",
+            "copy": "Sao chép",
+            "copied": "Đã sao chép!",
+            "delete": "Xóa",
+            "deleteConfirm": "Bạn có chắc muốn xóa gợi ý này?",
+            "receiver": "Gửi đến",
+            "dateToday": "Hôm nay",
+            "dateYesterday": "Hôm qua",
+            "noContext": "Không có bối cảnh chi tiết"
         }
     },
     "common": {

@@ -10,6 +10,7 @@ import {
     ChevronLeft,
     ChevronRight,
     Home,
+    History,
 } from "lucide-react";
 import LanguageSwitcher from "./LanguageSwitcher";
 
@@ -29,6 +30,7 @@ const Sidebar: React.FC = () => {
     const navItems = [
         { path: "/home", icon: Home, label: t("navbar.home") },
         { path: "/chat", icon: MessageSquare, label: t("navbar.chat") },
+        { path: "/history", icon: History, label: t("navbar.history") },
         { path: "/profile", icon: User, label: t("navbar.profile") },
         { path: "/settings", icon: Settings, label: t("navbar.settings") },
     ];

@@ -9,6 +9,7 @@ import RegisterPage from "./pages/RegisterPage";
 import HomePage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage";
 import ChatPage from "./pages/ChatPage";
+import HistoryPage from "./pages/HistoryPage";
 import TutorialPage from "./pages/TutorialPage/TutorialPage";
 
 /* ===== Settings ===== */
@@ -103,6 +104,7 @@ function App() {
                                         />
 
                                         <Route path="/chat" element={<ChatPage />} />
+                                        <Route path="/history" element={<HistoryPage />} />
                                         <Route path="/profile" element={<ProfilePage />} />
 
                                         <Route path="/settings" element={<SettingsPage />}>
