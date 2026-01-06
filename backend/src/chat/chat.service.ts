@@ -149,6 +149,7 @@ export class ChatService {
                         userId: true,
                         email: true,
                         fullName: true,
+                        avatar: true,
                     },
                 },
             },
@@ -161,8 +162,8 @@ export class ChatService {
                 OR: [{ userOneId: userId }, { userTwoId: userId }],
             },
             include: {
-                userOne: { select: { userId: true, fullName: true, email: true } },
-                userTwo: { select: { userId: true, fullName: true, email: true } },
+                userOne: { select: { userId: true, fullName: true, email: true, avatar: true } },
+                userTwo: { select: { userId: true, fullName: true, email: true, avatar: true } },
                 messages: {
                     orderBy: { createdAt: "desc" },
                     take: 1,
