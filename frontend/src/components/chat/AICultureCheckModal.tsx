@@ -10,7 +10,7 @@ interface Props {
     response: AICheckResponse | null;
     onClose: () => void;
     onSendOriginal: () => void;
-    onSendSuggestion: (text: string) => void;
+    onSendSuggestion: (suggestion: AISuggestion) => void;
     onContinueEditing: () => void;
 }
 
@@ -47,7 +47,7 @@ export default function AICultureCheckModal({
 
     const handleSendSelected = () => {
         if (selectedSuggestion) {
-            onSendSuggestion(selectedSuggestion.text);
+            onSendSuggestion(selectedSuggestion);
             setSelectedSuggestion(null);
         }
     };

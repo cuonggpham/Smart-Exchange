@@ -28,6 +28,7 @@ model User {
   messagesSent     Message[]
   contextTemplates ContextTemplate[]
   chatContexts     ChatContext[]
+  suggestionHistory SuggestionHistory[]
 
   @@map("Users")
 }
@@ -91,5 +92,24 @@ model ContextTemplate {
   user User @relation(fields: [userId], references: [userId], onDelete: Cascade)
 
   @@map("ContextTemplates")
+}
+
+model SuggestionHistory {
+  historyId          String   @id @default(uuid()) @db.VarChar(36)
+  userId             String   @db.VarChar(36)
+  chatId             String?  @db.VarChar(36)
+  receiverName       String   @db.VarChar(100)
+  contextDescription String?  @db.Text
+  originalText       String   @db.Text
+  selectedSuggestion String   @db.Text
+  suggestionLevel    String   @db.VarChar(20)
+  culturalNotes      String?  @db.Text
+
+  createdAt DateTime @default(now()) @db.Timestamp(0)
+
+  user User @relation(fields: [userId], references: [userId], onDelete: Cascade)
+
+  @@index([userId, createdAt(sort: Desc)], name: "IDX_History_User_Sort")
+  @@map("SuggestionHistory")
 }
 

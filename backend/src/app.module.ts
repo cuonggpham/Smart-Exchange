@@ -5,10 +5,11 @@ import { UsersModule } from "./users/users.module";
 import { ChatModule } from "./chat/chat.module";
 import { AIModule } from "./ai/ai.module";
 import { ContextModule } from "./context/context.module";
+import { HistoryModule } from "./history/history.module";
 import { LoggerMiddleware } from "./common/middleware/logger.middleware";
 
 @Module({
-    imports: [PrismaModule, UsersModule, AuthModule, ChatModule, AIModule, ContextModule],
+    imports: [PrismaModule, UsersModule, AuthModule, ChatModule, AIModule, ContextModule, HistoryModule],
 })
 export class AppModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {
