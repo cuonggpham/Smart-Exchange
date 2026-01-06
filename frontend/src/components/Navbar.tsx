@@ -56,7 +56,7 @@ const Navbar: React.FC = () => {
                     onKeyDown={(e) => e.key === "Enter" && navigate("/home")}
                 >
                     <span className="navbar-logo">SE</span>
-                    <span className="navbar-title">Smart Exchange</span>
+                    <span className="navbar-title">Smart EXchange</span>
                 </div>
 
                 {/* Desktop Navigation */}

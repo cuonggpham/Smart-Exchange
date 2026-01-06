@@ -1,7 +1,6 @@
 import { useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import "../styles/ChatPage.css";
-import ChatHeader from "../components/chat/ChatHeader";
 import ChatSideBar from "../components/chat/ChatSideBar";
 import ChatArea from "../components/chat/ChatArea";
 import type { ChatSession, ChatUser } from "../services/chat.service";
@@ -39,7 +38,6 @@ export default function ChatPage() {
 
     return (
         <div className="chat-container">
-            <ChatHeader />
             <div className="chat-body">
                 <ChatSideBar
                     onSelectChat={handleSelectChat}

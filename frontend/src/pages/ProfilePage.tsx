@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../contexts/AuthContext";
 import { userService } from "~/services/api";
-import LanguageSwitcher from "../components/LanguageSwitcher";
 import "../styles/ProfilePage.css";
 
 interface ProfileFormData {
@@ -111,7 +110,7 @@ const ProfilePage: React.FC = () => {
             position: position || "",
             avatar: savedAvatar || prev.avatar || "",
         }));
-    }, [user]);const isDataUrl = useMemo(() => formData.avatar.startsWith("data:image/"), [formData.avatar]);
+    }, [user]); const isDataUrl = useMemo(() => formData.avatar.startsWith("data:image/"), [formData.avatar]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -193,11 +192,6 @@ const ProfilePage: React.FC = () => {
 
     return (
         <div className="profile-page">
-            <header className="profile-header">
-                <div className="profile-app-name">Smart Exchange</div>
-                <LanguageSwitcher />
-            </header>
-
             <main className="profile-main">
                 <div className="profile-container">
                     <h1 className="profile-title">{t("profile.title")}</h1>

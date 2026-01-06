@@ -1,8 +1,6 @@
 import React from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useAuth } from "../contexts/AuthContext";
-import LanguageSwitcher from "../components/LanguageSwitcher";
 import "../styles/SettingsPage.css";
 
 // Icon components với màu sắc theo hình ảnh
@@ -80,7 +78,6 @@ const HelpIcon = () => (
 
 const SettingsPage: React.FC = () => {
     const { t } = useTranslation();
-    const { user } = useAuth();
 
     const menuItems = [
         { key: "account", label: t("settings.menu.account"), to: "/settings", icon: AccountIcon },
@@ -119,21 +116,6 @@ const SettingsPage: React.FC = () => {
 
     return (
         <div className="settings-layout">
-            <header className="settings-header">
-                <NavLink to="/home" className="back-link">
-                    ← {t("settings.backHome")}
-                </NavLink>
-                <h1 className="settings-title">{t("settings.title")}</h1>
-                <div className="settings-header-right">
-                    <LanguageSwitcher />
-                    <div className="settings-user-chip">
-                        {t("settings.userDisplay", {
-                            username: user?.email?.split("@")[0] || "N/A",
-                        })}
-                    </div>
-                </div>
-            </header>
-
             <div className="settings-body">
                 <aside className="settings-sidebar">
                     <div className="settings-menu-title">{t("settings.menu.title")}</div>

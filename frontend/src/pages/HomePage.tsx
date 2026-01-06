@@ -2,19 +2,12 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../contexts/AuthContext";
-import { MessageSquare, User, Settings, LogOut } from "lucide-react";
+import { MessageSquare, User, Settings } from "lucide-react";
 
 const HomePage: React.FC = () => {
     const { t } = useTranslation();
-    const { user, settings, logout } = useAuth();
+    const { user, settings } = useAuth();
     const navigate = useNavigate();
-    const [loading, setLoading] = React.useState(false);
-
-    const handleLogout = async () => {
-        setLoading(true);
-        await logout();
-        setLoading(false);
-    };
 
     const navCards = [
         {
@@ -45,26 +38,8 @@ const HomePage: React.FC = () => {
 
     return (
         <div className="dashboard-container animate-fade-in">
-            {/* Header */}
-            <header className="dashboard-header">
-                <div>
-                    <h1 className="dashboard-title">{t('home.title')}</h1>
-                    <p className="text-muted">{t('home.welcome') || 'Welcome back!'}</p>
-                </div>
-                <button
-                    onClick={handleLogout}
-                    disabled={loading}
-                    className="danger-btn flex items-center gap-2"
-                    style={{ width: 'auto' }}
-                >
-                    {loading ? (
-                        <span className="spinner" />
-                    ) : (
-                        <LogOut size={18} />
-                    )}
-                    {loading ? t('home.actions.loggingOut') : t('home.actions.logout')}
-                </button>
-            </header>
+            {/* Header - Simplified to just spacing or title if needed, but sidebar has it */}
+            <div style={{ height: '24px' }} />
 
             {/* User Info Section */}
             <section className="user-info-section animate-fade-in-up">

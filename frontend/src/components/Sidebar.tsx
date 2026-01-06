@@ -9,7 +9,9 @@ import {
     LogOut,
     ChevronLeft,
     ChevronRight,
+    Home,
 } from "lucide-react";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 const Sidebar: React.FC = () => {
     const { t } = useTranslation();
@@ -25,6 +27,7 @@ const Sidebar: React.FC = () => {
     };
 
     const navItems = [
+        { path: "/home", icon: Home, label: t("navbar.home") },
         { path: "/chat", icon: MessageSquare, label: t("navbar.chat") },
         { path: "/profile", icon: User, label: t("navbar.profile") },
         { path: "/settings", icon: Settings, label: t("navbar.settings") },
@@ -41,7 +44,7 @@ const Sidebar: React.FC = () => {
                 onKeyDown={(e) => e.key === "Enter" && navigate("/home")}
             >
                 <span className="sidebar-logo">SE</span>
-                {!isCollapsed && <span className="sidebar-title">Smart Exchange</span>}
+                {!isCollapsed && <span className="sidebar-title">Smart EXchange</span>}
             </div>
 
             {/* Toggle Button */}
@@ -81,6 +84,9 @@ const Sidebar: React.FC = () => {
                             {user?.email?.split("@")[0] || "User"}
                         </span>
                     )}
+                </div>
+                <div className={`sidebar-lang-container ${isCollapsed ? "collapsed" : ""}`}>
+                    <LanguageSwitcher />
                 </div>
                 <button
                     className="sidebar-link logout"

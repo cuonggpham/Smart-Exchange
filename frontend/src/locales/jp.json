@@ -187,8 +187,8 @@
         }
     },
     "home": {
-        "title": "Smart Exchangeへようこそ",
-        "appName": "Smart Exchange",
+        "title": "Smart EXchangeへようこそ",
+        "appName": "Smart EXchange",
         "welcome": "おかえりなさい！",
         "profileDescription": "プロフィール情報を表示・編集",
         "settingsDescription": "設定を構成",
@@ -212,7 +212,7 @@
     "chat": {
         "title": "チャット",
         "header": {
-            "appName": "Smart Exchange"
+            "appName": "Smart EXchange"
         },
         "sidebar": {
             "backHome": "ホーム",

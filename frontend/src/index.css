@@ -1031,6 +1031,31 @@ button,
     display: none;
 }
 
+.sidebar-lang-container {
+    padding: 8px 14px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.sidebar-lang-container.collapsed {
+    padding: 8px 0;
+    justify-content: center;
+}
+
+.sidebar-lang-container.collapsed .lang-switch {
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sidebar-lang-container.collapsed .lang-btn {
+    padding: 4px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 /* App Layout with Sidebar */
 .app-layout {
     display: flex;

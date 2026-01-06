@@ -10,7 +10,7 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children, title }) => {
     return (
         <div className="auth-page">
             <header className="auth-header">
-                <div className="app-name">Smart Exchange</div>
+                <div className="app-name">Smart EXchange</div>
                 <LanguageSwitcher />
             </header>
 

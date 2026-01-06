@@ -1,4 +1,4 @@
-# Smart Exchange
+# Smart EXchange
 
 A full-stack web application built with NestJS and React for real-time chat and language exchange.
 
