@@ -31,6 +31,7 @@ import { SocketProvider } from "./contexts/SocketContext";
 
 import { ProtectedLayout } from "./layouts/ProtectedLayout";
 import { PublicRoute } from "./components/PublicRoute";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 
 /* ===== Guards ===== */
 
@@ -94,15 +95,6 @@ function App() {
                                             }
                                         />
 
-                                        <Route
-                                            path="/tutorial"
-                                            element={
-                                                <TutorialGuard>
-                                                    <TutorialPage />
-                                                </TutorialGuard>
-                                            }
-                                        />
-
                                         <Route path="/chat" element={<ChatPage />} />
                                         <Route path="/history" element={<HistoryPage />} />
                                         <Route path="/profile" element={<ProfilePage />} />
@@ -118,6 +110,18 @@ function App() {
                                             <Route path="logout" element={<LogoutSettings />} />
                                         </Route>
                                     </Route>
+
+                                    {/* ===== TUTORIAL (Protected but no Layout) ===== */}
+                                    <Route
+                                        path="/tutorial"
+                                        element={
+                                            <ProtectedRoute>
+                                                <TutorialGuard>
+                                                    <TutorialPage />
+                                                </TutorialGuard>
+                                            </ProtectedRoute>
+                                        }
+                                    />
 
                                     {/* ===== FALLBACK ===== */}
                                     <Route path="*" element={<Navigate to="/" replace />} />
