@@ -390,11 +390,11 @@
     box-shadow: 0 2px 4px var(--shadow-sm);
 }
 
-.theme-toggle-switch input:checked + .theme-toggle-slider {
+.theme-toggle-switch input:checked+.theme-toggle-slider {
     background-color: var(--primary-color);
 }
 
-.theme-toggle-switch input:checked + .theme-toggle-slider:before {
+.theme-toggle-switch input:checked+.theme-toggle-slider:before {
     transform: translateX(28px);
 }
 
@@ -402,9 +402,27 @@
     box-shadow: 0 0 0 2px var(--primary-light);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 768px) {
+    .settings-layout {
+        padding: 16px;
+    }
+
+    .settings-header {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        text-align: center;
+    }
+
+    .settings-header-right {
+        justify-content: center;
+    }
+
     .settings-body {
         grid-template-columns: 1fr;
     }
-}
 
+    .radio-pill {
+        flex: 1;
+        justify-content: center;
+    }
+}

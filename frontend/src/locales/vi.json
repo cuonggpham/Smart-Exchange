@@ -292,6 +292,9 @@
             "dateToday": "Hôm nay",
             "dateYesterday": "Hôm qua",
             "noContext": "Không có bối cảnh chi tiết"
+        },
+        "attachment": {
+            "download": "Tải xuống"
         }
     },
     "common": {

@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { ProtectedRoute } from "../components/ProtectedRoute";
 import Sidebar from "../components/Sidebar";
+import BottomNav from "../components/BottomNav";
 
 export const ProtectedLayout = () => {
     return (
@@ -10,6 +11,7 @@ export const ProtectedLayout = () => {
                 <main className="main-content">
                     <Outlet />
                 </main>
+                <BottomNav />
             </div>
         </ProtectedRoute>
     );

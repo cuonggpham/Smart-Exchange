@@ -388,20 +388,23 @@
     .chat-sidebar {
         width: 100%;
         min-width: auto;
-        position: absolute;
-        left: 0;
-        top: 64px;
-        bottom: 0;
-        z-index: 100;
-        transform: translateX(-100%);
-        transition: transform var(--transition-normal);
+        border-right: none;
+        padding-top: 10px;
     }
 
-    .chat-sidebar.open {
-        transform: translateX(0);
+    .chat-body {
+        position: relative;
     }
 
     .bubble-row {
-        max-width: 85%;
+        max-width: 90%;
+    }
+
+    .chat-area {
+        padding: 16px;
+    }
+
+    .input-container {
+        padding: 12px 16px;
     }
 }

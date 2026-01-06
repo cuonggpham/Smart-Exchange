@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import "../styles/ChatPage.css";
 import ChatSideBar from "../components/chat/ChatSideBar";
@@ -11,11 +11,23 @@ export default function ChatPage() {
     const { user, loading } = useAuth();
     const [selectedChat, setSelectedChat] = useState<ChatSession | null>(null);
     const [receiver, setReceiver] = useState<ChatUser | null>(null);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
     const sidebarRefreshRef = useRef<(() => void) | null>(null);
+
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth <= 768);
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
     const handleSelectChat = (chat: ChatSession, partner: ChatUser) => {
         setSelectedChat(chat);
         setReceiver(partner);
+    };
+
+    const handleBackToList = () => {
+        setSelectedChat(null);
+        setReceiver(null);
     };
 
     const handleChatCreated = (newChatId: string) => {
@@ -38,21 +50,25 @@ export default function ChatPage() {
 
     return (
         <div className="chat-container">
-            <div className="chat-body">
-                <ChatSideBar
-                    onSelectChat={handleSelectChat}
-                    selectedChatId={selectedChat?.chatId}
-                    onRefreshRef={(fn) => {
-                        sidebarRefreshRef.current = fn;
-                    }}
-                />
+            <div className={`chat-body ${selectedChat ? "chat-selected" : ""}`}>
+                {(!isMobile || !selectedChat) && (
+                    <ChatSideBar
+                        onSelectChat={handleSelectChat}
+                        selectedChatId={selectedChat?.chatId}
+                        onRefreshRef={(fn) => {
+                            sidebarRefreshRef.current = fn;
+                        }}
+                    />
+                )}
+
                 {selectedChat && receiver ? (
                     <ChatArea
                         chatId={selectedChat.chatId}
                         receiver={receiver}
                         onChatCreated={handleChatCreated}
+                        onBack={isMobile ? handleBackToList : undefined}
                     />
-                ) : (
+                ) : !isMobile ? (
                     <div
                         className="chat-area-placeholder"
                         style={{
@@ -65,7 +81,7 @@ export default function ChatPage() {
                     >
                         {t('chat.placeholder.selectChat')}
                     </div>
-                )}
+                ) : null}
             </div>
         </div>
     );

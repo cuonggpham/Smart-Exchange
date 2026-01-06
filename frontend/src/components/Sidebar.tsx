@@ -36,7 +36,7 @@ const Sidebar: React.FC = () => {
     ];
 
     return (
-        <aside className={`sidebar ${isCollapsed ? "collapsed" : ""}`}>
+        <aside className={`sidebar hidden-mobile ${isCollapsed ? "collapsed" : ""}`}>
             {/* Logo / Brand */}
             <div
                 className="sidebar-brand"

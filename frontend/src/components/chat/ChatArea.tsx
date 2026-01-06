@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Settings } from "lucide-react";
+import { Settings, ArrowLeft } from "lucide-react";
 import MsgList from "./MsgList";
 import MessageInput from "./MessageInput";
 import type { MessageInputRef } from "./MessageInput";
@@ -35,9 +35,10 @@ interface Props {
     chatId: string;
     receiver: ChatUser;
     onChatCreated?: (newChatId: string) => void;
+    onBack?: () => void;
 }
 
-export default function ChatArea({ chatId, receiver, onChatCreated }: Props) {
+export default function ChatArea({ chatId, receiver, onChatCreated, onBack }: Props) {
     const { user } = useAuth();
     const { socket } = useSocket();
     const [messages, setMessages] = useState<DisplayMessage[]>([]);
@@ -290,7 +291,27 @@ export default function ChatArea({ chatId, receiver, onChatCreated }: Props) {
                 className="chat-header-info"
                 style={{ padding: "10px 20px", borderBottom: "1px solid #eee", fontWeight: "bold", display: "flex", justifyContent: "space-between", alignItems: "center" }}
             >
-                <span>{receiver.fullName}</span>
+                <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                    {onBack && (
+                        <button
+                            className="back-btn-mobile only-mobile"
+                            onClick={onBack}
+                            style={{
+                                background: "none",
+                                border: "none",
+                                cursor: "pointer",
+                                padding: "4px",
+                                display: "flex",
+                                alignItems: "center",
+                                color: "var(--text-color)"
+                            }}
+                            title="Back"
+                        >
+                            <ArrowLeft size={20} />
+                        </button>
+                    )}
+                    <span>{receiver.fullName}</span>
+                </div>
                 <button
                     className="settings-btn"
                     onClick={() => setIsSettingsOpen(true)}

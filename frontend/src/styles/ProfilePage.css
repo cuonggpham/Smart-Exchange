@@ -47,6 +47,7 @@
         opacity: 0;
         transform: translateY(10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -89,6 +90,7 @@
         opacity: 0;
         transform: translateX(-10px);
     }
+
     to {
         opacity: 1;
         transform: translateX(0);
@@ -268,6 +270,11 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+    .profile-page {
+        padding-bottom: 80px;
+        /* Space for bottom nav */
+    }
+
     .profile-container {
         padding: 1.5rem;
     }
@@ -286,7 +293,18 @@
         min-width: 100%;
     }
 
-    .form-textarea {
+    .form-textarea,
+    .form-input {
+        width: 100% !important;
+    }
+
+    .avatar-controls {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    .avatar-inputs {
         width: 100%;
     }
 }

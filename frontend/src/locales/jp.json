@@ -292,6 +292,9 @@
             "dateToday": "今日",
             "dateYesterday": "昨日",
             "noContext": "詳細な背景なし"
+        },
+        "attachment": {
+            "download": "ダウンロード"
         }
     },
     "common": {
