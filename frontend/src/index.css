@@ -1368,14 +1368,16 @@ button,
 
 .main-content {
     flex: 1;
-    margin-left: 240px;
+    margin-left: 280px;
+    /* 260px sidebar + 20px gap */
     min-height: 100vh;
     transition: margin-left var(--transition-normal);
 }
 
 .sidebar.collapsed~.main-content,
 .app-layout:has(.sidebar.collapsed) .main-content {
-    margin-left: 72px;
+    margin-left: 100px;
+    /* 80px collapsed sidebar + 20px gap */
 }
 
 /* Mobile Sidebar */
