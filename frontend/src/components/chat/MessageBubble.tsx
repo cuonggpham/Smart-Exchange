@@ -4,8 +4,7 @@ import i18n from "../../i18n";
 import { Languages, AlertTriangle, Lightbulb, ChevronDown, X, Sparkles, Loader2, File, Download } from "lucide-react";
 import type { DisplayMessage as Message } from "./ChatArea";
 import { chatService } from "../../services/chat.service";
-import avatarUser from "../../assets/avatar-user.png";
-import avatarOther from "../../assets/avatar-other.png";
+import UserAvatar from "../UserAvatar";
 import "./MessageBubble.css";
 
 interface Props {
@@ -86,7 +85,12 @@ export default function MessageBubble({ msg, onDelete }: Props) {
             onMouseEnter={() => setShowActions(true)}
             onMouseLeave={() => setShowActions(false)}
         >
-            <img src={isUser ? avatarUser : avatarOther} className="avatar" alt="avatar" />
+            <UserAvatar
+                src={msg.avatar}
+                name={msg.senderName}
+                size={36}
+                className="avatar"
+            />
             <div className="bubble-wrapper">
                 <div className="bubble">
                     {renderAttachment()}

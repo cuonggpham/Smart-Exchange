@@ -91,6 +91,7 @@ export class UsersService {
         if (updateUserDto.jobTitle !== undefined) data.jobTitle = updateUserDto.jobTitle;
         if (updateUserDto.language !== undefined) data.languageCode = updateUserDto.language;
         if (updateUserDto.themeMode !== undefined) data.themeMode = updateUserDto.themeMode;
+        if (updateUserDto.avatar !== undefined) data.avatar = updateUserDto.avatar;
 
         const updatedUser = await this.prisma.user.update({
             where: { userId: user_id },

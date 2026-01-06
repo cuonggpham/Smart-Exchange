@@ -20,6 +20,7 @@ model User {
 
   languageCode String @default("jp") @db.VarChar(3)
   themeMode    String @default("light") @db.VarChar(7)
+  avatar       String? @db.Text
 
   createdAt DateTime @default(now()) @db.Timestamp(0)
 

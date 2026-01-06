@@ -4,6 +4,7 @@ export interface ChatUser {
     userId: string;
     fullName: string;
     email: string;
+    avatar?: string;
 }
 
 export interface LastMessage {

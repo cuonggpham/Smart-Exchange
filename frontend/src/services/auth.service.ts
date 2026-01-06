@@ -20,10 +20,11 @@ export interface GoogleLoginRequest {
 // --- Response Types ---
 export interface UserInfo {
     id: string;
+    fullName: string;
     email: string;
     jobTitle: string | null;
     // Quan trọng: dùng để kiểm tra xem user đã xem hướng dẫn chưa
-    isTutorialCompleted: boolean; 
+    isTutorialCompleted: boolean;
     // Các trường tùy chọn (giữ lại từ bản cũ để tương thích nếu cần)
     languageCode?: string;
     themeMode?: string;

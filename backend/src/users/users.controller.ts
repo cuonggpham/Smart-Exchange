@@ -8,8 +8,14 @@ import {
     Post,
     Query,
     UseGuards,
+
     Request,
+    UseInterceptors,
+    UploadedFile,
+    BadRequestException,
 } from "@nestjs/common";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { StorageService } from "../common/storage/storage.service";
 import { JwtAuthGuard } from "../common/guards/jwt-auth.guard";
 import { OwnershipGuard } from "../common/guards/ownership.guard";
 import { CreateUserDto } from "./dto/create-user.dto";
@@ -19,7 +25,10 @@ import { UsersService } from "./users.service";
 
 @Controller("users")
 export class UsersController {
-    constructor(private readonly usersService: UsersService) { }
+    constructor(
+        private readonly usersService: UsersService,
+        private readonly storageService: StorageService
+    ) { }
 
     @UseGuards(JwtAuthGuard)
     @Get("me")
@@ -30,6 +39,17 @@ export class UsersController {
     @Post()
     create(@Body() createUserDto: CreateUserDto) {
         return this.usersService.create(createUserDto);
+    }
+
+    @Post('avatar')
+    @UseGuards(JwtAuthGuard)
+    @UseInterceptors(FileInterceptor('file'))
+    async uploadAvatar(@Request() req: any, @UploadedFile() file: Express.Multer.File) {
+        if (!file) throw new BadRequestException('File is required');
+        // Upload to S3 (folder 'avatars')
+        const uploadResult = await this.storageService.uploadFile(file, 'avatars');
+        // Update user profile with new Avatar URL
+        return this.usersService.update(req.user.userId, { avatar: uploadResult.url });
     }
 
     // --- 👇 QUAN TRỌNG: Phải đặt API này LÊN TRÊN các API có :id ---

@@ -9,8 +9,10 @@ import { authService, userService } from "../services/api";
 interface User {
     id: string;
     email: string;
+    fullName: string;
     jobTitle: string | null;
     isTutorialCompleted: boolean;
+    avatar?: string;
 }
 
 export type AppLanguage = "vi" | "jp";
@@ -95,8 +97,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 setUser({
                     id: currentUser.userId,
                     email: currentUser.email,
+                    fullName: currentUser.fullName || currentUser.email.split("@")[0],
                     jobTitle: currentUser.jobTitle,
                     isTutorialCompleted: currentUser.isTutorialCompleted ?? false,
+                    avatar: currentUser.avatar,
                 });
 
                 applySettings({
@@ -148,14 +152,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 language: normalizeLanguage(currentUser.languageCode),
                 theme: normalizeTheme(currentUser.themeMode),
             });
-        } catch {}
+        } catch { }
     };
 
     /* ===== LOGOUT ===== */
     const logout = async () => {
         try {
             await authService.logout();
-        } catch {}
+        } catch { }
 
         setUser(null);
         applySettings(DEFAULT_SETTINGS);

@@ -18,6 +18,7 @@ import {
   Users,
   MessageCircle,
 } from "lucide-react";
+import UserAvatar from "../../components/UserAvatar";
 
 // Phone mockup image - using placeholder
 const phoneHeroImg = "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=300&h=600&fit=crop";
@@ -263,7 +264,7 @@ export default function LandingPage() {
           {testimonials.map((testimonial, index) => (
             <div className="testimonial-card" key={index}>
               <div className="testimonial-avatar">
-                <img src={testimonial.avatar} alt={testimonial.name} />
+                <UserAvatar src={testimonial.avatar} name={testimonial.name} size={70} />
               </div>
               <div className="testimonial-content">
                 <h4>{testimonial.name}</h4>

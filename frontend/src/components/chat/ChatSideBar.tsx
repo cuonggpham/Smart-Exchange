@@ -6,6 +6,7 @@ import { chatService } from "../../services/chat.service";
 import type { ChatSession, ChatUser } from "../../services/chat.service";
 import { User, Users, Search } from "lucide-react";
 import { useDebounce } from "../../hooks/useDebounce";
+import UserAvatar from "../UserAvatar";
 
 interface Props {
     onSelectChat: (chat: ChatSession, partner: ChatUser) => void;
@@ -108,15 +109,7 @@ export default function ChatSideBar({ onSelectChat, selectedChatId, onRefreshRef
         }
     };
 
-    // Get initials for avatar placeholder
-    const getInitials = (name: string) => {
-        return name
-            .split(' ')
-            .map(n => n[0])
-            .join('')
-            .toUpperCase()
-            .slice(0, 2);
-    };
+
 
     return (
         <div className="chat-sidebar">
@@ -142,23 +135,13 @@ export default function ChatSideBar({ onSelectChat, selectedChatId, onRefreshRef
                                 tabIndex={0}
                                 onKeyDown={(e) => e.key === 'Enter' && onSelectChat(chat, partner)}
                             >
-                                <div
-                                    className="history-item-avatar"
-                                    style={{
-                                        width: 36,
-                                        height: 36,
-                                        borderRadius: '50%',
-                                        background: isSelected ? 'var(--primary-color)' : 'var(--bg-tertiary)',
-                                        color: isSelected ? '#fff' : 'var(--text-muted)',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        fontWeight: 600,
-                                        fontSize: 13,
-                                        flexShrink: 0,
-                                    }}
-                                >
-                                    {getInitials(partner.fullName || partner.email)}
+                                <div className="history-item-avatar">
+                                    <UserAvatar
+                                        src={partner.avatar}
+                                        name={partner.fullName || partner.email}
+                                        size={36}
+                                        style={{ fontSize: 13 }}
+                                    />
                                 </div>
                                 <div className="history-item-info">
                                     <div className="history-item-name">{partner.fullName || partner.email}</div>
@@ -244,22 +227,13 @@ export default function ChatSideBar({ onSelectChat, selectedChatId, onRefreshRef
                             tabIndex={0}
                             onKeyDown={(e) => e.key === 'Enter' && handleUserClick(u)}
                         >
-                            <div
-                                style={{
-                                    width: 36,
-                                    height: 36,
-                                    borderRadius: '50%',
-                                    background: 'var(--secondary-light)',
-                                    color: 'var(--secondary-color)',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    fontWeight: 600,
-                                    fontSize: 13,
-                                    flexShrink: 0,
-                                }}
-                            >
-                                {getInitials(u.fullName || u.email)}
+                            <div className="history-item-avatar">
+                                <UserAvatar
+                                    src={u.avatar}
+                                    name={u.fullName || u.email}
+                                    size={36}
+                                    style={{ fontSize: 13 }}
+                                />
                             </div>
                             <div className="history-item-info">
                                 <div className="history-item-name">{u.fullName || u.email}</div>

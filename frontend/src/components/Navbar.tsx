@@ -11,6 +11,7 @@ import {
     X,
     ChevronDown,
 } from "lucide-react";
+import UserAvatar from "./UserAvatar";
 
 const Navbar: React.FC = () => {
     const { t } = useTranslation();
@@ -84,10 +85,14 @@ const Navbar: React.FC = () => {
                         aria-haspopup="true"
                     >
                         <div className="navbar-avatar">
-                            <User size={18} />
+                            <UserAvatar
+                                src={user?.avatar}
+                                name={user?.fullName || user?.email || "User"}
+                                size={32}
+                            />
                         </div>
                         <span className="navbar-user-name">
-                            {user?.email?.split("@")[0] || "User"}
+                            {user?.fullName || user?.email?.split("@")[0] || "User"}
                         </span>
                         <ChevronDown
                             size={16}

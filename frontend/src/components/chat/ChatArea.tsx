@@ -18,6 +18,8 @@ import "../../styles/ChatPage.css";
 export interface DisplayMessage {
     id: string;
     sender: "user" | "other";
+    senderName?: string;
+    avatar?: string;
     text: string | null;
     timestamp: string;
     aiAnalysis?: {
@@ -104,6 +106,8 @@ export default function ChatArea({ chatId, receiver, onChatCreated, onBack }: Pr
                         return {
                             id: m.messageId,
                             sender: m.senderId === user?.id ? "user" : "other",
+                            senderName: m.senderId === user?.id ? (user?.fullName || user?.email) : (receiver.fullName || receiver.email),
+                            avatar: m.senderId === user?.id ? user?.avatar : receiver.avatar,
                             text: m.content,
                             timestamp: new Date(m.createdAt).toLocaleTimeString([], {
                                 hour: "2-digit",
@@ -144,6 +148,8 @@ export default function ChatArea({ chatId, receiver, onChatCreated, onBack }: Pr
                 const formattedMsg: DisplayMessage = {
                     id: newMsg.messageId,
                     sender: newMsg.senderId === user?.id ? "user" : "other",
+                    senderName: newMsg.senderId === user?.id ? (user?.fullName || user?.email) : (receiver.fullName || receiver.email),
+                    avatar: newMsg.senderId === user?.id ? user?.avatar : receiver.avatar,
                     text: newMsg.content,
                     attachmentUrl: newMsg.attachmentUrl,
                     attachmentName: newMsg.attachmentName,

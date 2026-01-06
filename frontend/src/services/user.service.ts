@@ -15,12 +15,12 @@ export interface CurrentUserResponse extends UserInfo {
 export interface UpdateSettingsDto {
     language?: string;
     themeMode?: string;
-}  
-    
+}
+
 export interface UserProfile extends UserInfo {
-  name?: string;
-  avatar?: string;
-  isTutorialCompleted: boolean; // <-- Trường quan trọng cho tính năng Tutorial
+    name?: string;
+    avatar?: string;
+    isTutorialCompleted: boolean;
 }
 
 class UserService {
@@ -43,11 +43,18 @@ class UserService {
         return axiosInstance.delete(`/users/${userId}`);
     }
 
-    // NOTE: Backend hiện không có GET /users/profile, dùng getCurrentUser() (/users/me) thay thế.
+    // Upload avatar
+    async uploadAvatar(file: File): Promise<UserProfile> {
+        const formData = new FormData();
+        formData.append("file", file);
+        return axiosInstance.post("/users/avatar", formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
+    }
 
-    // NOTE: Backend hiện không có PATCH /users/profile. Nếu cần cập nhật user, dùng updateUser(userId, data) (PATCH /users/:id).
-
-  // Đánh dấu đã hoàn thành Tutorial
+    // Đánh dấu đã hoàn thành Tutorial
     async completeTutorial(): Promise<UserProfile> {
         return axiosInstance.patch("/users/tutorial-completion");
     }

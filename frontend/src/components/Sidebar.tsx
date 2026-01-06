@@ -13,6 +13,7 @@ import {
     History,
 } from "lucide-react";
 import LanguageSwitcher from "./LanguageSwitcher";
+import UserAvatar from "./UserAvatar";
 
 const Sidebar: React.FC = () => {
     const { t } = useTranslation();
@@ -79,11 +80,15 @@ const Sidebar: React.FC = () => {
             <div className="sidebar-footer">
                 <div className="sidebar-user">
                     <div className="sidebar-avatar">
-                        <User size={18} />
+                        <UserAvatar
+                            src={user?.avatar}
+                            name={user?.fullName || user?.email || "User"}
+                            size={32}
+                        />
                     </div>
                     {!isCollapsed && (
                         <span className="sidebar-user-name">
-                            {user?.email?.split("@")[0] || "User"}
+                            {user?.fullName || user?.email?.split("@")[0] || "User"}
                         </span>
                     )}
                 </div>

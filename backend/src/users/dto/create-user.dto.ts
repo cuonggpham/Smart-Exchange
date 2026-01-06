@@ -29,4 +29,8 @@ export class CreateUserDto {
     @IsOptional()
     @IsBoolean()
     isTutorialCompleted?: boolean;
+
+    @IsOptional()
+    @IsString()
+    avatar?: string;
 }
