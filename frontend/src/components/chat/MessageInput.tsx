@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 interface Props {
     onSend: (text: string) => void;
     onAICheck?: (text: string) => void;
+    cultureCheckEnabled?: boolean;
 }
 
 export interface MessageInputRef {
@@ -12,7 +13,7 @@ export interface MessageInputRef {
     focusInput: () => void;
 }
 
-const MessageInput = forwardRef<MessageInputRef, Props>(({ onSend, onAICheck }, ref) => {
+const MessageInput = forwardRef<MessageInputRef, Props>(({ onSend, onAICheck, cultureCheckEnabled = true }, ref) => {
     const { t } = useTranslation();
     const editorRef = useRef<HTMLDivElement>(null);
 
@@ -32,16 +33,18 @@ const MessageInput = forwardRef<MessageInputRef, Props>(({ onSend, onAICheck }, 
         editorRef.current?.focus();
     }, []);
 
-    const handleAICheck = () => {
+    const handleSubmit = () => {
         const div = editorRef.current;
         if (!div) return;
 
         const text = div.innerText.trim();
         if (!text) return;
 
-        if (onAICheck) {
+        // If culture check is enabled and onAICheck is provided, use AI check
+        if (cultureCheckEnabled && onAICheck) {
             onAICheck(text);
         } else {
+            // Otherwise, send directly
             onSend(text);
             div.innerHTML = "";
             div.focus();
@@ -51,9 +54,10 @@ const MessageInput = forwardRef<MessageInputRef, Props>(({ onSend, onAICheck }, 
     const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
         if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
-            handleAICheck();
+            handleSubmit();
         }
     };
+
 
     return (
         <div className="input-container">
@@ -65,8 +69,8 @@ const MessageInput = forwardRef<MessageInputRef, Props>(({ onSend, onAICheck }, 
                 onKeyDown={onKeyDown}
             />
 
-            <button className="send-button" onClick={handleAICheck}>
-                {t('chat.input.checkButton')}
+            <button className="send-button" onClick={handleSubmit}>
+                {cultureCheckEnabled ? t('chat.input.checkButton') : t('chat.input.sendButton')}
             </button>
         </div>
     );
