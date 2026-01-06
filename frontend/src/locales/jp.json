@@ -47,6 +47,8 @@
     },
     "profile": {
         "title": "プロフィール",
+        "fullNameLabel": "氏名",
+        "fullNamePlaceholder": "お名前を入力してください",
         "emailLabel": "電子メール",
         "careerLabel": "自分のキャリア",
         "careerPlaceholder": "キャリア情報を入力してください...",
@@ -63,7 +65,12 @@
         "avatarEmpty": "未設定",
         "avatarUrlPlaceholder": "画像URLを貼り付ける、またはファイルを選択",
         "errorAvatarInvalid": "画像ファイルのみ対応しています。",
-        "errorAvatarReadFailed": "画像の読み込みに失敗しました。"
+        "errorAvatarReadFailed": "画像の読み込みに失敗しました。",
+        "avatarHint": "クリックしてアップロード",
+        "accountSection": "アカウント",
+        "careerSection": "キャリア",
+        "saveChanges": "変更を保存",
+        "saving": "保存中..."
     },
     "lang": {
         "language": "言語",

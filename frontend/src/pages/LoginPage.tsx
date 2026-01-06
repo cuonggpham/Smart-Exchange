@@ -11,7 +11,7 @@ import { useAuth } from "../contexts/AuthContext";
 const LoginPage: React.FC = () => {
     const { t, i18n } = useTranslation();
     const navigate = useNavigate();
-    const { setUser, applySettings } = useAuth();
+    const { setUser, applySettings, refreshUser } = useAuth();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -37,6 +37,7 @@ const LoginPage: React.FC = () => {
                 theme: result.settings.theme as "light" | "dark",
             });
             setUser(result.user);
+            await refreshUser();
             navigate("/home");
         } catch (err) {
             console.error("Login error:", err);
@@ -68,6 +69,7 @@ const LoginPage: React.FC = () => {
                 theme: result.settings.theme as "light" | "dark",
             });
             setUser(result.user);
+            await refreshUser();
             navigate("/home");
         } catch (err) {
             console.error("Google login error:", err);

@@ -3,7 +3,7 @@
     position: absolute;
     top: 0;
     right: 0;
-    width: 320px;
+    width: 360px;
     height: 100%;
     background: var(--bg-secondary);
     border-left: 1px solid var(--border-color);
@@ -24,14 +24,14 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px 20px;
+    padding: 20px 24px;
     border-bottom: 1px solid var(--border-color);
     background: var(--bg-secondary);
 }
 
 .settings-sidebar-title {
     font-family: var(--font-heading);
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 600;
     color: var(--text-color);
     margin: 0;
@@ -41,8 +41,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
     border: none;
     background: transparent;
     color: var(--text-muted);
@@ -60,11 +60,11 @@
 .settings-sidebar-content {
     flex: 1;
     overflow-y: auto;
-    padding: 16px;
+    padding: 20px;
 }
 
 .settings-section {
-    margin-bottom: 20px;
+    margin-bottom: 24px;
 }
 
 /* Toggle Row */
@@ -72,8 +72,8 @@
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 12px;
-    padding: 12px;
+    gap: 16px;
+    padding: 16px;
     background: var(--bg-color);
     border-radius: var(--radius-md);
     border: 1px solid var(--border-color);
@@ -82,18 +82,18 @@
 .settings-toggle-info {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 6px;
     flex: 1;
 }
 
 .settings-toggle-label {
-    font-size: 14px;
-    font-weight: 500;
+    font-size: 16px;
+    font-weight: 600;
     color: var(--text-color);
 }
 
 .settings-toggle-desc {
-    font-size: 12px;
+    font-size: 14px;
     color: var(--text-muted);
     line-height: 1.4;
 }
@@ -102,8 +102,8 @@
 .toggle-switch {
     position: relative;
     display: inline-block;
-    width: 44px;
-    height: 24px;
+    width: 56px;
+    height: 30px;
     flex-shrink: 0;
 }
 
@@ -122,14 +122,14 @@
     bottom: 0;
     background-color: var(--text-muted);
     transition: 0.3s;
-    border-radius: 24px;
+    border-radius: 30px;
 }
 
 .toggle-slider:before {
     position: absolute;
     content: "";
-    height: 18px;
-    width: 18px;
+    height: 24px;
+    width: 24px;
     left: 3px;
     bottom: 3px;
     background-color: white;
@@ -143,7 +143,7 @@
 }
 
 .toggle-switch input:checked+.toggle-slider:before {
-    transform: translateX(20px);
+    transform: translateX(26px);
 }
 
 /* Settings button in header */
@@ -151,8 +151,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
+    width: 44px;
+    height: 44px;
     border: none;
     background: transparent;
     color: var(--text-muted);

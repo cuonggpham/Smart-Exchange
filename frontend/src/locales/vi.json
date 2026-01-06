@@ -47,6 +47,8 @@
     },
     "profile": {
         "title": "Hồ sơ cá nhân",
+        "fullNameLabel": "Họ và tên",
+        "fullNamePlaceholder": "Nhập họ và tên của bạn",
         "emailLabel": "Địa chỉ Email",
         "careerLabel": "Sự nghiệp của tôi",
         "careerPlaceholder": "Vui lòng nhập thông tin về sự nghiệp...",
@@ -63,7 +65,12 @@
         "avatarEmpty": "Chưa có",
         "avatarUrlPlaceholder": "Dán URL ảnh hoặc chọn file",
         "errorAvatarInvalid": "Chỉ chấp nhận file hình ảnh.",
-        "errorAvatarReadFailed": "Không đọc được file ảnh."
+        "errorAvatarReadFailed": "Không đọc được file ảnh.",
+        "avatarHint": "Nhấp để tải ảnh lên",
+        "accountSection": "Tài khoản",
+        "careerSection": "Nghề nghiệp",
+        "saveChanges": "Lưu thay đổi",
+        "saving": "Đang lưu..."
     },
     "lang": {
         "language": "Ngôn ngữ",

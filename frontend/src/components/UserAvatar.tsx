@@ -5,6 +5,7 @@ interface UserAvatarProps {
     src?: string | null;
     name?: string;
     size?: number;
+    borderRadius?: string | number;
     className?: string;
     style?: React.CSSProperties;
 }
@@ -13,6 +14,7 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
     src,
     name = "User",
     size = 40,
+    borderRadius = '50%',
     className = "",
     style = {}
 }) => {
@@ -29,7 +31,7 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
     const containerStyle: React.CSSProperties = {
         width: size,
         height: size,
-        borderRadius: '50%',
+        borderRadius: borderRadius,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',

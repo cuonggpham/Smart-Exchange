@@ -1126,10 +1126,10 @@ button,
 /* Navigation */
 .sidebar-nav {
     flex: 1;
-    padding: 20px 14px;
+    padding: 24px 14px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 10px;
     overflow-y: auto;
 }
 
@@ -1137,10 +1137,10 @@ button,
     position: relative;
     display: flex;
     align-items: center;
-    gap: 14px;
-    padding: 13px 16px;
-    border-radius: 10px;
-    font-size: 14px;
+    gap: 16px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    font-size: 15px;
     font-weight: 500;
     color: var(--text-secondary);
     text-decoration: none;
@@ -1168,7 +1168,7 @@ button,
 
 .sidebar.collapsed .sidebar-link {
     justify-content: center;
-    padding: 13px;
+    padding: 14px;
 }
 
 .sidebar.collapsed .sidebar-link span {
@@ -1250,17 +1250,18 @@ button,
 }
 
 .sidebar-avatar {
-    width: 36px;
-    height: 36px;
-    min-width: 36px;
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
     background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
     color: white;
-    border-radius: 50%;
+    border-radius: var(--radius-md);
     display: flex;
     align-items: center;
     justify-content: center;
     box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25);
     transition: all 0.3s ease;
+    overflow: hidden;
 }
 
 .sidebar-user:hover .sidebar-avatar {
@@ -1357,7 +1358,173 @@ button,
     aspect-ratio: 1 / 1;
 }
 
+/* Avatar Dropdown Menu */
+.sidebar-avatar-wrapper {
+    position: relative;
+}
 
+.sidebar-user.clickable {
+    cursor: pointer;
+}
+
+.sidebar-user.clickable:hover {
+    background: var(--bg-tertiary);
+}
+
+.avatar-dropdown-menu {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    min-width: 220px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.15),
+        0 6px 10px -5px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 8px;
+    z-index: 1000;
+    animation: avatarMenuSlideUp 200ms ease-out;
+}
+
+.avatar-dropdown-menu.collapsed-position {
+    left: 100%;
+    right: auto;
+    bottom: 0;
+    margin-left: 8px;
+}
+
+@keyframes avatarMenuSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+:root[data-theme="dark"] .avatar-dropdown-menu {
+    background: rgba(30, 41, 59, 0.95);
+    border-color: var(--border-color);
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.4),
+        0 6px 10px -5px rgba(0, 0, 0, 0.3);
+}
+
+.avatar-menu-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px;
+    border-radius: var(--radius-md);
+    background: var(--bg-tertiary);
+    margin-bottom: 6px;
+}
+
+.avatar-menu-user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    overflow: hidden;
+}
+
+.avatar-menu-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.avatar-menu-email {
+    font-size: 13px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.avatar-menu-divider {
+    height: 1px;
+    background: var(--border-color);
+    margin: 8px 0;
+}
+
+.avatar-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    padding: 12px 14px;
+    border: none;
+    background: transparent;
+    color: var(--text-color);
+    font-size: 15px;
+    font-weight: 500;
+    font-family: var(--font-body);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.avatar-menu-item:hover {
+    background: var(--bg-tertiary);
+}
+
+.avatar-menu-item:hover svg {
+    color: var(--primary-color);
+}
+
+.avatar-menu-item svg {
+    color: var(--text-secondary);
+    transition: color var(--transition-fast);
+}
+
+.avatar-menu-item.logout {
+    color: var(--danger-color);
+}
+
+.avatar-menu-item.logout svg {
+    color: var(--danger-color);
+}
+
+.avatar-menu-item.logout:hover {
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.avatar-menu-item:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Language Switcher in Avatar Menu */
+.avatar-menu-lang-section {
+    padding: 8px 4px;
+}
+
+.avatar-menu-lang-section .lang-switch-wrapper {
+    width: 100%;
+}
+
+.avatar-menu-lang-section .lang-switch-header {
+    padding: 4px 8px 8px;
+}
+
+.avatar-menu-lang-section .lang-switch {
+    width: 100%;
+}
+
+.avatar-menu-lang-section .lang-btn {
+    flex: 1;
+}
+
+.avatar-menu-lang-section .lang-switch-slider {
+    width: calc(50% - 5px);
+}
 
 
 

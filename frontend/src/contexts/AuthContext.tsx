@@ -34,6 +34,7 @@ interface AuthContextType {
 
     updateSettings: (partial: Partial<SettingsState>) => Promise<void>;
     refreshSettingsFromServer: () => Promise<void>;
+    refreshUser: () => Promise<void>;
     logout: () => Promise<void>;
 }
 
@@ -155,6 +156,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         } catch { }
     };
 
+    /* ===== REFRESH USER ===== */
+    const refreshUser = async () => {
+        try {
+            const currentUser = await userService.getCurrentUser();
+            setUser({
+                id: currentUser.userId,
+                email: currentUser.email,
+                fullName: currentUser.fullName || currentUser.email.split("@")[0],
+                jobTitle: currentUser.jobTitle,
+                isTutorialCompleted: currentUser.isTutorialCompleted ?? false,
+                avatar: currentUser.avatar,
+            });
+        } catch { }
+    };
+
     /* ===== LOGOUT ===== */
     const logout = async () => {
         try {
@@ -177,6 +193,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 applySettings, // ✅ LOGIN / LANGUAGE SWITCHER DÙNG
                 updateSettings,
                 refreshSettingsFromServer,
+                refreshUser,
                 logout,
             }}
         >

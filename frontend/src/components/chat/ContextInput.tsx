@@ -120,15 +120,15 @@ export default function ContextInput({ chatId, onContextChange }: Props) {
     return (
         <div className={`context-input-container ${isExpanded ? "expanded" : ""}`}>
             <div className="context-header" onClick={() => setIsExpanded(!isExpanded)}>
-                <FileText size={16} className="context-icon" />
+                <FileText size={20} className="context-icon" />
                 <span className="context-title">{t("chat.context.title")}</span>
                 {saveStatus && (
                     <span className={`save-status ${saveStatus.className}`}>
-                        <saveStatus.icon size={12} className={saveStatus.className === "saving" ? "spin" : ""} />
+                        <saveStatus.icon size={14} className={saveStatus.className === "saving" ? "spin" : ""} />
                         {saveStatus.text}
                     </span>
                 )}
-                <ChevronDown size={14} className={`expand-icon ${isExpanded ? "expanded" : ""}`} />
+                <ChevronDown size={18} className={`expand-icon ${isExpanded ? "expanded" : ""}`} />
             </div>
 
             {isExpanded && (
@@ -149,7 +149,7 @@ export default function ContextInput({ chatId, onContextChange }: Props) {
                             className="context-btn template-btn"
                             onClick={() => setShowTemplates(!showTemplates)}
                         >
-                            <ClipboardList size={14} />
+                            <ClipboardList size={18} />
                             {t("chat.context.selectTemplate")}
                         </button>
                         <button
@@ -158,7 +158,7 @@ export default function ContextInput({ chatId, onContextChange }: Props) {
                             disabled={!context.trim()}
                             title={t("chat.context.saveAsTemplate")}
                         >
-                            <Save size={14} />
+                            <Save size={18} />
                             {t("chat.context.saveAsTemplate")}
                         </button>
                     </div>
@@ -203,7 +203,7 @@ export default function ContextInput({ chatId, onContextChange }: Props) {
                                                 handleDeleteTemplate(template.templateId);
                                             }}
                                         >
-                                            <X size={14} />
+                                            <X size={18} />
                                         </button>
                                     </div>
                                 ))

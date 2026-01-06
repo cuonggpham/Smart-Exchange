@@ -88,6 +88,7 @@ export class UsersService {
         if (updateUserDto.email) data.email = updateUserDto.email;
         if (updateUserDto.password)
             data.password = await BcryptSecurity.hashPassword(updateUserDto.password);
+        if (updateUserDto.fullName !== undefined) data.fullName = updateUserDto.fullName;
         if (updateUserDto.jobTitle !== undefined) data.jobTitle = updateUserDto.jobTitle;
         if (updateUserDto.language !== undefined) data.languageCode = updateUserDto.language;
         if (updateUserDto.themeMode !== undefined) data.themeMode = updateUserDto.themeMode;
@@ -152,15 +153,13 @@ export class UsersService {
             where: { email: payload.email },
         });
 
+        // Nếu user đã tồn tại, không ghi đè fullName và avatar đã được cập nhật
+        // Chỉ trả về user hiện có
         if (existingUser) {
-            return this.prisma.user.update({
-                where: { userId: existingUser.userId },
-                data: {
-                    fullName: payload.fullName,
-                },
-            });
+            return existingUser;
         }
 
+        // Tạo user mới với thông tin từ Google
         const randomPassword = crypto.randomBytes(16).toString("hex");
         const hashedPassword = await BcryptSecurity.hashPassword(randomPassword);
 

@@ -25,7 +25,7 @@ export default function ChatSettingsSidebar({
             <div className="settings-sidebar-header">
                 <h3 className="settings-sidebar-title">{t("chat.settings.title")}</h3>
                 <button className="settings-close-btn" onClick={onClose}>
-                    <X size={20} />
+                    <X size={24} />
                 </button>
             </div>
 
