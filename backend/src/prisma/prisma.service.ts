@@ -5,7 +5,13 @@ import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
     constructor() {
-        const adapter = new PrismaMariaDb(process.env.DATABASE_URL!);
+        // Fix: The mariadb driver requires the protocol to be mariadb://
+        let connectionUrl = process.env.DATABASE_URL!;
+        if (connectionUrl.startsWith("mysql://")) {
+            connectionUrl = connectionUrl.replace("mysql://", "mariadb://");
+        }
+
+        const adapter = new PrismaMariaDb(connectionUrl);
         super({ adapter });
     }
 

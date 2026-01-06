@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from "react";
+import { Settings } from "lucide-react";
 import MsgList from "./MsgList";
 import MessageInput from "./MessageInput";
 import type { MessageInputRef } from "./MessageInput";
 import AICultureCheckModal from "./AICultureCheckModal";
-import ContextInput from "./ContextInput";
+import ChatSettingsSidebar from "./ChatSettingsSidebar";
 import { useSocket } from "../../contexts/SocketContext";
 import { useAuth } from "../../contexts/AuthContext";
 import { chatService } from "../../services/chat.service";
@@ -50,7 +51,9 @@ export default function ChatArea({ chatId, receiver, onChatCreated }: Props) {
     // Conversation summary state - persists across AI checks
     const [conversationSummary, setConversationSummary] = useState<ConversationSummary | null>(null);
 
-    // Context description for AI analysis
+    // Settings sidebar states
+    const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+    const [cultureCheckEnabled, setCultureCheckEnabled] = useState(true);
 
 
     useEffect(() => {
@@ -251,23 +254,41 @@ export default function ChatArea({ chatId, receiver, onChatCreated }: Props) {
     };
 
     return (
-        <div className="chat-area-wrapper">
+        <div className="chat-area-wrapper" style={{ position: "relative" }}>
             <div
                 className="chat-header-info"
-                style={{ padding: "10px 20px", borderBottom: "1px solid #eee", fontWeight: "bold" }}
+                style={{ padding: "10px 20px", borderBottom: "1px solid #eee", fontWeight: "bold", display: "flex", justifyContent: "space-between", alignItems: "center" }}
             >
-                Đang chat với: {receiver.fullName}
+                <span>{receiver.fullName}</span>
+                <button
+                    className="settings-btn"
+                    onClick={() => setIsSettingsOpen(true)}
+                    title="Settings"
+                >
+                    <Settings size={20} />
+                </button>
             </div>
-            <ContextInput
-                chatId={chatId}
-            />
             <div className="chat-area" ref={listRef}>
                 <MsgList
                     messages={messages}
                     onDeleteMessage={handleDeleteMessage}
                 />
             </div>
-            <MessageInput ref={messageInputRef} onSend={handleSend} onAICheck={handleAICheck} />
+            <MessageInput
+                ref={messageInputRef}
+                onSend={handleSend}
+                onAICheck={handleAICheck}
+                cultureCheckEnabled={cultureCheckEnabled}
+            />
+
+            {/* Settings Sidebar */}
+            <ChatSettingsSidebar
+                chatId={chatId}
+                isOpen={isSettingsOpen}
+                onClose={() => setIsSettingsOpen(false)}
+                cultureCheckEnabled={cultureCheckEnabled}
+                onCultureCheckChange={setCultureCheckEnabled}
+            />
 
             {/* AI Culture Check Modal */}
             <AICultureCheckModal

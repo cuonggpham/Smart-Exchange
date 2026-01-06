@@ -5,7 +5,6 @@ import LanguageSwitcher from '../../components/LanguageSwitcher';
 import { userService } from '../../services/user.service';
 import { useAuth } from '../../contexts/AuthContext';
 import './TutorialPage.css';
-import { MessageCircle, Bot, Sparkles } from 'lucide-react';
 
 const TutorialPage: React.FC = () => {
   const { t } = useTranslation();
@@ -18,19 +17,37 @@ const TutorialPage: React.FC = () => {
       id: "01",
       titleKey: "tutorial.steps.step1.title",
       descKey: "tutorial.steps.step1.desc",
-      icon: <MessageCircle size={32} />
+      imageUrl: "https://i.ibb.co/TMpLwhw3/image.png"
     },
     {
       id: "02",
       titleKey: "tutorial.steps.step2.title",
       descKey: "tutorial.steps.step2.desc",
-      icon: <Bot size={32} />
+      imageUrl: "https://i.ibb.co/QjDjg07s/image.png"
     },
     {
       id: "03",
       titleKey: "tutorial.steps.step3.title",
       descKey: "tutorial.steps.step3.desc",
-      icon: <Sparkles size={32} />
+      imageUrl: "https://i.ibb.co/TqckgYcZ/image.png"
+    },
+    {
+      id: "04",
+      titleKey: "tutorial.steps.step4.title",
+      descKey: "tutorial.steps.step4.desc",
+      imageUrl: "https://i.ibb.co/7dL4SQTc/image.png"
+    },
+    {
+      id: "05",
+      titleKey: "tutorial.steps.step5.title",
+      descKey: "tutorial.steps.step5.desc",
+      imageUrl: "https://i.ibb.co/GQgM7kc3/image.png"
+    },
+    {
+      id: "06",
+      titleKey: "tutorial.steps.step6.title",
+      descKey: "tutorial.steps.step6.desc",
+      imageUrl: "https://i.ibb.co/hxZrpWMf/image.png"
     }
   ];
 
@@ -96,13 +113,9 @@ const TutorialPage: React.FC = () => {
                 </div>
                 <h3 className="feature-title">{t(item.titleKey)}</h3>
                 <p className="feature-desc">{t(item.descKey)}</p>
-                <p className="placeholder-text">
-                  xxxxxxxxxxxxxxxxxxxxxxxxxxx<br />xxxxxxxxxxxxxxxxxxxxxxxxxxx
-                </p>
               </div>
               <div className="feature-image-box">
-                <div className="feature-icon">{item.icon}</div>
-                <p className="img-caption">Image Placeholder</p>
+                <img src={item.imageUrl} alt={`Step ${item.id}`} className="feature-image" />
               </div>
             </div>
           ))}

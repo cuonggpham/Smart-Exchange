@@ -141,7 +141,7 @@
         }
     },
     "tutorial": {
-        "pageTitle": "HƯỚNG DẪN SỬ DỤNG",
+        "pageTitle": "HƯỎNG DẪN SỬ DỤNG",
         "topBannerBtn": "Bạn đã hiểu hết chưa?",
         "stepBadge": "BƯỚC",
         "cta": {
@@ -157,12 +157,24 @@
                 "desc": "Nhập nội dung bạn muốn gửi bằng tiếng Việt hoặc tiếng Nhật vào khung chat. Hệ thống sẽ tiếp nhận thông tin đầu vào của bạn ngay lập tức."
             },
             "step2": {
-                "title": "AI Phân tích",
-                "desc": "Hệ thống AI sẽ tự động kiểm tra ngữ pháp, văn phong và đề xuất chỉnh sửa để câu văn trở nên tự nhiên, chuyên nghiệp nhất."
+                "title": "Mở Cài đặt",
+                "desc": "Nhấn vào biểu tượng ⚙️ ở góc trên bên phải để mở sidebar cài đặt cuộc trò chuyện."
             },
             "step3": {
+                "title": "Thiết lập bối cảnh",
+                "desc": "Mô tả bối cảnh cuộc trò chuyện (ví dụ: 'Đối phương là sếp, đang giận vì tôi nộp báo cáo muộn'). Điều này giúp AI phân tích chính xác hơn."
+            },
+            "step4": {
+                "title": "Bật/Tắt kiểm tra văn hóa",
+                "desc": "Sử dụng công tắc để bật/tắt tính năng kiểm tra văn hóa AI. Khi bật, tin nhắn sẽ được AI kiểm tra trước khi gửi."
+            },
+            "step5": {
+                "title": "AI Phân tích",
+                "desc": "Khi bật kiểm tra văn hóa, hệ thống AI sẽ kiểm tra ngữ pháp, văn phong và đề xuất chỉnh sửa để câu văn phù hợp với văn hóa giao tiếp."
+            },
+            "step6": {
                 "title": "Chọn & Gửi",
-                "desc": "Xem xét các gợi ý từ AI, lựa chọn câu trả lời phù hợp nhất với ngữ cảnh và gửi tin nhắn đi cho đối tác."
+                "desc": "Xem xét các gợi ý từ AI, lựa chọn câu trả lời phù hợp nhất với ngữ cảnh hoặc gửi bản gốc nếu đã hài lòng."
             }
         }
     },
@@ -243,6 +255,11 @@
             "realIntent": "Ý định thực sự",
             "culturalContext": "Bối cảnh văn hóa",
             "analyze": "Phân tích tin nhắn"
+        },
+        "settings": {
+            "title": "Cài đặt cuộc trò chuyện",
+            "cultureCheck": "Kiểm tra văn hóa",
+            "cultureCheckDesc": "Bật/tắt kiểm tra văn hóa AI trước khi gửi tin nhắn"
         }
     },
     "common": {
