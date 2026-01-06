@@ -65,6 +65,9 @@
         "errorAvatarReadFailed": "Không đọc được file ảnh."
     },
     "lang": {
+        "language": "Ngôn ngữ",
+        "vietnamese": "Tiếng Việt",
+        "japanese": "Tiếng Nhật",
         "ariaVi": "Chuyển sang tiếng Việt",
         "ariaJp": "Chuyển sang tiếng Nhật"
     },
