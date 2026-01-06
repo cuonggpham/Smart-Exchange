@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../contexts/AuthContext";
+import { useToast } from "../contexts/ToastContext";
 import { userService } from "~/services/api";
 import "../styles/ProfilePage.css";
 import UserAvatar from "../components/UserAvatar";
@@ -17,6 +18,7 @@ interface ProfileFormData {
 const ProfilePage: React.FC = () => {
     const { t } = useTranslation();
     const { user, refreshUser } = useAuth();
+    const { showToast } = useToast();
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const [formData, setFormData] = useState<ProfileFormData>({
@@ -28,8 +30,6 @@ const ProfilePage: React.FC = () => {
     });
 
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    const [success, setSuccess] = useState(false);
 
     useEffect(() => {
         if (!user) return;
@@ -57,12 +57,11 @@ const ProfilePage: React.FC = () => {
             ...prev,
             [name]: value,
         }));
-        setSuccess(false);
     };
 
     const handleAvatarFileChange = (file: File) => {
         if (!file.type.startsWith("image/")) {
-            setError(t("profile.errorAvatarInvalid"));
+            showToast(t("profile.errorAvatarInvalid"), "error");
             return;
         }
 
@@ -72,7 +71,6 @@ const ProfilePage: React.FC = () => {
             avatar: url,
             avatarFile: file
         }));
-        setSuccess(false);
     };
 
     const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -88,11 +86,8 @@ const ProfilePage: React.FC = () => {
     };
 
     const handleSaveAll = async () => {
-        setError(null);
-        setSuccess(false);
-
         if (!user) {
-            setError(t("profile.errorNotAuthenticated"));
+            showToast(t("profile.errorNotAuthenticated"), "error");
             return;
         }
 
@@ -121,11 +116,10 @@ const ProfilePage: React.FC = () => {
             // Refresh user data from server
             await refreshUser();
 
-            setSuccess(true);
-            setTimeout(() => setSuccess(false), 3000);
+            showToast(t("profile.successMessage"), "success");
         } catch (err: unknown) {
             const message = err instanceof Error ? err.message : "Update failed";
-            setError(message);
+            showToast(message, "error");
         } finally {
             setLoading(false);
         }
@@ -135,32 +129,12 @@ const ProfilePage: React.FC = () => {
         <div className="profile-page">
             <main className="profile-main">
                 <div className="profile-container">
-                    {/* Error/Success Messages */}
-                    {error && (
-                        <div className="profile-message error">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <circle cx="12" cy="12" r="10" />
-                                <line x1="12" y1="8" x2="12" y2="12" />
-                                <line x1="12" y1="16" x2="12.01" y2="16" />
-                            </svg>
-                            {error}
-                        </div>
-                    )}
-                    {success && (
-                        <div className="profile-message success">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                                <polyline points="22 4 12 14.01 9 11.01" />
-                            </svg>
-                            {t("profile.successMessage")}
-                        </div>
-                    )}
-
                     {/* Hero Avatar Card */}
                     <div className="profile-hero-card">
                         <div className="profile-hero">
                             <div
                                 className="avatar-upload-zone"
+                                onClick={handleAvatarClick}
                             >
                                 <div className="avatar-wrapper">
                                     <div className="avatar-inner">

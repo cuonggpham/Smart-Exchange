@@ -28,6 +28,8 @@ import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { SocketProvider } from "./contexts/SocketContext";
+import { ToastProvider } from "./contexts/ToastContext";
+import ToastContainer from "./components/Toast";
 
 import { ProtectedLayout } from "./layouts/ProtectedLayout";
 import { PublicRoute } from "./components/PublicRoute";
@@ -72,62 +74,65 @@ function App() {
                 <AuthProvider>
                     <ThemeProvider>
                         <LanguageProvider>
-                            <SocketProvider>
-                                <Routes>
+                            <ToastProvider>
+                                <SocketProvider>
+                                    <Routes>
 
-                                    {/* ===== LANDING (ROOT – KHÔNG GUARD) ===== */}
-                                    <Route path="/" element={<LandingPage />} />
+                                        {/* ===== LANDING (ROOT – KHÔNG GUARD) ===== */}
+                                        <Route path="/" element={<LandingPage />} />
 
-                                    {/* ===== PUBLIC (LOGIN / REGISTER) ===== */}
-                                    <Route element={<PublicRoute />}>
-                                        <Route path="/login" element={<LoginPage />} />
-                                        <Route path="/register" element={<RegisterPage />} />
-                                    </Route>
+                                        {/* ===== PUBLIC (LOGIN / REGISTER) ===== */}
+                                        <Route element={<PublicRoute />}>
+                                            <Route path="/login" element={<LoginPage />} />
+                                            <Route path="/register" element={<RegisterPage />} />
+                                        </Route>
 
-                                    {/* ===== PROTECTED ===== */}
-                                    <Route element={<ProtectedLayout />}>
+                                        {/* ===== PROTECTED ===== */}
+                                        <Route element={<ProtectedLayout />}>
+                                            <Route
+                                                path="/home"
+                                                element={
+                                                    <HomeGuard>
+                                                        <HomePage />
+                                                    </HomeGuard>
+                                                }
+                                            />
+
+                                            <Route path="/chat" element={<ChatPage />} />
+                                            <Route path="/history" element={<HistoryPage />} />
+                                            <Route path="/profile" element={<ProfilePage />} />
+
+                                            <Route path="/settings" element={<SettingsPage />}>
+                                                <Route index element={<SettingsOverview />} />
+                                                <Route path="language" element={<LanguageSettings />} />
+                                                <Route path="theme" element={<ThemeSettings />} />
+                                                <Route path="notifications" element={<NotificationsSettings />} />
+                                                <Route path="security" element={<SecuritySettings />} />
+                                                <Route path="system" element={<SystemSettings />} />
+                                                <Route path="help" element={<HelpSettings />} />
+                                                <Route path="logout" element={<LogoutSettings />} />
+                                            </Route>
+                                        </Route>
+
+                                        {/* ===== TUTORIAL (Protected but no Layout) ===== */}
                                         <Route
-                                            path="/home"
+                                            path="/tutorial"
                                             element={
-                                                <HomeGuard>
-                                                    <HomePage />
-                                                </HomeGuard>
+                                                <ProtectedRoute>
+                                                    <TutorialGuard>
+                                                        <TutorialPage />
+                                                    </TutorialGuard>
+                                                </ProtectedRoute>
                                             }
                                         />
 
-                                        <Route path="/chat" element={<ChatPage />} />
-                                        <Route path="/history" element={<HistoryPage />} />
-                                        <Route path="/profile" element={<ProfilePage />} />
+                                        {/* ===== FALLBACK ===== */}
+                                        <Route path="*" element={<Navigate to="/" replace />} />
 
-                                        <Route path="/settings" element={<SettingsPage />}>
-                                            <Route index element={<SettingsOverview />} />
-                                            <Route path="language" element={<LanguageSettings />} />
-                                            <Route path="theme" element={<ThemeSettings />} />
-                                            <Route path="notifications" element={<NotificationsSettings />} />
-                                            <Route path="security" element={<SecuritySettings />} />
-                                            <Route path="system" element={<SystemSettings />} />
-                                            <Route path="help" element={<HelpSettings />} />
-                                            <Route path="logout" element={<LogoutSettings />} />
-                                        </Route>
-                                    </Route>
-
-                                    {/* ===== TUTORIAL (Protected but no Layout) ===== */}
-                                    <Route
-                                        path="/tutorial"
-                                        element={
-                                            <ProtectedRoute>
-                                                <TutorialGuard>
-                                                    <TutorialPage />
-                                                </TutorialGuard>
-                                            </ProtectedRoute>
-                                        }
-                                    />
-
-                                    {/* ===== FALLBACK ===== */}
-                                    <Route path="*" element={<Navigate to="/" replace />} />
-
-                                </Routes>
-                            </SocketProvider>
+                                    </Routes>
+                                </SocketProvider>
+                                <ToastContainer />
+                            </ToastProvider>
                         </LanguageProvider>
                     </ThemeProvider>
                 </AuthProvider>
