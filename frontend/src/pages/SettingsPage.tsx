@@ -120,7 +120,7 @@ const SettingsPage: React.FC = () => {
     return (
         <div className="settings-layout">
             <header className="settings-header">
-                <NavLink to="/" className="back-link">
+                <NavLink to="/home" className="back-link">
                     ← {t("settings.backHome")}
                 </NavLink>
                 <h1 className="settings-title">{t("settings.title")}</h1>
