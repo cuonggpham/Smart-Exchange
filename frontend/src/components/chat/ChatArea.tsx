@@ -347,6 +347,7 @@ export default function ChatArea({ chatId, receiver, onChatCreated, onBack }: Pr
                 onClose={() => setIsSettingsOpen(false)}
                 cultureCheckEnabled={cultureCheckEnabled}
                 onCultureCheckChange={setCultureCheckEnabled}
+                receiver={receiver}
             />
 
             {/* AI Culture Check Modal */}

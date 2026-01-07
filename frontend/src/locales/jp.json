@@ -280,8 +280,12 @@
         },
         "settings": {
             "title": "チャット設定",
+            "conversationInfo": "会話情報",
             "cultureCheck": "文化チェック",
-            "cultureCheckDesc": "送信前にAIによる文化チェックを有効/無効にする"
+            "cultureCheckDesc": "送信前にAIによる文化チェックを有効/無効にする",
+            "career": "職業",
+            "position": "役職",
+            "notUpdated": "未更新"
         },
         "history": {
             "title": "表現履歴",

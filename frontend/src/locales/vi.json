@@ -280,8 +280,12 @@
         },
         "settings": {
             "title": "Cài đặt cuộc trò chuyện",
+            "conversationInfo": "Thông tin hội thoại",
             "cultureCheck": "Kiểm tra văn hóa",
-            "cultureCheckDesc": "Bật/tắt kiểm tra văn hóa AI trước khi gửi tin nhắn"
+            "cultureCheckDesc": "Bật/tắt kiểm tra văn hóa AI trước khi gửi tin nhắn",
+            "career": "Nghề nghiệp",
+            "position": "Địa vị",
+            "notUpdated": "Chưa cập nhật"
         },
         "history": {
             "title": "Lịch sử gợi ý",

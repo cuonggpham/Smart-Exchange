@@ -5,6 +5,8 @@ export interface ChatUser {
     fullName: string;
     email: string;
     avatar?: string;
+    career?: string;
+    position?: string;
 }
 
 export interface LastMessage {

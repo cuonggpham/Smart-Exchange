@@ -3,6 +3,7 @@ import { PrismaService } from "../prisma/prisma.service";
 import { AIService } from "../ai/ai.service";
 import { AppException } from "../common/exceptions/app.exception";
 import { ExceptionCode } from "../common/constants/exception-code.constant";
+import { JobInfoHelper } from "../common/helpers/job-info.helper";
 
 @Injectable()
 export class ChatService {
@@ -157,19 +158,39 @@ export class ChatService {
     }
 
     async getUserChats(userId: string) {
-        return this.prisma.chat.findMany({
+        const chats = await this.prisma.chat.findMany({
             where: {
                 OR: [{ userOneId: userId }, { userTwoId: userId }],
             },
             include: {
-                userOne: { select: { userId: true, fullName: true, email: true, avatar: true } },
-                userTwo: { select: { userId: true, fullName: true, email: true, avatar: true } },
+                userOne: { select: { userId: true, fullName: true, email: true, avatar: true, jobTitle: true } },
+                userTwo: { select: { userId: true, fullName: true, email: true, avatar: true, jobTitle: true } },
                 messages: {
                     orderBy: { createdAt: "desc" },
                     take: 1,
                 },
             },
             orderBy: { updateAt: "desc" },
+        });
+
+        // Parse jobTitle into career and position for each user
+        return chats.map((chat) => {
+            const userOneParsed = JobInfoHelper.parseJobTitle(chat.userOne.jobTitle);
+            const userTwoParsed = JobInfoHelper.parseJobTitle(chat.userTwo.jobTitle);
+
+            return {
+                ...chat,
+                userOne: {
+                    ...chat.userOne,
+                    career: userOneParsed.career,
+                    position: userOneParsed.position,
+                },
+                userTwo: {
+                    ...chat.userTwo,
+                    career: userTwoParsed.career,
+                    position: userTwoParsed.position,
+                },
+            };
         });
     }
 
