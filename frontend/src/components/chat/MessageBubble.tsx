@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import i18n from "../../i18n";
-import { Languages, AlertTriangle, Lightbulb, ChevronDown, X, Sparkles, Loader2, File, Download, Eye, EyeOff } from "lucide-react";
+import { Languages, AlertTriangle, Lightbulb, ChevronDown, X, Sparkles, Loader2, File, Download } from "lucide-react";
 import type { DisplayMessage as Message } from "./ChatArea";
 import { chatService } from "../../services/chat.service";
 import UserAvatar from "../UserAvatar";
@@ -115,66 +115,57 @@ export default function MessageBubble({ msg, onDelete }: Props) {
                             {isAnalyzing ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
                         </button>
                     )}
-                </div>
-
-                {/* AI Analysis for received messages */}
-                {!isUser && aiAnalysis && (
-                    <div className={`ai-analysis-section ${!isAnalysisVisible ? 'collapsed' : ''}`}>
-                        {/* Toggle button - compact */}
+                    {!isUser && aiAnalysis && (
                         <button
-                            className="toggle-analysis-btn"
+                            className="analyze-msg-btn toggle-eye"
                             onClick={() => setIsAnalysisVisible(!isAnalysisVisible)}
                             title={isAnalysisVisible ? t("common.hide") : t("common.show")}
                         >
-                            {isAnalysisVisible ? <EyeOff size={12} /> : <Eye size={12} />}
+                            <Sparkles size={14} />
                         </button>
+                    )}
+                </div>
 
-                        {isAnalysisVisible ? (
-                            <>
-                                {/* Inline translation */}
-                                <div className="ai-translation">
-                                    <Languages size={14} className="translation-icon" />
-                                    <span className="translation-text">{aiAnalysis.translatedText}</span>
-                                </div>
+                {/* AI Analysis for received messages */}
+                {!isUser && aiAnalysis && isAnalysisVisible && (
+                    <div className="ai-analysis-section">
+                        {/* Inline translation */}
+                        <div className="ai-translation">
+                            <Languages size={14} className="translation-icon" />
+                            <span className="translation-text">{aiAnalysis.translatedText}</span>
+                        </div>
 
-                                {/* Warning indicator for indirect expressions */}
-                                {aiAnalysis.isIndirectExpression && (
-                                    <div className="indirect-warning">
-                                        <AlertTriangle size={12} />
-                                        {t("chat.aiNote.indirectWarning")}
+                        {/* Warning indicator for indirect expressions */}
+                        {aiAnalysis.isIndirectExpression && (
+                            <div className="indirect-warning">
+                                <AlertTriangle size={12} />
+                                {t("chat.aiNote.indirectWarning")}
+                            </div>
+                        )}
+
+                        {/* Expandable AI note */}
+                        {(aiAnalysis.intentSummary || aiAnalysis.culturalNote) && (
+                            <div className="ai-note-toggle" onClick={() => setIsNoteExpanded(!isNoteExpanded)}>
+                                <Lightbulb size={14} className="note-icon" />
+                                <span className="note-label">
+                                    {isNoteExpanded ? t("chat.aiNote.collapse") : t("chat.aiNote.viewDetails")}
+                                </span>
+                                <ChevronDown size={12} className={`expand-arrow ${isNoteExpanded ? "expanded" : ""}`} />
+                            </div>
+                        )}
+
+                        {isNoteExpanded && (
+                            <div className="ai-note-content">
+                                {aiAnalysis.intentSummary && (
+                                    <div className="note-section">
+                                        <strong>{t("chat.aiNote.realIntent")}:</strong> {aiAnalysis.intentSummary}
                                     </div>
                                 )}
-
-                                {/* Expandable AI note */}
-                                {(aiAnalysis.intentSummary || aiAnalysis.culturalNote) && (
-                                    <div className="ai-note-toggle" onClick={() => setIsNoteExpanded(!isNoteExpanded)}>
-                                        <Lightbulb size={14} className="note-icon" />
-                                        <span className="note-label">
-                                            {isNoteExpanded ? t("chat.aiNote.collapse") : t("chat.aiNote.viewDetails")}
-                                        </span>
-                                        <ChevronDown size={12} className={`expand-arrow ${isNoteExpanded ? "expanded" : ""}`} />
+                                {aiAnalysis.culturalNote && (
+                                    <div className="note-section">
+                                        <strong>{t("chat.aiNote.culturalContext")}:</strong> {aiAnalysis.culturalNote}
                                     </div>
                                 )}
-
-                                {isNoteExpanded && (
-                                    <div className="ai-note-content">
-                                        {aiAnalysis.intentSummary && (
-                                            <div className="note-section">
-                                                <strong>{t("chat.aiNote.realIntent")}:</strong> {aiAnalysis.intentSummary}
-                                            </div>
-                                        )}
-                                        {aiAnalysis.culturalNote && (
-                                            <div className="note-section">
-                                                <strong>{t("chat.aiNote.culturalContext")}:</strong> {aiAnalysis.culturalNote}
-                                            </div>
-                                        )}
-                                    </div>
-                                )}
-                            </>
-                        ) : (
-                            <div className="ai-analysis-collapsed">
-                                <Sparkles size={12} />
-                                <span>{t("chat.aiNote.analysis") || "AI"}</span>
                             </div>
                         )}
                     </div>

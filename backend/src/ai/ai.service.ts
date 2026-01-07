@@ -127,13 +127,11 @@ export class AIService {
         this.chatModel = new ChatOpenAI({
             ...modelConfig,
             model: modelName,
-            temperature: 0.7,
         });
 
         this.summaryModel = new ChatOpenAI({
             ...modelConfig,
             model: summaryModelName,
-            temperature: 0.3,
         });
 
         this.logger.log(`AI Service initialized with model: ${modelName}, base URL: ${baseURL || "default"}`);
