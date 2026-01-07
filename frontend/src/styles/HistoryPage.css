@@ -260,6 +260,63 @@
     color: var(--danger-color);
 }
 
+/* Date filter styles */
+.history-date-filter {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+}
+
+.history-date-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.history-date-input-group label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.history-date-input {
+    padding: 10px 12px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+    font-size: 14px;
+    min-width: 140px;
+    transition: all var(--transition-fast);
+}
+
+.history-date-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.history-clear-date-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.history-clear-date-btn:hover {
+    border-color: var(--danger-color);
+    color: var(--danger-color);
+    background: var(--danger-light);
+}
+
 @media (max-width: 768px) {
     .history-header {
         flex-direction: column;
@@ -277,7 +334,51 @@
         width: 100%;
     }
 
+    .history-date-filter {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .history-date-input-group {
+        flex: 1;
+        min-width: 120px;
+    }
+
+    .history-date-input {
+        width: 100%;
+        min-width: unset;
+    }
+
     .history-grid {
         grid-template-columns: 1fr;
     }
+}
+
+/* Infinite scroll styles */
+.history-sentinel {
+    padding: 24px;
+    text-align: center;
+    min-height: 60px;
+}
+
+.history-loading-more {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.history-loading-more svg {
+    color: var(--primary-color);
+}
+
+.history-end-message {
+    color: var(--text-muted);
+    font-size: 14px;
+    padding: 8px 16px;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-full);
+    display: inline-block;
 }

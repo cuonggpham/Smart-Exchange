@@ -276,7 +276,8 @@
             "collapse": "Thu gọn",
             "realIntent": "Ý định thực sự",
             "culturalContext": "Bối cảnh văn hóa",
-            "analyze": "Phân tích tin nhắn"
+            "analyze": "Phân tích tin nhắn",
+            "analysis": "Phân tích AI"
         },
         "settings": {
             "title": "Cài đặt cuộc trò chuyện",
@@ -305,10 +306,18 @@
             "receiver": "Gửi đến",
             "dateToday": "Hôm nay",
             "dateYesterday": "Hôm qua",
-            "noContext": "Không có bối cảnh chi tiết"
+            "noContext": "Không có bối cảnh chi tiết",
+            "loadingMore": "Đang tải thêm...",
+            "endOfList": "Đã hiển thị tất cả gợi ý",
+            "fromDate": "Từ ngày",
+            "toDate": "Đến ngày",
+            "clearDateFilter": "Xóa bộ lọc ngày"
         },
         "attachment": {
             "download": "Tải xuống"
+        },
+        "upload": {
+            "failed": "Tải lên thất bại"
         }
     },
     "common": {
@@ -329,6 +338,8 @@
         "submit": "Gửi",
         "yes": "Có",
         "no": "Không",
+        "show": "Hiển thị",
+        "hide": "Ẩn",
         "validation": {
             "required": "Trường này là bắt buộc",
             "invalidEmail": "Email không hợp lệ",

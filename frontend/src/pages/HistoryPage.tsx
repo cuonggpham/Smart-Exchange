@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
     Search,
@@ -11,11 +11,14 @@ import {
     Lightbulb,
     FileText,
     CheckCircle2,
-    XCircle,
-    CopyCheck
+    CopyCheck,
+    Loader2,
+    X
 } from 'lucide-react';
 import { historyService, type SuggestionHistoryItem } from '../services/history.service';
 import '../styles/HistoryPage.css';
+
+const ITEMS_PER_PAGE = 20;
 
 const HistoryPage: React.FC = () => {
     const { t } = useTranslation();
@@ -26,25 +29,103 @@ const HistoryPage: React.FC = () => {
     const [selectedReceiver, setSelectedReceiver] = useState('');
     const [copiedId, setCopiedId] = useState<string | null>(null);
 
-    useEffect(() => {
-        loadData();
-    }, []);
+    // Date filter states
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
 
-    const loadData = async () => {
+    // Infinite scroll states
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
+    const [isLoadingMore, setIsLoadingMore] = useState(false);
+
+    // Refs for Intersection Observer
+    const sentinelRef = useRef<HTMLDivElement | null>(null);
+    const observerRef = useRef<IntersectionObserver | null>(null);
+
+    // Load initial data
+    const loadInitial = useCallback(async () => {
         setIsLoading(true);
+        setPage(1);
+        setHasMore(true);
         try {
             const [historyData, receiversData] = await Promise.all([
-                historyService.getHistory(1, 100),
+                historyService.getHistory(
+                    1,
+                    ITEMS_PER_PAGE,
+                    selectedReceiver || undefined,
+                    startDate || undefined,
+                    endDate || undefined
+                ),
                 historyService.getReceivers()
             ]);
             setHistory(historyData.items);
+            setHasMore(historyData.items.length < historyData.total);
             setReceivers(receiversData);
         } catch (error) {
             console.error('Failed to load history data:', error);
         } finally {
             setIsLoading(false);
         }
+    }, [selectedReceiver, startDate, endDate]);
+
+    // Load more data (append)
+    const loadMore = useCallback(async () => {
+        if (isLoadingMore || !hasMore) return;
+
+        setIsLoadingMore(true);
+        try {
+            const nextPage = page + 1;
+            const data = await historyService.getHistory(
+                nextPage,
+                ITEMS_PER_PAGE,
+                selectedReceiver || undefined,
+                startDate || undefined,
+                endDate || undefined
+            );
+
+            setHistory(prev => {
+                const newHistory = [...prev, ...data.items];
+                setHasMore(newHistory.length < data.total);
+                return newHistory;
+            });
+            setPage(nextPage);
+        } catch (error) {
+            console.error('Failed to load more history:', error);
+        } finally {
+            setIsLoadingMore(false);
+        }
+    }, [isLoadingMore, hasMore, page, selectedReceiver, startDate, endDate]);
+
+    // Clear date filters
+    const handleClearDateFilter = () => {
+        setStartDate('');
+        setEndDate('');
     };
+
+    // Initial load
+    useEffect(() => {
+        loadInitial();
+    }, [loadInitial]);
+
+    // Setup Intersection Observer
+    useEffect(() => {
+        if (isLoading) return;
+
+        observerRef.current = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting && hasMore && !isLoadingMore) {
+                    loadMore();
+                }
+            },
+            { threshold: 0.1, rootMargin: '100px' }
+        );
+
+        if (sentinelRef.current) {
+            observerRef.current.observe(sentinelRef.current);
+        }
+
+        return () => observerRef.current?.disconnect();
+    }, [isLoading, hasMore, isLoadingMore, loadMore]);
 
     const handleCopy = (id: string, text: string) => {
         navigator.clipboard.writeText(text);
@@ -130,6 +211,36 @@ const HistoryPage: React.FC = () => {
                             <option key={name} value={name}>{name}</option>
                         ))}
                     </select>
+
+                    <div className="history-date-filter">
+                        <div className="history-date-input-group">
+                            <label>{t('chat.history.fromDate')}</label>
+                            <input
+                                type="date"
+                                className="history-date-input"
+                                value={startDate}
+                                onChange={(e) => setStartDate(e.target.value)}
+                            />
+                        </div>
+                        <div className="history-date-input-group">
+                            <label>{t('chat.history.toDate')}</label>
+                            <input
+                                type="date"
+                                className="history-date-input"
+                                value={endDate}
+                                onChange={(e) => setEndDate(e.target.value)}
+                            />
+                        </div>
+                        {(startDate || endDate) && (
+                            <button
+                                className="history-clear-date-btn"
+                                onClick={handleClearDateFilter}
+                                title={t('chat.history.clearDateFilter')}
+                            >
+                                <X size={16} />
+                            </button>
+                        )}
+                    </div>
                 </div>
             </header>
 
@@ -148,90 +259,107 @@ const HistoryPage: React.FC = () => {
                     <p>{t('chat.history.empty')}</p>
                 </div>
             ) : (
-                Object.entries(groupedHistory).map(([date, items]) => (
-                    <div key={date} className="history-date-group">
-                        <div className="history-date-label">
-                            <Calendar size={16} />
-                            {date}
-                        </div>
+                <>
+                    {Object.entries(groupedHistory).map(([date, items]) => (
+                        <div key={date} className="history-date-group">
+                            <div className="history-date-label">
+                                <Calendar size={16} />
+                                {date}
+                            </div>
 
-                        <div className="history-grid">
-                            {items.map(item => (
-                                <div key={item.historyId} className="history-card animate-fade-in-up">
-                                    <div className="history-card-header">
-                                        <div className="history-receiver">
-                                            <User size={16} className="text-secondary" />
-                                            {item.receiverName}
-                                        </div>
-                                        <span className={`history-level-badge ${item.suggestionLevel}`}>
-                                            {item.suggestionLevel}
-                                        </span>
-                                    </div>
-
-                                    <div className="history-card-body">
-                                        <div className="history-item-section">
-                                            <span className="history-item-label">
-                                                <Filter size={12} style={{ marginRight: '4px' }} />
-                                                {t('chat.history.usedContext')}
-                                            </span>
-                                            <div className="history-context-box">
-                                                <span className="history-item-value">
-                                                    {item.contextDescription || t('chat.history.noContext')}
-                                                </span>
+                            <div className="history-grid">
+                                {items.map(item => (
+                                    <div key={item.historyId} className="history-card animate-fade-in-up">
+                                        <div className="history-card-header">
+                                            <div className="history-receiver">
+                                                <User size={16} className="text-secondary" />
+                                                {item.receiverName}
                                             </div>
-                                        </div>
-
-                                        <div className="history-item-section">
-                                            <span className="history-item-label">{t('chat.history.original')}</span>
-                                            <span className="history-item-value history-original-text">
-                                                「{item.originalText}」
+                                            <span className={`history-level-badge ${item.suggestionLevel}`}>
+                                                {item.suggestionLevel}
                                             </span>
                                         </div>
 
-                                        <div className="history-item-section">
-                                            <span className="history-item-label">
-                                                <CheckCircle2 size={12} style={{ marginRight: '4px', color: 'var(--primary-color)' }} />
-                                                {t('chat.history.suggestion')}
-                                            </span>
-                                            <span className="history-item-value history-suggestion-text">
-                                                {item.selectedSuggestion}
-                                            </span>
-                                        </div>
-
-                                        {item.culturalNotes && (
+                                        <div className="history-card-body">
                                             <div className="history-item-section">
-                                                <div className="history-cultural-note">
-                                                    <Lightbulb size={16} className="text-warning" />
-                                                    <span>{item.culturalNotes}</span>
+                                                <span className="history-item-label">
+                                                    <Filter size={12} style={{ marginRight: '4px' }} />
+                                                    {t('chat.history.usedContext')}
+                                                </span>
+                                                <div className="history-context-box">
+                                                    <span className="history-item-value">
+                                                        {item.contextDescription || t('chat.history.noContext')}
+                                                    </span>
                                                 </div>
                                             </div>
-                                        )}
-                                    </div>
 
-                                    <div className="history-card-footer">
-                                        <button
-                                            className="history-action-btn copy"
-                                            onClick={() => handleCopy(item.historyId, item.selectedSuggestion)}
-                                        >
-                                            {copiedId === item.historyId ? (
-                                                <><CopyCheck size={14} /> {t('chat.history.copied')}</>
-                                            ) : (
-                                                <><Copy size={14} /> {t('chat.history.copy')}</>
+                                            <div className="history-item-section">
+                                                <span className="history-item-label">{t('chat.history.original')}</span>
+                                                <span className="history-item-value history-original-text">
+                                                    「{item.originalText}」
+                                                </span>
+                                            </div>
+
+                                            <div className="history-item-section">
+                                                <span className="history-item-label">
+                                                    <CheckCircle2 size={12} style={{ marginRight: '4px', color: 'var(--primary-color)' }} />
+                                                    {t('chat.history.suggestion')}
+                                                </span>
+                                                <span className="history-item-value history-suggestion-text">
+                                                    {item.selectedSuggestion}
+                                                </span>
+                                            </div>
+
+                                            {item.culturalNotes && (
+                                                <div className="history-item-section">
+                                                    <div className="history-cultural-note">
+                                                        <Lightbulb size={16} className="text-warning" />
+                                                        <span>{item.culturalNotes}</span>
+                                                    </div>
+                                                </div>
                                             )}
-                                        </button>
-                                        <button
-                                            className="history-action-btn delete"
-                                            onClick={() => handleDelete(item.historyId)}
-                                        >
-                                            <Trash2 size={14} />
-                                            {t('chat.history.delete')}
-                                        </button>
+                                        </div>
+
+                                        <div className="history-card-footer">
+                                            <button
+                                                className="history-action-btn copy"
+                                                onClick={() => handleCopy(item.historyId, item.selectedSuggestion)}
+                                            >
+                                                {copiedId === item.historyId ? (
+                                                    <><CopyCheck size={14} /> {t('chat.history.copied')}</>
+                                                ) : (
+                                                    <><Copy size={14} /> {t('chat.history.copy')}</>
+                                                )}
+                                            </button>
+                                            <button
+                                                className="history-action-btn delete"
+                                                onClick={() => handleDelete(item.historyId)}
+                                            >
+                                                <Trash2 size={14} />
+                                                {t('chat.history.delete')}
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
                         </div>
+                    ))}
+
+                    {/* Sentinel element for infinite scroll */}
+                    <div ref={sentinelRef} className="history-sentinel">
+                        {isLoadingMore && (
+                            <div className="history-loading-more">
+                                <Loader2 size={20} className="animate-spin" />
+                                <span>{t('chat.history.loadingMore')}</span>
+                            </div>
+                        )}
+                        {!hasMore && history.length > 0 && (
+                            <div className="history-end-message">
+                                {t('chat.history.endOfList')}
+                            </div>
+                        )}
                     </div>
-                ))
+                </>
             )}
         </div>
     );

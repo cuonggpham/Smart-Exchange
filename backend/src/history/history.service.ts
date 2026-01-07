@@ -27,7 +27,9 @@ export class HistoryService {
         userId: string,
         page = 1,
         limit = 20,
-        receiverFilter?: string
+        receiverFilter?: string,
+        startDate?: Date,
+        endDate?: Date
     ): Promise<HistoryListResponseDto> {
         const skip = (page - 1) * limit;
 
@@ -36,6 +38,18 @@ export class HistoryService {
             where.receiverName = {
                 contains: receiverFilter,
             };
+        }
+        if (startDate || endDate) {
+            where.createdAt = {};
+            if (startDate) {
+                where.createdAt.gte = startDate;
+            }
+            if (endDate) {
+                // Set endDate to end of day
+                const endOfDay = new Date(endDate);
+                endOfDay.setHours(23, 59, 59, 999);
+                where.createdAt.lte = endOfDay;
+            }
         }
 
         const [items, total] = await Promise.all([

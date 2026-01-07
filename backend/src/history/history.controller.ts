@@ -31,13 +31,17 @@ export class HistoryController {
         @Req() req: any,
         @Query('page') page?: string,
         @Query('limit') limit?: string,
-        @Query('receiver') receiver?: string
+        @Query('receiver') receiver?: string,
+        @Query('startDate') startDate?: string,
+        @Query('endDate') endDate?: string
     ): Promise<HistoryListResponseDto> {
         return this.historyService.findAll(
             req.user.userId,
             page ? parseInt(page, 10) : 1,
             limit ? parseInt(limit, 10) : 20,
-            receiver
+            receiver,
+            startDate ? new Date(startDate) : undefined,
+            endDate ? new Date(endDate) : undefined
         );
     }
 

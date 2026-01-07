@@ -33,12 +33,16 @@ class HistoryService {
     async getHistory(
         page = 1,
         limit = 20,
-        receiver?: string
+        receiver?: string,
+        startDate?: string,
+        endDate?: string
     ): Promise<HistoryListResponse> {
         const params = new URLSearchParams();
         params.append('page', page.toString());
         params.append('limit', limit.toString());
         if (receiver) params.append('receiver', receiver);
+        if (startDate) params.append('startDate', startDate);
+        if (endDate) params.append('endDate', endDate);
 
         return axiosInstance.get(`/history?${params.toString()}`);
     }

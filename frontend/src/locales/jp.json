@@ -276,7 +276,8 @@
             "collapse": "閉じる",
             "realIntent": "本当の意図",
             "culturalContext": "文化的な背景",
-            "analyze": "メッセージを分析"
+            "analyze": "メッセージを分析",
+            "analysis": "AI分析"
         },
         "settings": {
             "title": "チャット設定",
@@ -305,10 +306,18 @@
             "receiver": "送信先",
             "dateToday": "今日",
             "dateYesterday": "昨日",
-            "noContext": "詳細な背景なし"
+            "noContext": "詳細な背景なし",
+            "loadingMore": "読み込み中...",
+            "endOfList": "すべての履歴を表示しました",
+            "fromDate": "開始日",
+            "toDate": "終了日",
+            "clearDateFilter": "日付フィルターをクリア"
         },
         "attachment": {
             "download": "ダウンロード"
+        },
+        "upload": {
+            "failed": "アップロードに失敗しました"
         }
     },
     "common": {
@@ -329,6 +338,8 @@
         "submit": "送信",
         "yes": "はい",
         "no": "いいえ",
+        "show": "表示",
+        "hide": "非表示",
         "validation": {
             "required": "この項目は必須です",
             "invalidEmail": "メールアドレスが無効です",
