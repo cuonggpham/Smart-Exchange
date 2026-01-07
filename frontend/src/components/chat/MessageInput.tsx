@@ -1,12 +1,13 @@
 import { useEffect, useRef, useImperativeHandle, forwardRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Paperclip, X, FileText } from "lucide-react";
+import { Paperclip, X, FileText, Send, Sparkles } from "lucide-react";
 import { chatService } from "../../services/chat.service";
 
 interface Props {
     onSend: (text: string, attachment?: { url: string; name: string; type: string }) => void;
     onAICheck?: (text: string) => void;
     cultureCheckEnabled?: boolean;
+    onCultureCheckChange?: (enabled: boolean) => void;
 }
 
 export interface MessageInputRef {
@@ -15,12 +16,24 @@ export interface MessageInputRef {
     focusInput: () => void;
 }
 
-const MessageInput = forwardRef<MessageInputRef, Props>(({ onSend, onAICheck, cultureCheckEnabled = true }, ref) => {
+const MessageInput = forwardRef<MessageInputRef, Props>(({ onSend, onAICheck, cultureCheckEnabled = true, onCultureCheckChange }, ref) => {
     const { t } = useTranslation();
     const editorRef = useRef<HTMLDivElement>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [attachment, setAttachment] = useState<{ url: string; name: string; type: string } | null>(null);
     const [isUploading, setIsUploading] = useState(false);
+    const [localCultureCheck, setLocalCultureCheck] = useState(cultureCheckEnabled);
+
+    // Sync with external prop
+    useEffect(() => {
+        setLocalCultureCheck(cultureCheckEnabled);
+    }, [cultureCheckEnabled]);
+
+    const handleToggleCultureCheck = () => {
+        const newValue = !localCultureCheck;
+        setLocalCultureCheck(newValue);
+        onCultureCheckChange?.(newValue);
+    };
 
     useImperativeHandle(ref, () => ({
         getInputText: () => editorRef.current?.innerText.trim() || "",
@@ -56,20 +69,22 @@ const MessageInput = forwardRef<MessageInputRef, Props>(({ onSend, onAICheck, cu
         }
     };
 
-    const handleSubmit = () => {
+    // Handle submit with optional force mode
+    const handleSubmit = (forceMode?: 'direct' | 'ai') => {
         const div = editorRef.current;
         if (!div) return;
 
         const text = div.innerText.trim();
         if (!text && !attachment) return;
 
-        // If culture check is enabled and onAICheck is provided, and it's a text-only message
-        // For simplicity, we only trigger AI check if there's text and no attachment, 
-        // or we can decide how to handle it. Usually AI check is for text content.
-        if (cultureCheckEnabled && onAICheck && text && !attachment) {
+        // Determine if we should use AI check
+        const shouldUseAI = forceMode === 'ai' ||
+            (forceMode !== 'direct' && localCultureCheck && onAICheck && text && !attachment);
+
+        if (shouldUseAI && onAICheck && text) {
             onAICheck(text);
         } else {
-            // Otherwise, send directly
+            // Send directly
             onSend(text, attachment || undefined);
             div.innerHTML = "";
             setAttachment(null);
@@ -78,9 +93,23 @@ const MessageInput = forwardRef<MessageInputRef, Props>(({ onSend, onAICheck, cu
     };
 
     const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-        if (e.key === "Enter" && !e.shiftKey) {
-            e.preventDefault();
-            handleSubmit();
+        if (e.key === "Enter") {
+            if (e.shiftKey) {
+                // Shift+Enter: New line (let default behavior happen)
+                return;
+            } else if (e.altKey) {
+                // Alt+Enter: Always use AI analysis
+                e.preventDefault();
+                handleSubmit('ai');
+            } else if (e.ctrlKey || e.metaKey) {
+                // Ctrl+Enter (or Cmd+Enter on Mac): Always send directly
+                e.preventDefault();
+                handleSubmit('direct');
+            } else {
+                // Enter alone: Follow toggle state
+                e.preventDefault();
+                handleSubmit();
+            }
         }
     };
 
@@ -125,8 +154,22 @@ const MessageInput = forwardRef<MessageInputRef, Props>(({ onSend, onAICheck, cu
                     onKeyDown={onKeyDown}
                 />
 
-                <button className="send-button" onClick={handleSubmit} disabled={isUploading}>
-                    {cultureCheckEnabled && !attachment ? t('chat.input.checkButton') : t('chat.input.sendButton')}
+                {/* AI Check Toggle - Simple Icon Button */}
+                <button
+                    className={`ai-toggle-btn ${localCultureCheck ? 'on' : 'off'}`}
+                    onClick={handleToggleCultureCheck}
+                    type="button"
+                    title={localCultureCheck ? t('chat.input.aiCheckOn') : t('chat.input.aiCheckOff')}
+                    aria-label={t('chat.input.toggleAICheck')}
+                >
+                    <span className={`ai-toggle-icon-wrapper ${!localCultureCheck ? 'slashed' : ''}`}>
+                        <Sparkles size={18} />
+                    </span>
+                </button>
+
+                <button className="send-button" onClick={() => handleSubmit()} disabled={isUploading}>
+                    <Send size={18} />
+                    {t('chat.input.sendButton')}
                 </button>
             </div>
         </div>

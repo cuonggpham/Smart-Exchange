@@ -241,7 +241,10 @@
         "input": {
             "placeholder": "Nhập tin nhắn...",
             "checkButton": "Kiểm tra đề xuất",
-            "sendButton": "Gửi"
+            "sendButton": "Gửi",
+            "aiCheckOn": "Bật: Phân tích AI trước khi gửi (Alt+Enter để phân tích, Ctrl+Enter để gửi trực tiếp)",
+            "aiCheckOff": "Tắt: Gửi tin nhắn trực tiếp (Alt+Enter để phân tích, Ctrl+Enter để gửi trực tiếp)",
+            "toggleAICheck": "Bật/tắt kiểm tra AI"
         },
         "ai": {
             "checking": "AI đang kiểm tra...",

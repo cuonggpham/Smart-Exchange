@@ -1073,7 +1073,17 @@ button,
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.sidebar-brand:hover .sidebar-logo {
+.sidebar-logo-img {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    object-fit: contain;
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar-brand:hover .sidebar-logo,
+.sidebar-brand:hover .sidebar-logo-img {
     transform: scale(1.05);
     box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
 }

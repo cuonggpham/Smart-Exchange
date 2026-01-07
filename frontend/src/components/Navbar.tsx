@@ -56,7 +56,7 @@ const Navbar: React.FC = () => {
                     tabIndex={0}
                     onKeyDown={(e) => e.key === "Enter" && navigate("/home")}
                 >
-                    <span className="navbar-logo">SE</span>
+                    <img src="/logo.png" alt="Smart EXchange Logo" className="navbar-logo" />
                     <span className="navbar-title">Smart EXchange</span>
                 </div>
 

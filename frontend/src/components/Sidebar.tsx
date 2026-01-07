@@ -69,7 +69,7 @@ const Sidebar: React.FC = () => {
                 tabIndex={0}
                 onKeyDown={(e) => e.key === "Enter" && navigate("/home")}
             >
-                <span className="sidebar-logo">SE</span>
+                <img src="/logo.png" alt="Logo" className="sidebar-logo-img" />
                 {!isCollapsed && <span className="sidebar-title">Smart EXchange</span>}
             </div>
 

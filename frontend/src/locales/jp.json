@@ -241,7 +241,10 @@
         "input": {
             "placeholder": "メッセージを入力...",
             "checkButton": "提案をチェック",
-            "sendButton": "送信"
+            "sendButton": "送信",
+            "aiCheckOn": "オン: 送信前にAI分析 (Alt+Enterで分析、Ctrl+Enterで直接送信)",
+            "aiCheckOff": "オフ: 直接送信 (Alt+Enterで分析、Ctrl+Enterで直接送信)",
+            "toggleAICheck": "AIチェック切り替え"
         },
         "ai": {
             "checking": "AIがチェック中...",

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import { Settings, ArrowLeft } from "lucide-react";
+import { ArrowLeft, Info } from "lucide-react";
+import UserAvatar from "../UserAvatar";
 import MsgList from "./MsgList";
 import MessageInput from "./MessageInput";
 import type { MessageInputRef } from "./MessageInput";
@@ -292,39 +293,38 @@ export default function ChatArea({ chatId, receiver, onChatCreated, onBack }: Pr
     };
 
     return (
-        <div className="chat-area-wrapper" style={{ position: "relative" }}>
-            <div
-                className="chat-header-info"
-                style={{ padding: "10px 20px", borderBottom: "1px solid #eee", fontWeight: "bold", display: "flex", justifyContent: "space-between", alignItems: "center" }}
-            >
-                <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+        <div className="chat-area-wrapper">
+            {/* Messenger-style Chat Header */}
+            <div className="messenger-header">
+                <div className="messenger-header-left">
                     {onBack && (
                         <button
-                            className="back-btn-mobile only-mobile"
+                            className="messenger-back-btn"
                             onClick={onBack}
-                            style={{
-                                background: "none",
-                                border: "none",
-                                cursor: "pointer",
-                                padding: "4px",
-                                display: "flex",
-                                alignItems: "center",
-                                color: "var(--text-color)"
-                            }}
                             title="Back"
                         >
                             <ArrowLeft size={20} />
                         </button>
                     )}
-                    <span>{receiver.fullName}</span>
+                    <div className="messenger-user-info">
+                        <UserAvatar
+                            src={receiver.avatar}
+                            name={receiver.fullName}
+                            size={40}
+                            className="messenger-avatar"
+                        />
+                        <span className="messenger-user-name">{receiver.fullName}</span>
+                    </div>
                 </div>
-                <button
-                    className="settings-btn"
-                    onClick={() => setIsSettingsOpen(true)}
-                    title="Settings"
-                >
-                    <Settings size={20} />
-                </button>
+                <div className="messenger-header-actions">
+                    <button
+                        className="messenger-action-btn"
+                        onClick={() => setIsSettingsOpen(true)}
+                        title="Conversation info"
+                    >
+                        <Info size={20} />
+                    </button>
+                </div>
             </div>
             <div className="chat-area" ref={listRef}>
                 <MsgList
@@ -337,6 +337,7 @@ export default function ChatArea({ chatId, receiver, onChatCreated, onBack }: Pr
                 onSend={handleSend}
                 onAICheck={handleAICheck}
                 cultureCheckEnabled={cultureCheckEnabled}
+                onCultureCheckChange={setCultureCheckEnabled}
             />
 
             {/* Settings Sidebar */}
