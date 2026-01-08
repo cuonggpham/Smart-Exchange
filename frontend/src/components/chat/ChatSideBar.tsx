@@ -4,7 +4,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useSocket } from "../../contexts/SocketContext";
 import { chatService } from "../../services/chat.service";
 import type { ChatSession, ChatUser } from "../../services/chat.service";
-import { User, Users, Search } from "lucide-react";
+import { MessageCircle, Users, Search, Edit } from "lucide-react";
 import { useDebounce } from "../../hooks/useDebounce";
 import UserAvatar from "../UserAvatar";
 
@@ -15,7 +15,7 @@ interface Props {
 }
 
 export default function ChatSideBar({ onSelectChat, selectedChatId, onRefreshRef }: Props) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { user } = useAuth();
     const { socket } = useSocket();
     const [chats, setChats] = useState<ChatSession[]>([]);
@@ -23,6 +23,24 @@ export default function ChatSideBar({ onSelectChat, selectedChatId, onRefreshRef
     const [searchQuery, setSearchQuery] = useState("");
     const [isSearching, setIsSearching] = useState(false);
     const debouncedSearchQuery = useDebounce(searchQuery, 500);
+
+    // Helper function to format time with i18n
+    const formatMessageTime = useCallback((dateString: string): string => {
+        const date = new Date(dateString);
+        const now = new Date();
+        const diffMs = now.getTime() - date.getTime();
+        const diffMins = Math.floor(diffMs / 60000);
+        const diffHours = Math.floor(diffMs / 3600000);
+        const diffDays = Math.floor(diffMs / 86400000);
+
+        if (diffMins < 1) return t('chat.sidebar.time.justNow');
+        if (diffMins < 60) return t('chat.sidebar.time.minutesAgo', { count: diffMins });
+        if (diffHours < 24) return t('chat.sidebar.time.hoursAgo', { count: diffHours });
+        if (diffDays < 7) return t('chat.sidebar.time.daysAgo', { count: diffDays });
+
+        const locale = i18n.language === 'jp' ? 'ja-JP' : 'vi-VN';
+        return date.toLocaleDateString(locale, { day: "2-digit", month: "2-digit" });
+    }, [t, i18n.language]);
 
     const loadChats = useCallback(async () => {
         try {
@@ -90,6 +108,17 @@ export default function ChatSideBar({ onSelectChat, selectedChatId, onRefreshRef
         return chat.userOne.userId === user?.id ? chat.userTwo : chat.userOne;
     };
 
+    // Filter chats based on search query
+    const filteredChats = chats.filter((chat) => {
+        if (!searchQuery.trim()) return true;
+        const partner = getPartner(chat);
+        const query = searchQuery.toLowerCase();
+        return (
+            partner.fullName?.toLowerCase().includes(query) ||
+            partner.email?.toLowerCase().includes(query)
+        );
+    });
+
     const handleUserClick = (partner: ChatUser) => {
         const existingChat = chats.find(
             (c) => c.userOne.userId === partner.userId || c.userTwo.userId === partner.userId
@@ -109,44 +138,77 @@ export default function ChatSideBar({ onSelectChat, selectedChatId, onRefreshRef
         }
     };
 
-
-
     return (
-        <div className="chat-sidebar">
-            <div className="history-title" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <User size={14} />
+        <div className="chat-sidebar messenger-style">
+            {/* Header */}
+            <div className="sidebar-header">
+                <h2 className="sidebar-title">{t('chat.sidebar.title')}</h2>
+                <div className="sidebar-actions">
+                    <button className="sidebar-action-btn" title={t('chat.sidebar.newMessage')}>
+                        <Edit size={18} />
+                    </button>
+                </div>
+            </div>
+
+            {/* Search Bar */}
+            <div className="messenger-search-container">
+                <Search size={16} className="messenger-search-icon" />
+                <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder={t('chat.sidebar.searchPlaceholder')}
+                />
+            </div>
+
+            {/* Recent Chats Section */}
+            <div className="messenger-section-title">
+                <MessageCircle size={14} />
                 {t('chat.sidebar.recentChats')}
             </div>
-            <div className="history-list">
-                {chats.length === 0 ? (
-                    <div className="text-muted text-sm" style={{ padding: '12px 0' }}>
-                        {t('chat.sidebar.noChats') || 'No conversations yet'}
+
+            <div className="messenger-conversation-list">
+                {filteredChats.length === 0 ? (
+                    <div className="messenger-empty-state">
+                        {searchQuery
+                            ? t('chat.sidebar.noChatsFound')
+                            : t('chat.sidebar.noChats')}
                     </div>
                 ) : (
-                    chats.map((chat) => {
+                    filteredChats.map((chat) => {
                         const partner = getPartner(chat);
                         const isSelected = selectedChatId === chat.chatId;
+                        const lastMessage = chat.messages[0]?.content || t('chat.sidebar.noMessages');
+                        const lastTime = chat.updateAt ? formatMessageTime(chat.updateAt) : "";
+
                         return (
                             <div
                                 key={chat.chatId}
-                                className={`history-item ${isSelected ? "selected" : ""}`}
+                                className={`messenger-conversation-item ${isSelected ? "selected" : ""}`}
                                 onClick={() => onSelectChat(chat, partner)}
                                 role="button"
                                 tabIndex={0}
                                 onKeyDown={(e) => e.key === 'Enter' && onSelectChat(chat, partner)}
                             >
-                                <div className="history-item-avatar">
+                                <div className="messenger-avatar-wrapper">
                                     <UserAvatar
                                         src={partner.avatar}
                                         name={partner.fullName || partner.email}
-                                        size={36}
-                                        style={{ fontSize: 13 }}
+                                        size={52}
+                                        style={{ fontSize: 18 }}
                                     />
                                 </div>
-                                <div className="history-item-info">
-                                    <div className="history-item-name">{partner.fullName || partner.email}</div>
-                                    <div className="history-item-preview">
-                                        {chat.messages[0]?.content || t('chat.sidebar.noMessages')}
+                                <div className="messenger-conversation-content">
+                                    <div className="messenger-conversation-header">
+                                        <span className="messenger-conversation-name">
+                                            {partner.fullName || partner.email}
+                                        </span>
+                                        <span className="messenger-conversation-time">
+                                            {lastTime}
+                                        </span>
+                                    </div>
+                                    <div className="messenger-conversation-preview">
+                                        {lastMessage}
                                     </div>
                                 </div>
                             </div>
@@ -155,89 +217,51 @@ export default function ChatSideBar({ onSelectChat, selectedChatId, onRefreshRef
                 )}
             </div>
 
-            <div className="history-title" style={{ marginTop: "24px", display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {/* Other Users Section */}
+            <div className="messenger-section-title" style={{ marginTop: "16px" }}>
                 <Users size={14} />
                 {t('chat.sidebar.otherUsers')}
             </div>
 
-            {/* Search Input */}
-            <div style={{
-                padding: '8px 0',
-                marginBottom: '8px'
-            }}>
-                <div style={{
-                    position: 'relative',
-                    display: 'flex',
-                    alignItems: 'center'
-                }}>
-                    <Search
-                        size={16}
-                        style={{
-                            position: 'absolute',
-                            left: '12px',
-                            color: 'var(--text-muted)',
-                            pointerEvents: 'none'
-                        }}
-                    />
-                    <input
-                        type="text"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        placeholder={t('chat.sidebar.searchPlaceholder')}
-                        style={{
-                            width: '100%',
-                            padding: '10px 12px 10px 36px',
-                            border: '1px solid var(--border-color)',
-                            borderRadius: '8px',
-                            fontSize: '14px',
-                            backgroundColor: 'var(--bg-primary)',
-                            color: 'var(--text-primary)',
-                            outline: 'none',
-                            transition: 'border-color 0.2s ease',
-                        }}
-                        onFocus={(e) => {
-                            e.target.style.borderColor = 'var(--primary-color)';
-                        }}
-                        onBlur={(e) => {
-                            e.target.style.borderColor = 'var(--border-color)';
-                        }}
-                    />
-                </div>
-            </div>
-
-            <div className="history-list">
+            <div className="messenger-conversation-list">
                 {isSearching ? (
-                    <div className="text-muted text-sm" style={{ padding: '12px 0', textAlign: 'center' }}>
-                        Đang tìm kiếm...
+                    <div className="messenger-loading">
+                        {t('chat.sidebar.searching')}
                     </div>
                 ) : users.length === 0 ? (
-                    <div className="text-muted text-sm" style={{ padding: '12px 0' }}>
+                    <div className="messenger-empty-state">
                         {searchQuery
-                            ? `Không tìm thấy người dùng "${searchQuery}"`
-                            : t('chat.sidebar.noOtherUsers') || 'No other users available'
+                            ? t('chat.sidebar.noUsersFound')
+                            : t('chat.sidebar.noOtherUsers')
                         }
                     </div>
                 ) : (
                     users.map((u) => (
                         <div
                             key={u.userId}
-                            className="history-item"
+                            className="messenger-conversation-item"
                             onClick={() => handleUserClick(u)}
                             role="button"
                             tabIndex={0}
                             onKeyDown={(e) => e.key === 'Enter' && handleUserClick(u)}
                         >
-                            <div className="history-item-avatar">
+                            <div className="messenger-avatar-wrapper">
                                 <UserAvatar
                                     src={u.avatar}
                                     name={u.fullName || u.email}
-                                    size={36}
-                                    style={{ fontSize: 13 }}
+                                    size={52}
+                                    style={{ fontSize: 18 }}
                                 />
                             </div>
-                            <div className="history-item-info">
-                                <div className="history-item-name">{u.fullName || u.email}</div>
-                                <div className="history-item-preview">{u.email}</div>
+                            <div className="messenger-conversation-content">
+                                <div className="messenger-conversation-header">
+                                    <span className="messenger-conversation-name">
+                                        {u.fullName || u.email}
+                                    </span>
+                                </div>
+                                <div className="messenger-conversation-preview">
+                                    {u.email}
+                                </div>
                             </div>
                         </div>
                     ))
@@ -246,3 +270,4 @@ export default function ChatSideBar({ onSelectChat, selectedChatId, onRefreshRef
         </div>
     );
 }
+

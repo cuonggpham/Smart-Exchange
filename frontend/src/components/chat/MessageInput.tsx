@@ -113,6 +113,13 @@ const MessageInput = forwardRef<MessageInputRef, Props>(({ onSend, onAICheck, cu
         }
     };
 
+    // Handle paste - strip formatting and only paste plain text
+    const onPaste = (e: React.ClipboardEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        const text = e.clipboardData.getData('text/plain');
+        document.execCommand('insertText', false, text);
+    };
+
     return (
         <div className="input-container-wrapper">
             {attachment && (
@@ -146,13 +153,17 @@ const MessageInput = forwardRef<MessageInputRef, Props>(({ onSend, onAICheck, cu
                     onChange={handleFileChange}
                 />
 
-                <div
-                    ref={editorRef}
-                    className="editor input-placeholder"
-                    contentEditable
-                    suppressContentEditableWarning={true}
-                    onKeyDown={onKeyDown}
-                />
+                <div className="editor-wrapper">
+                    <span className="text-indicator">Aa</span>
+                    <div
+                        ref={editorRef}
+                        className="editor input-placeholder"
+                        contentEditable
+                        suppressContentEditableWarning={true}
+                        onKeyDown={onKeyDown}
+                        onPaste={onPaste}
+                    />
+                </div>
 
                 {/* AI Check Toggle - Simple Icon Button */}
                 <button

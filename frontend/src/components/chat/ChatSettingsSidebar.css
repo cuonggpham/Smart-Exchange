@@ -1,22 +1,21 @@
 /* Chat Settings Sidebar */
 .chat-settings-sidebar {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 360px;
+    width: 0;
+    min-width: 0;
     height: 100%;
     background: var(--bg-secondary);
-    border-left: 1px solid var(--border-color);
-    box-shadow: -4px 0 12px rgba(0, 0, 0, 0.1);
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-    z-index: 100;
+    border-left: none;
+    overflow: hidden;
+    transition: width 0.3s ease, min-width 0.3s ease, border-left 0.3s ease;
     display: flex;
     flex-direction: column;
+    flex-shrink: 0;
 }
 
 .chat-settings-sidebar.open {
-    transform: translateX(0);
+    width: 360px;
+    min-width: 360px;
+    border-left: 1px solid var(--border-color);
 }
 
 /* Header */
@@ -214,6 +213,15 @@
 /* Responsive */
 @media (max-width: 768px) {
     .chat-settings-sidebar {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 100%;
+        z-index: 100;
+    }
+
+    .chat-settings-sidebar.open {
         width: 100%;
+        min-width: 100%;
     }
 }

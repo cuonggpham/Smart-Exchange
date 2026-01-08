@@ -226,13 +226,26 @@
             "appName": "Smart EXchange"
         },
         "sidebar": {
+            "title": "Đoạn chat",
             "backHome": "Trang chủ",
+            "newMessage": "Tin nhắn mới",
             "recentChats": "Đã chat gần đây",
             "otherUsers": "Người dùng khác",
             "noMessages": "Chưa có tin nhắn",
             "noChats": "Chưa có cuộc trò chuyện nào",
+            "noChatsFound": "Không tìm thấy cuộc trò chuyện",
             "noOtherUsers": "Không có người dùng khác",
-            "searchPlaceholder": "Tìm kiếm người dùng..."
+            "noUsersFound": "Không tìm thấy người dùng",
+            "searchPlaceholder": "Tìm kiếm người dùng...",
+            "searching": "Đang tìm kiếm...",
+            "time": {
+                "justNow": "Vừa xong",
+                "minutesAgo": "{{count}} phút",
+                "hoursAgo": "{{count}} giờ",
+                "daysAgo": "{{count}} ngày",
+                "today": "Hôm nay",
+                "yesterday": "Hôm qua"
+            }
         },
         "placeholder": {
             "selectChat": "Chọn một cuộc trò chuyện để bắt đầu"

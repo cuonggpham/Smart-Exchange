@@ -226,13 +226,26 @@
             "appName": "Smart EXchange"
         },
         "sidebar": {
+            "title": "チャット",
             "backHome": "ホーム",
+            "newMessage": "新しいメッセージ",
             "recentChats": "最近のチャット",
             "otherUsers": "他のユーザー",
             "noMessages": "メッセージなし",
             "noChats": "会話がまだありません",
+            "noChatsFound": "会話が見つかりません",
             "noOtherUsers": "他のユーザーがいません",
-            "searchPlaceholder": "ユーザーを検索..."
+            "noUsersFound": "ユーザーが見つかりません",
+            "searchPlaceholder": "ユーザーを検索...",
+            "searching": "検索中...",
+            "time": {
+                "justNow": "たった今",
+                "minutesAgo": "{{count}}分",
+                "hoursAgo": "{{count}}時間",
+                "daysAgo": "{{count}}日",
+                "today": "今日",
+                "yesterday": "昨日"
+            }
         },
         "placeholder": {
             "selectChat": "会話を選択して開始"

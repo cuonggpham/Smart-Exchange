@@ -23,6 +23,7 @@ export interface DisplayMessage {
     avatar?: string;
     text: string | null;
     timestamp: string;
+    createdAt: Date;
     aiAnalysis?: {
         translatedText: string;
         intentSummary: string;
@@ -114,6 +115,7 @@ export default function ChatArea({ chatId, receiver, onChatCreated, onBack }: Pr
                                 hour: "2-digit",
                                 minute: "2-digit",
                             }),
+                            createdAt: new Date(m.createdAt),
                             aiAnalysis,
                             attachmentUrl: m.attachmentUrl,
                             attachmentName: m.attachmentName,
@@ -159,6 +161,7 @@ export default function ChatArea({ chatId, receiver, onChatCreated, onBack }: Pr
                         hour: "2-digit",
                         minute: "2-digit",
                     }),
+                    createdAt: new Date(newMsg.createdAt),
                 };
                 setMessages((prev) => [...prev, formattedMsg]);
                 shouldScrollToBottom.current = true;
@@ -293,52 +296,55 @@ export default function ChatArea({ chatId, receiver, onChatCreated, onBack }: Pr
     };
 
     return (
-        <div className="chat-area-wrapper">
-            {/* Messenger-style Chat Header */}
-            <div className="messenger-header">
-                <div className="messenger-header-left">
-                    {onBack && (
+        <div className={`chat-area-wrapper ${isSettingsOpen ? "with-sidebar" : ""}`}>
+            {/* Main Chat Area */}
+            <div className="chat-main-content">
+                {/* Messenger-style Chat Header */}
+                <div className="messenger-header">
+                    <div className="messenger-header-left">
+                        {onBack && (
+                            <button
+                                className="messenger-back-btn"
+                                onClick={onBack}
+                                title="Back"
+                            >
+                                <ArrowLeft size={20} />
+                            </button>
+                        )}
+                        <div className="messenger-user-info">
+                            <UserAvatar
+                                src={receiver.avatar}
+                                name={receiver.fullName}
+                                size={40}
+                                className="messenger-avatar"
+                            />
+                            <span className="messenger-user-name">{receiver.fullName}</span>
+                        </div>
+                    </div>
+                    <div className="messenger-header-actions">
                         <button
-                            className="messenger-back-btn"
-                            onClick={onBack}
-                            title="Back"
+                            className={`messenger-action-btn ${isSettingsOpen ? "active" : ""}`}
+                            onClick={() => setIsSettingsOpen(!isSettingsOpen)}
+                            title="Conversation info"
                         >
-                            <ArrowLeft size={20} />
+                            <Info size={20} />
                         </button>
-                    )}
-                    <div className="messenger-user-info">
-                        <UserAvatar
-                            src={receiver.avatar}
-                            name={receiver.fullName}
-                            size={40}
-                            className="messenger-avatar"
-                        />
-                        <span className="messenger-user-name">{receiver.fullName}</span>
                     </div>
                 </div>
-                <div className="messenger-header-actions">
-                    <button
-                        className="messenger-action-btn"
-                        onClick={() => setIsSettingsOpen(true)}
-                        title="Conversation info"
-                    >
-                        <Info size={20} />
-                    </button>
+                <div className="chat-area" ref={listRef}>
+                    <MsgList
+                        messages={messages}
+                        onDeleteMessage={handleDeleteMessage}
+                    />
                 </div>
-            </div>
-            <div className="chat-area" ref={listRef}>
-                <MsgList
-                    messages={messages}
-                    onDeleteMessage={handleDeleteMessage}
+                <MessageInput
+                    ref={messageInputRef}
+                    onSend={handleSend}
+                    onAICheck={handleAICheck}
+                    cultureCheckEnabled={cultureCheckEnabled}
+                    onCultureCheckChange={setCultureCheckEnabled}
                 />
             </div>
-            <MessageInput
-                ref={messageInputRef}
-                onSend={handleSend}
-                onAICheck={handleAICheck}
-                cultureCheckEnabled={cultureCheckEnabled}
-                onCultureCheckChange={setCultureCheckEnabled}
-            />
 
             {/* Settings Sidebar */}
             <ChatSettingsSidebar

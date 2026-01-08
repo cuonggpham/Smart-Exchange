@@ -70,7 +70,12 @@ const Sidebar: React.FC = () => {
                 onKeyDown={(e) => e.key === "Enter" && navigate("/home")}
             >
                 <img src="/logo.png" alt="Logo" className="sidebar-logo-img" />
-                {!isCollapsed && <span className="sidebar-title">Smart EXchange</span>}
+                {!isCollapsed && (
+                    <div className="sidebar-brand-text">
+                        <span className="sidebar-brand-smart">Smart</span>
+                        <span className="sidebar-brand-ex">EXCHANGE</span>
+                    </div>
+                )}
             </div>
 
             {/* Toggle Button */}

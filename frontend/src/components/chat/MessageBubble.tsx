@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import i18n from "../../i18n";
 import { Languages, AlertTriangle, Lightbulb, ChevronDown, X, Sparkles, Loader2, File, Download } from "lucide-react";
@@ -15,6 +15,9 @@ interface Props {
 export default function MessageBubble({ msg, onDelete }: Props) {
     const { t } = useTranslation();
     const [showActions, setShowActions] = useState(false);
+    const [showTimestamp, setShowTimestamp] = useState(false);
+    const showTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const hideTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const [isNoteExpanded, setIsNoteExpanded] = useState(false);
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [localAnalysis, setLocalAnalysis] = useState(msg.aiAnalysis);
@@ -80,11 +83,51 @@ export default function MessageBubble({ msg, onDelete }: Props) {
         );
     };
 
+    const handleMouseEnter = () => {
+        // Clear any pending hide timeout
+        if (hideTimeoutRef.current) {
+            clearTimeout(hideTimeoutRef.current);
+            hideTimeoutRef.current = null;
+        }
+        setShowActions(true);
+
+        // Delay showing timestamp by 1 second
+        showTimeoutRef.current = setTimeout(() => {
+            setShowTimestamp(true);
+        }, 500);
+    };
+
+    const handleMouseLeave = () => {
+        // Clear any pending show timeout
+        if (showTimeoutRef.current) {
+            clearTimeout(showTimeoutRef.current);
+            showTimeoutRef.current = null;
+        }
+        setShowActions(false);
+
+        // Delay hiding timestamp for smooth UX
+        hideTimeoutRef.current = setTimeout(() => {
+            setShowTimestamp(false);
+        }, 300);
+    };
+
+    // Cleanup timeouts on unmount
+    useEffect(() => {
+        return () => {
+            if (showTimeoutRef.current) {
+                clearTimeout(showTimeoutRef.current);
+            }
+            if (hideTimeoutRef.current) {
+                clearTimeout(hideTimeoutRef.current);
+            }
+        };
+    }, []);
+
     return (
         <div
             className={`bubble-row ${isUser ? "right" : "left"}`}
-            onMouseEnter={() => setShowActions(true)}
-            onMouseLeave={() => setShowActions(false)}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
         >
             <UserAvatar
                 src={msg.avatar}
@@ -117,7 +160,7 @@ export default function MessageBubble({ msg, onDelete }: Props) {
                     )}
                     {!isUser && aiAnalysis && (
                         <button
-                            className="analyze-msg-btn toggle-eye"
+                            className={`analyze-msg-btn toggle-eye ${isAnalysisVisible ? 'visible' : 'hidden'}`}
                             onClick={() => setIsAnalysisVisible(!isAnalysisVisible)}
                             title={isAnalysisVisible ? t("common.hide") : t("common.show")}
                         >
@@ -171,7 +214,9 @@ export default function MessageBubble({ msg, onDelete }: Props) {
                     </div>
                 )}
 
-                <div className="timestamp">{msg.timestamp}</div>
+                <div className={`timestamp messenger-style ${showTimestamp ? 'visible' : ''}`}>
+                    {msg.timestamp}
+                </div>
             </div>
         </div>
     );

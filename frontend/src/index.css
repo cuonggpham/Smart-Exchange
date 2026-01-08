@@ -1088,20 +1088,36 @@ button,
     box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
 }
 
-.sidebar-title {
+/* Brand Text - Compact Two-Line Design */
+.sidebar-brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+    gap: 0;
+}
+
+.sidebar-brand-smart {
     font-family: var(--font-heading);
-    font-size: 17px;
-    font-weight: 700;
-    background: linear-gradient(135deg, var(--text-color) 0%, var(--text-secondary) 100%);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.sidebar-brand-ex {
+    font-family: var(--font-heading);
+    font-size: 22px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--primary-color) 0%, #2563eb 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    letter-spacing: -0.4px;
-    white-space: nowrap;
-    overflow: hidden;
+    letter-spacing: -0.5px;
+    line-height: 1.1;
 }
 
-.sidebar.collapsed .sidebar-title {
+.sidebar.collapsed .sidebar-brand-text {
     display: none;
 }
 

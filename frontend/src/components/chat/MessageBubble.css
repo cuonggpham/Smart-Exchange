@@ -168,3 +168,19 @@
 .animate-spin {
     animation: spin 1s linear infinite;
 }
+
+/* ======= TOGGLE EYE STATES ======= */
+.analyze-msg-btn.toggle-eye.visible {
+    background: var(--primary-color);
+    color: white;
+}
+
+.analyze-msg-btn.toggle-eye.hidden {
+    background: var(--text-muted);
+    color: white;
+    opacity: 0.8;
+}
+
+.analyze-msg-btn.toggle-eye.hidden:hover {
+    opacity: 1;
+}
